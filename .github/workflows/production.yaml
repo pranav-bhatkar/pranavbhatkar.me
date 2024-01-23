@@ -15,10 +15,24 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
+            - name: Send Notification 1
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "Initiating Production Deployment! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
+
             - name: Install Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 21
+
+            - name: Send Notification 2
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "Node.js Installed! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
 
             - uses: pnpm/action-setup@v2
               name: Install pnpm
@@ -39,12 +53,43 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-pnpm-store-
 
+            - name: Send Notification 3
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "pnpm Installed! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
+
             - name: Install Vercel CLI
               run: pnpm add -g vercel@latest
+
+            - name: Send Notification 4
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "Vercel CLI Installed! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
+
             - name: Pull Vercel Environment Information
               run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Send Notification 5
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "Vercel Environment Information Pulled! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
+
             - name: Build Project Artifacts
               run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+            - name: Send Notification 6
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "Project Artifacts Built! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
+
             - name: Deploy Project Artifacts to Vercel
               id: preview
               run: |
@@ -52,6 +97,13 @@ jobs:
                   deploymentUrl=$(cat deployment-url.txt)
                   echo "Vercel Production URL: $deploymentUrl"
                   echo "DEPLOYMENT_URL=$deploymentUrl" >> $GITHUB_OUTPUT
+
+            - name: Send Notification 7
+              run: |
+                  curl -u ${{ secrets.NTFY_CRED }} \
+                    -d "Project Artifacts Deployed to Vercel! 🚀💻" \
+                    -H "Title: GitHub Baba" \
+                    ${{ secrets.NTFY_URL }}
     Ntfy-Success:
         needs: Deploy-Production
         runs-on: ubuntu-latest
@@ -64,7 +116,7 @@ jobs:
                   curl -u ${{ secrets.NTFY_CRED }} \
                     -d "Your Portfolio is all set and live! 🚀💻" \
                     -H "Title: GitHub Baba" \
-                    -H "Actions: view, Open Site, ${{ env.DeploymentUrl }}; view, Open Github, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+                    -H "Actions: view, Open Site, $DEPLOYMENT_URL; view, Open Github, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
                     ${{ secrets.NTFY_URL }}
     Ntfy-Failure:
         needs: Deploy-Production
