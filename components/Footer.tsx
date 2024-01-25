@@ -16,6 +16,7 @@ export default function Footer() {
                     {siteMetadata.twitter && (
                         <a
                             href={siteMetadata.twitter}
+                            aria-label="Pranav Bhatkar Twitter"
                             className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
                         >
                             <Twitter size={24} />
@@ -24,6 +25,7 @@ export default function Footer() {
                     {siteMetadata.email && (
                         <a
                             href={`mailto:${siteMetadata.email}`}
+                            aria-label="Pranav Bhatkar Email"
                             className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
                         >
                             <Mail size={24} />
@@ -32,6 +34,7 @@ export default function Footer() {
                     {siteMetadata.github && (
                         <a
                             href={siteMetadata.github}
+                            aria-label="Pranav Bhatkar Github"
                             className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
                         >
                             <Github size={24} />
@@ -40,6 +43,7 @@ export default function Footer() {
                     {siteMetadata.instagram && (
                         <a
                             href={siteMetadata.instagram}
+                            aria-label="Pranav Bhatkar Instagram"
                             className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
                         >
                             <Instagram size={24} />

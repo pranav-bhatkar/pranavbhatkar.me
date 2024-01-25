@@ -149,11 +149,11 @@ export default function ListLayout({
                                     </div>
                                     <div className="space-y-3 xl:col-span-3">
                                         <div>
-                                            <h3 className="text-2xl font-bold leading-8 tracking-tight mb-2">
+                                            <h1 className="text-2xl font-bold leading-8 tracking-tight mb-2">
                                                 <Link href={`/${path}`} className="text-foreground">
                                                     {title}
                                                 </Link>
-                                            </h3>
+                                            </h1>
                                             <div className="flex flex-wrap space-x-3">
                                                 {tags?.map((tag) => <Tag key={tag} text={tag} />)}
                                             </div>
