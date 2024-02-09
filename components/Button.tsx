@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
 
 import Magnetic from './Magnetic'
 
-export default function index({
+export default function Button({
     children,
     backgroundColor,
     ...attributes
@@ -15,7 +15,7 @@ export default function index({
 } & React.HTMLAttributes<HTMLDivElement>) {
     const circle = useRef(null)
     const text = useRef(null)
-    let timeline = useRef<gsap.core.Timeline>()
+    const timeline = useRef<gsap.core.Timeline>()
     let timeoutId: null | NodeJS.Timeout = null
     useEffect(() => {
         timeline.current = gsap.timeline({ paused: true })
