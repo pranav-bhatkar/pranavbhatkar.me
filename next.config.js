@@ -63,7 +63,7 @@ module.exports = () => {
     return plugins.reduce((acc, next) => next(acc), {
         logging: {
             fetches: {
-                fullUrl: true,
+                fullUrl: false, // Set to true to see full URL in the logs
             },
         },
         reactStrictMode: true,
