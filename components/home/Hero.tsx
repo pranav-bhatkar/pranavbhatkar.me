@@ -2,11 +2,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+import Button from '../Button'
+import Magnetic from '../Magnetic'
+
 function Hero() {
     return (
         <section
             id="hero"
-            className="my-8 md:my-36 w-full  flex flex-col md:flex-row gap-4 justify-center md:justify-between items-start md:items-center pt-4 space-y-8 md:space-y-0"
+            className="my-8 md:my-26 2xl:my-36 w-full  flex flex-col md:flex-row gap-4 justify-center md:justify-between items-start md:items-center pt-4 space-y-8 md:space-y-0"
         >
             <div className="max-w-[350px] md:max-w-[500px] space-y-4">
                 <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
@@ -25,12 +28,7 @@ function Hero() {
                     or want to work with me?{' '}
                 </p>
                 <div>
-                    <a
-                        href="mailto:mail@pranavbhatkar.me"
-                        className="w-max focus:shadow-outline-blue inline rounded-lg border border-transparent bg-foreground dark:bg-white px-4 py-2 text-sm font-bold leading-5 text-background shadow transition-colors duration-150 hover:bg-black/90 focus:outline-none dark:hover:bg-gray-300"
-                    >
-                        Contact Me
-                    </a>
+                    <Button backgroundColor={'#334BD3'}>Contact Me</Button>
                 </div>
             </div>
             <div className="hidden dark:block self-center">
