@@ -3,7 +3,6 @@ import Link from 'next/link'
 import React from 'react'
 
 import Button from '../Button'
-import Magnetic from '../Magnetic'
 
 function Hero() {
     return (
@@ -28,7 +27,9 @@ function Hero() {
                     or want to work with me?{' '}
                 </p>
                 <div>
-                    <Button backgroundColor={'#334BD3'}>Contact Me</Button>
+                    <Link href="https://instagram.com/pranavbhatkar_" target="_blank">
+                        <Button backgroundColor={'#334BD3'}>Contact Me</Button>
+                    </Link>
                 </div>
             </div>
             <div className="hidden dark:block self-center">
