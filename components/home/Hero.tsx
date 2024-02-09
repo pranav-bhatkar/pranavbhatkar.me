@@ -6,7 +6,7 @@ function Hero() {
     return (
         <section
             id="hero"
-            className="my-16 md:my-36 w-full  flex flex-col md:flex-row gap-4 justify-center md:justify-between items-start md:items-center pt-4 space-y-8 md:space-y-0"
+            className="my-8 md:my-36 w-full  flex flex-col md:flex-row gap-4 justify-center md:justify-between items-start md:items-center pt-4 space-y-8 md:space-y-0"
         >
             <div className="max-w-[350px] md:max-w-[500px] space-y-4">
                 <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
