@@ -2,52 +2,69 @@
 
 import siteMetadata from '@/data/siteMetadata'
 import { Github, Instagram, Mail, Twitter } from 'lucide-react'
-import { usePathname } from 'next/navigation'
-
 import Link from './Link'
+import Magnetic from './Magnetic'
 
 export default function Footer() {
-    const pathName = usePathname()
-
     return (
         <footer>
             <div className="mt-16 flex flex-col items-center">
                 <div className="mb-3 flex space-x-4">
                     {siteMetadata.twitter && (
-                        <a
-                            href={siteMetadata.twitter}
-                            aria-label="Pranav Bhatkar Twitter"
-                            className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
-                        >
-                            <Twitter size={24} />
-                        </a>
+                        <Magnetic>
+                            <div className="relative flex items-center justify-center scale-1 w-[4] h-[4]">
+                                <a
+                                    href={siteMetadata.twitter}
+                                    aria-label="Pranav Bhatkar Twitter"
+                                    className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
+                                >
+                                    <Twitter size={24} />
+                                </a>
+                                <div className="absolute w-full h-full hover:scale-[3]"></div>
+                            </div>
+                        </Magnetic>
                     )}
                     {siteMetadata.email && (
-                        <a
-                            href={`mailto:${siteMetadata.email}`}
-                            aria-label="Pranav Bhatkar Email"
-                            className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
-                        >
-                            <Mail size={24} />
-                        </a>
+                        <Magnetic>
+                            <div className="relative flex items-center justify-center scale-1 w-[4] h-[4]">
+                                <a
+                                    href={`mailto:${siteMetadata.email}`}
+                                    aria-label="Pranav Bhatkar Email"
+                                    className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
+                                >
+                                    <Mail size={24} />
+                                </a>
+                                <div className="absolute w-full h-full hover:scale-[3]"></div>
+                            </div>
+                        </Magnetic>
                     )}
                     {siteMetadata.github && (
-                        <a
-                            href={siteMetadata.github}
-                            aria-label="Pranav Bhatkar Github"
-                            className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
-                        >
-                            <Github size={24} />
-                        </a>
+                        <Magnetic>
+                            <div className="relative flex items-center justify-center scale-1 w-[4] h-[4]">
+                                <a
+                                    href={siteMetadata.github}
+                                    aria-label="Pranav Bhatkar Github"
+                                    className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
+                                >
+                                    <Github size={24} />
+                                </a>
+                                <div className="absolute w-full h-full hover:scale-[3]"></div>
+                            </div>
+                        </Magnetic>
                     )}
                     {siteMetadata.instagram && (
-                        <a
-                            href={siteMetadata.instagram}
-                            aria-label="Pranav Bhatkar Instagram"
-                            className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
-                        >
-                            <Instagram size={24} />
-                        </a>
+                        <Magnetic>
+                            <div className="relative flex items-center justify-center scale-1 w-[4] h-[4]">
+                                <a
+                                    href={siteMetadata.instagram}
+                                    aria-label="Pranav Bhatkar Instagram"
+                                    className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
+                                >
+                                    <Instagram size={24} />
+                                </a>
+                                <div className="absolute w-full h-full hover:scale-[3]"></div>
+                            </div>
+                        </Magnetic>
                     )}
                 </div>
                 {/* {pathName == '/' && (

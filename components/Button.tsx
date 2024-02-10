@@ -44,7 +44,6 @@ export default function Button({
     return (
         <Magnetic>
             <div
-                // className=" border border-transparent bg-foreground dark:bg-white   font-bold leading-5 text-background shadow transition-colors duration-150 hover:bg-black/90 focus:outline-none dark:hover:bg-gray-300"
                 className="w-max rounded-lg border border-accent-foreground dark:border-accent-foreground cursor-pointer relative flex items-center justify-center text-sm px-4 py-2"
                 style={{ overflow: 'hidden' }}
                 onMouseEnter={() => {

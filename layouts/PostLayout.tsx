@@ -1,4 +1,4 @@
-import Comments from '@/components/Comments'
+// import Comments from '@/components/Comments'
 import Image from '@/components/Image'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
@@ -10,8 +10,8 @@ import { CoreContent } from 'pliny/utils/contentlayer'
 import { ReactNode } from 'react'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-    `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+// const discussUrl = (path) =>
+//     `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
     weekday: 'long',
