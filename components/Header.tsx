@@ -1,27 +1,15 @@
-'use client'
-
 import headerNavLinks from '@/data/headerNavLinks'
 import Logo from '@/data/logo.png'
 import siteMetadata from '@/data/siteMetadata'
-import { motion } from 'framer-motion'
 import NextImage from 'next/image'
-import { usePathname } from 'next/navigation'
-
 import Link from './Link'
 import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
 import ThemeSwitch from './ThemeSwitch'
-import { slideDown, slideDown1 } from './animation'
 
 const Header = () => {
-    const pathName = usePathname()
     return (
-        <motion.header
-            variants={pathName === '/' ? slideDown : slideDown1}
-            initial="initial"
-            animate="enter"
-            className="fixed left-0 right-0 top-0 z-40 bg-background/50 shadow-sm saturate-100 backdrop-blur-[10px]"
-        >
+        <header className="fixed left-0 right-0 top-0 z-40 bg-background/50 shadow-sm saturate-100 backdrop-blur-[10px]">
             <div className="mx-auto flex h-[60px] max-w-4xl items-center justify-between px-8">
                 <div>
                     <Link href="/" aria-label={siteMetadata.headerTitle}>
@@ -48,7 +36,7 @@ const Header = () => {
                     <MobileNav />
                 </div>
             </div>
-        </motion.header>
+        </header>
     )
 }
 

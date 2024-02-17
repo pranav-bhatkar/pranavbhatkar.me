@@ -23,8 +23,10 @@ export default function Home() {
     return (
         <>
             <main
-                // className="divide-y divide-accent-foreground dark:divide-accent"
-                className={cn(isLoading ? 'cursor-wait' : 'cursor-default')}
+                className={cn(
+                    isLoading ? 'cursor-wait' : 'cursor-default',
+                    'divide-y divide-accent-foreground dark:divide-accent'
+                )}
             >
                 <AnimatePresence mode="wait">{isLoading && <Preloader />}</AnimatePresence>
                 <Hero />
