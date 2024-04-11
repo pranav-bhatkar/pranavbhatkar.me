@@ -1,5 +1,6 @@
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import gsap from 'gsap'
+import { useTheme } from 'next-themes'
 import React from 'react'
 import { useEffect, useRef } from 'react'
 
@@ -17,6 +18,7 @@ export default function Button({
     const text = useRef(null)
     const timeline = useRef<gsap.core.Timeline>()
     let timeoutId: null | NodeJS.Timeout = null
+    const { theme } = useTheme()
     useEffect(() => {
         timeline.current = gsap.timeline({ paused: true })
         timeline.current
@@ -26,8 +28,12 @@ export default function Button({
                 'enter'
             )
             .to(circle.current, { top: '-150%', width: '125%', duration: 0.25 }, 'exit')
-            .to(text.current, { duration: 0.4, ease: 'power3.in', color: '#000' }, 'enter')
-            .to(text.current, { duration: 0.25, color: '#fff' }, 'exit')
+            .to(
+                text.current,
+                { duration: 0.4, ease: 'power3.in', color: theme === 'dark' ? '#000' : '#fff' },
+                'enter'
+            )
+            .to(text.current, { duration: 0.25, color: theme === 'dark' ? '#fff' : '#000' }, 'exit')
     }, [])
 
     const manageMouseEnter = () => {
@@ -54,7 +60,10 @@ export default function Button({
                 }}
                 {...attributes}
             >
-                <p className="z-10" ref={text}>
+                <p
+                    className="z-10"
+                    ref={text}
+                >
                     {children}
                 </p>
                 <div

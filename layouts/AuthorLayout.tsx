@@ -1,12 +1,7 @@
-'use client'
-
 import Image from '@/components/Image'
 import type { Authors } from 'contentlayer/generated'
-import { motion, useInView } from 'framer-motion'
 import { Github, Instagram, Linkedin, Mail, Twitter } from 'lucide-react'
-import { ReactNode, useRef } from 'react'
-
-import { slideRight, slideUp } from './animation'
+import { ReactNode } from 'react'
 
 interface Props {
     children: ReactNode
@@ -16,26 +11,15 @@ interface Props {
 export default function AuthorLayout({ children, content }: Props) {
     const { name, avatar, occupation, company, email, twitter, linkedin, github, instagram } =
         content
-    const about = useRef(null)
-    const isInView = useInView(about)
     return (
         <>
-            <div ref={about} className="divide-y divide-accent-foreground dark:divide-accent">
+            <div className="divide-y divide-accent-foreground dark:divide-accent">
                 <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-                    <motion.h1
-                    variants={slideRight}
-                    initial="initial"
-                    animate={isInView ? 'open' : 'closed'}
-                    className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+                    <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
                         About
-                    </motion.h1>
+                    </h1>
                 </div>
-                <motion.div
-                    variants={slideUp}
-                    initial="initial"
-                    animate={isInView ? 'open' : 'closed'}
-                    className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0"
-                >
+                <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
                     <div className="flex flex-col items-center space-x-2 pt-8">
                         {avatar && (
                             <Image
@@ -97,7 +81,7 @@ export default function AuthorLayout({ children, content }: Props) {
                     <div className="prose prose-sm max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">
                         {children}
                     </div>
-                </motion.div>
+                </div>
             </div>
         </>
     )
