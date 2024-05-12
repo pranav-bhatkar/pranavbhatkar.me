@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
+import RetroGrid from '@/components/magicui/retro-grid'
 import siteMetadata from '@/data/siteMetadata'
 import 'css/tailwind.css'
 import { Metadata } from 'next'
@@ -91,28 +92,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
             <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-            <body className="bg-background text-black antialiased dark:text-white ">
+            <body className="bg-background text-black antialiased dark:text-white">
                 <ThemeProviders>
-                    <SectionContainer>
-                        <div className="flex h-full flex-col justify-between font-sans">
-                            <SearchProvider
-                                searchConfig={
-                                    siteMetadata.search
-                                        ? siteMetadata.search
-                                        : {
-                                              provider: 'kbar',
-                                              kbarConfig: {
-                                                  searchDocumentsPath: '/search.json',
-                                              },
-                                          }
-                                }
-                            >
-                                <Header />
-                                <main className="mb-auto">{children}</main>
-                            </SearchProvider>
-                            <Footer />
-                        </div>
-                    </SectionContainer>
+                    <SearchProvider
+                        searchConfig={
+                            siteMetadata.search
+                                ? siteMetadata.search
+                                : {
+                                      provider: 'kbar',
+                                      kbarConfig: {
+                                          searchDocumentsPath: '/search.json',
+                                      },
+                                  }
+                        }
+                    >
+                        <Header />
+                        {children}
+                    </SearchProvider>
+                    <Footer />
                 </ThemeProviders>
                 <GA
                     googleAnalyticsId={

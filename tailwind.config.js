@@ -86,6 +86,7 @@ module.exports = {
                 md: `calc(var(--radius) - 2px)`,
                 sm: 'calc(var(--radius) - 4px)',
             },
+
             keyframes: {
                 'accordion-down': {
                     from: { height: 0 },
@@ -95,8 +96,30 @@ module.exports = {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: 0 },
                 },
+                grid: {
+                    '0%': { transform: 'translateY(-50%)' },
+                    '100%': { transform: 'translateY(0)' },
+                },
+                'border-beam': {
+                    '100%': {
+                        'offset-distance': '100%',
+                    },
+                },
+                orbit: {
+                    '0%': {
+                        transform:
+                            'rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg)',
+                    },
+                    '100%': {
+                        transform:
+                            'rotate(360deg) translateY(calc(var(--radius) * 1px)) rotate(-360deg)',
+                    },
+                },
             },
             animation: {
+                grid: 'grid 15s linear infinite',
+                orbit: 'orbit calc(var(--duration)*1s) linear infinite',
+                'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
                 skeleton: 'skeleton 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
