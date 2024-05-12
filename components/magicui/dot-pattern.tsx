@@ -2,14 +2,15 @@ import { cn } from '@/scripts/utils/tailwind-helpers'
 import { useId } from 'react'
 
 interface DotPatternProps {
-    width?: any
-    height?: any
-    x?: any
-    y?: any
-    cx?: any
-    cy?: any
-    cr?: any
+    width?: number
+    height?: number
+    x?: number
+    y?: number
+    cx?: number
+    cy?: number
+    cr?: number
     className?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any
 }
 export function DotPattern({
