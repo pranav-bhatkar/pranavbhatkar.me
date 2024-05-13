@@ -1,250 +1,37 @@
 'use client'
 
-import { BorderBeam } from '@/components/magicui/border-beam'
-import WordRotate from '@/components/magicui/word-rotate'
-import { Button, buttonVariants } from '@/components/shadcn/button'
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/shadcn/tooltip'
+import Preloader from '@/components/Preloader'
+import Projects from '@/components/home/Projects'
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
-import { motion, useInView } from 'framer-motion'
-import { ChevronRight, MailIcon, PhoneIcon, Youtube } from 'lucide-react'
-import Link from 'next/link'
-import { useRef } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
-export default function Hero() {
-    const fadeInRef = useRef(null)
-    const fadeInInView = useInView(fadeInRef, {
-        once: true,
-    })
+// import Hero from '@/components/home/Hero'
+import Hero from '../components/home/Hero'
+import Introduction from '../components/home/Introduction'
 
-    const fadeUpVariants = {
-        initial: {
-            opacity: 0,
-            y: 24,
-        },
-        animate: {
-            opacity: 1,
-            y: 0,
-        },
-    }
-    const contact = {
-        email: 'work@pranavbhatkar.me',
-        tel: '+919960935244',
-        social: [
-            {
-                name: 'GitHub',
-                url: 'https://github.com/pranav-bhatkar',
-                icon: GitHubLogoIcon,
-            },
-            {
-                name: 'LinkedIn',
-                url: 'https://www.linkedin.com/in/pranavbhatkar',
-                icon: (props: React.SVGProps<SVGSVGElement>) => (
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-                        <title>LinkedIn</title>
-                        <path
-                            fill="currentColor"
-                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-                        />
-                    </svg>
-                ),
-            },
-            {
-                name: 'X',
-                url: 'https://x.com/pranavbhatkar_',
-                icon: (props: React.SVGProps<SVGSVGElement>) => (
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-                        <title>X</title>
-                        <path
-                            fill="currentColor"
-                            d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
-                        />
-                    </svg>
-                ),
-            },
-            {
-                name: 'Youtube',
-                url: 'https://youtube.com/@pranavbhatkar',
-                icon: Youtube,
-            },
-        ],
-    }
+export default function Home() {
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        ;(async () => {
+            const LocomotiveScroll = (await import('locomotive-scroll')).default
+            const locomotiveScroll = new LocomotiveScroll()
+            setTimeout(() => {
+                setIsLoading(false)
+
+                window.scrollTo(0, 0)
+            }, 2000)
+        })()
+    }, [])
     return (
-        <section id="hero">
-            <div className="relative h-screen overflow-hidden py-14">
-                <div className="container z-10 flex flex-col">
-                    <div className="mt-20 grid grid-cols-1">
-                        <div className="flex flex-col items-center gap-6 pb-8 text-center">
-                            <motion.h1
-                                ref={fadeInRef}
-                                className="text-balance bg-gradient-to-br from-black from-30% to-black/60 bg-clip-text py-6 text-3xl font-medium leading-10 tracking-tighter text-transparent dark:from-white dark:to-white/40 sm:text-6xl md:text-7xl lg:text-8xl"
-                                // className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
-                                animate={fadeInInView ? 'animate' : 'initial'}
-                                variants={fadeUpVariants}
-                                initial={false}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: 0.1,
-                                    ease: [0.21, 0.47, 0.32, 0.98],
-                                    type: 'spring',
-                                }}
-                            >
-                                Hi, I&apos;m
-                                <br />
-                                Pranav Bhatkar 👋
-                            </motion.h1>
-                            <motion.span
-                                className="text-balance text-lg tracking-tight text-gray-400 md:text-xl"
-                                animate={fadeInInView ? 'animate' : 'initial'}
-                                variants={fadeUpVariants}
-                                initial={false}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: 0.2,
-                                    ease: [0.21, 0.47, 0.32, 0.98],
-                                    type: 'spring',
-                                }}
-                                //  className="max-w-[600px] md:text-xl"
-                            >
-                                I&apos;m a passionate software engineer with an interest in{' '}
-                                <WordRotate
-                                    className=" w-full text-center font-bold leading-none tracking-tighter"
-                                    words={[
-                                        'Web Development.',
-                                        'Mobile Development.',
-                                        'Backend Development.',
-                                        'DevOps.',
-                                        'Machine Learning.',
-                                        'Full Stack Development.',
-                                        'Cloud Computing.',
-                                    ]}
-                                />
-                            </motion.span>
-
-                            <motion.div
-                                animate={fadeInInView ? 'animate' : 'initial'}
-                                variants={fadeUpVariants}
-                                initial={false}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: 0.3,
-                                    ease: [0.21, 0.47, 0.32, 0.98],
-                                    type: 'spring',
-                                }}
-                                className="flex flex-col gap-2 min-[400px]:flex-row"
-                            >
-                                <Link
-                                    href="/projects"
-                                    className={cn(
-                                        buttonVariants({
-                                            size: 'lg',
-                                        }),
-                                        'gap-2 whitespace-pre md:flex',
-                                        'group relative gap-1 overflow-hidden rounded-full text-base font-semibold tracking-tighter',
-                                        'transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2'
-                                    )}
-                                >
-                                    View My Work
-                                    <ChevronRight className="h-4 w-4 translate-x-0 transform transition-all duration-300 ease-out group-hover:translate-x-1" />
-                                </Link>
-                                <Link
-                                    href={`mailto:${contact.email}`}
-                                    target="_blank"
-                                    className={cn(
-                                        buttonVariants({
-                                            variant: 'secondary',
-                                            size: 'lg',
-                                        }),
-                                        'gap-2 whitespace-pre md:flex',
-                                        'group relative gap-1 overflow-hidden rounded-full text-base font-semibold tracking-tighter'
-                                    )}
-                                >
-                                    Contact Me
-                                    <ChevronRight className="h-4 w-4 translate-x-0 transform transition-all duration-300 ease-out group-hover:translate-x-1" />
-                                </Link>
-                            </motion.div>
-                            <motion.div
-                                animate={fadeInInView ? 'animate' : 'initial'}
-                                variants={fadeUpVariants}
-                                initial={false}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: 0.3,
-                                    ease: [0.21, 0.47, 0.32, 0.98],
-                                    type: 'spring',
-                                }}
-                                className="flex gap-x-1 pt-1 font-sans text-sm text-muted-foreground print:hidden"
-                            >
-                                <TooltipProvider>
-                                    {contact.email ? (
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <Button
-                                                    className="size-8"
-                                                    variant="outline"
-                                                    size="icon"
-                                                    asChild
-                                                >
-                                                    <a href={`mailto:${contact.email}`}>
-                                                        <MailIcon className="size-4" />
-                                                    </a>
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Email</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    ) : null}
-                                    {contact.tel ? (
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                {' '}
-                                                <Button
-                                                    className="size-8"
-                                                    variant="outline"
-                                                    size="icon"
-                                                    asChild
-                                                >
-                                                    <a href={`tel:${contact.tel}`}>
-                                                        <PhoneIcon className="size-4" />
-                                                    </a>
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Phone</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    ) : null}
-                                    {contact.social.map((social) => (
-                                        <Tooltip key={social.name}>
-                                            <TooltipTrigger>
-                                                <Button
-                                                    className="size-8"
-                                                    variant="outline"
-                                                    size="icon"
-                                                    asChild
-                                                >
-                                                    <a href={social.url}>
-                                                        <social.icon className="size-4" />
-                                                    </a>
-                                                </Button>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>{social.name}</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    ))}
-                                </TooltipProvider>
-                            </motion.div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <>
+            <main className={cn(isLoading ? 'cursor-wait' : 'cursor-default')}>
+                <AnimatePresence mode="wait">{isLoading && <Preloader />}</AnimatePresence>
+                <Hero />
+                <Introduction />
+                <Projects />
+            </main>
+        </>
     )
 }
