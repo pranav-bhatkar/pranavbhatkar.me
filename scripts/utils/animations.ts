@@ -175,11 +175,11 @@ export function initLoaderHome() {
     })
 
     if (window.innerWidth > 540) {
-        tl.set('main .once-in', {
+        tl.set('main', {
             y: '50vh',
         })
     } else {
-        tl.set('main .once-in', {
+        tl.set('main', {
             y: '10vh',
         })
     }
@@ -288,7 +288,7 @@ export function initLoaderHome() {
     })
 
     tl.to(
-        'main .once-in',
+        'main',
         {
             duration: 1.5,
             y: '0vh',
@@ -346,11 +346,11 @@ export function initLoader() {
     })
 
     if (window.innerWidth > 540) {
-        tl.set('main .once-in', {
+        tl.set('main', {
             y: '50vh',
         })
     } else {
-        tl.set('main .once-in', {
+        tl.set('main', {
             y: '10vh',
         })
     }
@@ -410,7 +410,7 @@ export function initLoader() {
     })
 
     tl.to(
-        'main .once-in',
+        'main',
         {
             duration: 1,
             y: '0vh',

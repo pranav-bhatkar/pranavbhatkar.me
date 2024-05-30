@@ -11,7 +11,11 @@ export default function Footer() {
             <div className="mt-16 flex flex-col items-center">
                 <div className="mb-3 flex space-x-4">
                     {siteMetadata.twitter && (
-                        <a className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125">
+                        <a
+                            href={siteMetadata.twitter}
+                            aria-label="Pranav Bhatkar Twitter"
+                            className="text-muted-foreground hover:brightness-125 dark:hover:brightness-125"
+                        >
                             <Twitter size={24} />
                         </a>
                     )}

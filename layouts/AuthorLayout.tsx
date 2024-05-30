@@ -39,6 +39,7 @@ export default function AuthorLayout({ children, content }: Props) {
                             {twitter && (
                                 <a
                                     href={twitter}
+                                    aria-label={`${name}'s Twitter`}
                                     className="hover:brightness-125 dark:hover:brightness-125"
                                 >
                                     <Twitter size={24} />
@@ -47,6 +48,7 @@ export default function AuthorLayout({ children, content }: Props) {
                             {email && (
                                 <a
                                     href={`mailto:${email}`}
+                                    aria-label={`${name}'s Email`}
                                     className="hover:brightness-125 dark:hover:brightness-125"
                                 >
                                     <Mail size={24} />
@@ -55,6 +57,7 @@ export default function AuthorLayout({ children, content }: Props) {
                             {github && (
                                 <a
                                     href={github}
+                                    aria-label={`${name}'s Github`}
                                     className="hover:brightness-125 dark:hover:brightness-125"
                                 >
                                     <Github size={24} />
@@ -63,6 +66,7 @@ export default function AuthorLayout({ children, content }: Props) {
                             {linkedin && (
                                 <a
                                     href={linkedin}
+                                    aria-label={`${name}'s Linkedin`}
                                     className="hover:brightness-125 dark:hover:brightness-125"
                                 >
                                     <Linkedin size={24} />
@@ -71,6 +75,7 @@ export default function AuthorLayout({ children, content }: Props) {
                             {instagram && (
                                 <a
                                     href={instagram}
+                                    aria-label={`${name}'s Instagram`}
                                     className="hover:brightness-125 dark:hover:brightness-125"
                                 >
                                     <Instagram size={24} />
