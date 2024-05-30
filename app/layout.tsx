@@ -1,7 +1,5 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
-import SectionContainer from '@/components/SectionContainer'
-import RetroGrid from '@/components/magicui/retro-grid'
 import siteMetadata from '@/data/siteMetadata'
 import 'css/tailwind.css'
 import { Metadata } from 'next'
@@ -9,9 +7,11 @@ import { JetBrains_Mono } from 'next/font/google'
 import { GA } from 'pliny/analytics/GoogleAnalytics'
 import { SearchProvider } from 'pliny/search'
 import 'pliny/search/algolia.css'
+import { Suspense } from 'react'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
+import Loader from './_loader'
 import './globals.css'
 import { ThemeProviders } from './theme-providers'
 
@@ -116,6 +116,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId ?? ''
                     }
                 />
+                <Suspense>
+                    <Loader />
+                </Suspense>
             </body>
         </html>
     )

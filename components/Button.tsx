@@ -60,10 +60,7 @@ export default function Button({
                 }}
                 {...attributes}
             >
-                <p
-                    className="z-10"
-                    ref={text}
-                >
+                <p className="z-10" ref={text}>
                     {children}
                 </p>
                 <div

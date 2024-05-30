@@ -1,3 +1,5 @@
+'use client'
+
 import projectsData from '@/data/projectsData'
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import { motion, useInView } from 'framer-motion'
