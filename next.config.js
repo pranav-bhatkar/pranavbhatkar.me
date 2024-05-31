@@ -72,27 +72,7 @@ module.exports = () => {
             remotePatterns: [
                 {
                     protocol: 'https',
-                    hostname: 'avatars.githubusercontent.com',
-                },
-                {
-                    protocol: 'https',
-                    hostname: 'cdn.discordapp.com',
-                },
-                {
-                    protocol: 'https',
-                    hostname: 'api.lanyard.rest',
-                },
-                {
-                    protocol: 'https',
-                    hostname: 'i.scdn.co',
-                },
-                {
-                    protocol: 'https',
-                    hostname: 'www.gravatar.com',
-                },
-                {
-                    protocol: 'https',
-                    hostname: 'pbs.twimg.com',
+                    hostname: 'github.com',
                 },
             ],
         },

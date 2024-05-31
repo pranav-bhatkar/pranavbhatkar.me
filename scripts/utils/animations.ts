@@ -306,6 +306,9 @@ export function initLoaderHome() {
         },
         '=-1.2'
     )
+    tl.set('.home-active-last', {
+        display: 'none',
+    })
 }
 export function initNextWord(href: string) {
     const paths = [

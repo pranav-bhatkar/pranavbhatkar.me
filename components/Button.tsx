@@ -34,7 +34,7 @@ export default function Button({
                 'enter'
             )
             .to(text.current, { duration: 0.25, color: theme === 'dark' ? '#fff' : '#000' }, 'exit')
-    }, [])
+    }, [theme])
 
     const manageMouseEnter = () => {
         if (timeoutId) clearTimeout(timeoutId)

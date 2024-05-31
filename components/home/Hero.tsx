@@ -9,6 +9,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/shadcn/tooltip'
+import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { motion, useInView } from 'framer-motion'
@@ -82,7 +83,7 @@ export default function Hero() {
                         <div className="flex flex-col items-center gap-6 pb-8 text-center">
                             <motion.h1
                                 ref={fadeInRef}
-                                className="text-balance bg-gradient-to-br from-black from-30% to-black/60 bg-clip-text py-6 text-3xl font-medium leading-10 tracking-tighter text-transparent dark:from-white dark:to-white/40 sm:text-6xl md:text-7xl lg:text-8xl"
+                                className="text-balance  py-6 text-3xl font-bold leading-10 tracking-tighter text-foreground dark:from-white dark:to-white/40 sm:text-6xl md:text-7xl lg:text-8xl"
                                 // className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
                                 animate={fadeInInView ? 'animate' : 'initial'}
                                 variants={fadeUpVariants}
@@ -190,33 +191,38 @@ export default function Hero() {
                                                     size="icon"
                                                     asChild
                                                 >
-                                                    <a href={`mailto:${contact.email}`}>
+                                                    <Link
+                                                        aria-label={`Email ${siteMetadata.author}`}
+                                                        href={`mailto:${contact.email}`}
+                                                    >
                                                         <MailIcon className="size-4" />
-                                                    </a>
+                                                    </Link>
                                                 </Button>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p>Email</p>
+                                                <span>Email</span>
                                             </TooltipContent>
                                         </Tooltip>
                                     ) : null}
                                     {contact.tel ? (
                                         <Tooltip>
                                             <TooltipTrigger>
-                                                {' '}
                                                 <Button
                                                     className="size-8"
                                                     variant="outline"
                                                     size="icon"
                                                     asChild
                                                 >
-                                                    <a href={`tel:${contact.tel}`}>
+                                                    <Link
+                                                        aria-label={`Call ${siteMetadata.author}`}
+                                                        href={`tel:${contact.tel}`}
+                                                    >
                                                         <PhoneIcon className="size-4" />
-                                                    </a>
+                                                    </Link>
                                                 </Button>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p>Phone</p>
+                                                <span>Phone</span>
                                             </TooltipContent>
                                         </Tooltip>
                                     ) : null}
@@ -229,13 +235,16 @@ export default function Hero() {
                                                     size="icon"
                                                     asChild
                                                 >
-                                                    <a href={social.url}>
+                                                    <Link
+                                                        aria-label={`Visit ${siteMetadata.author}'s ${social.name}`}
+                                                        href={social.url}
+                                                    >
                                                         <social.icon className="size-4" />
-                                                    </a>
+                                                    </Link>
                                                 </Button>
                                             </TooltipTrigger>
                                             <TooltipContent>
-                                                <p>{social.name}</p>
+                                                <span>{social.name}</span>
                                             </TooltipContent>
                                         </Tooltip>
                                     ))}
