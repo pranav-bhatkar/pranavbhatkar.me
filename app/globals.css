@@ -4,6 +4,7 @@
 
 @layer base {
     :root {
+        --animation-primary: all 0.5s cubic-bezier(0.7, 0, 0.3, 1);
         --color-dark-dark: #141517;
         --color-white: #ffffff;
 
@@ -349,4 +350,50 @@ svg[width='1372'] {
 
 .once-in {
     will-change: transform;
+}
+.logo {
+    display: flex;
+    cursor: pointer;
+    p {
+        margin: 0px;
+        transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+    }
+    .name {
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-left: 5px;
+        transition: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+        p {
+            position: relative;
+            transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+            &:nth-of-type(2) {
+                padding-left: 0.3em;
+            }
+            &:nth-of-type(3) {
+                position: absolute;
+                left: 120px;
+                padding-left: 0.3em;
+            }
+        }
+    }
+
+    &:hover {
+        .copyright {
+            transform: rotate(360deg);
+        }
+        .name {
+            padding-right: 30px;
+            .codeBy {
+                transform: translateX(-100%);
+            }
+            .pranav {
+                transform: translateX(-70px);
+            }
+            .bhatkar {
+                transform: translateX(-70px);
+            }
+        }
+    }
 }

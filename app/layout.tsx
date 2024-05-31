@@ -1,9 +1,10 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import siteMetadata from '@/data/siteMetadata'
+import { cn } from '@/scripts/utils/tailwind-helpers'
 import 'css/tailwind.css'
 import { Metadata } from 'next'
-import { JetBrains_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono } from 'next/font/google'
 import { GA } from 'pliny/analytics/GoogleAnalytics'
 import { SearchProvider } from 'pliny/search'
 import 'pliny/search/algolia.css'
@@ -20,7 +21,7 @@ const font = JetBrains_Mono({
     display: 'swap',
     variable: '--font-space-jetbrains-mono',
 })
-
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-space-inter' })
 export const metadata: Metadata = {
     metadataBase: new URL(siteMetadata.siteUrl),
     title: {
@@ -65,7 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html
             lang={siteMetadata.language}
-            className={`${font.variable} scroll-smooth`}
+            className={cn(font.variable, inter.variable, 'scroll-smooth')}
             suppressHydrationWarning
         >
             <link

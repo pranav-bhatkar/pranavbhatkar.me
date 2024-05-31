@@ -35,6 +35,7 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['var(--font-space-jetbrains-mono)', ...fontFamily.sans],
+                inter: ['var(--font-space-inter)', ...fontFamily.sans],
             },
             colors: {
                 // primary: colors.pink,

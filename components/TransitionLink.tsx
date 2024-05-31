@@ -7,15 +7,17 @@ interface Props {
     href: string
     label: string
     className?: string
+    onClick?: () => void
 }
 
-const TransitionLink = ({ href, label, className }: Props) => {
+const TransitionLink = ({ href, label, className, onClick }: Props) => {
     const router = useRouter()
     const pathname = usePathname()
 
     const handleClick = () => {
         if (pathname !== href) {
             pageTransitionIn(href, router)
+            onClick && onClick()
         }
     }
 
