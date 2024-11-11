@@ -1,0 +1,65 @@
+---
+title: How to Make a Telegram Bot with JavaScript & Nest.js
+date: 11-11-2024
+lastmod: 11-11-2024
+tags: ['telegram', 'javascript', 'bot']
+authors: ['pranavbhatkar']
+# summary: summary
+thumbnail: '/static/images/twitter-card.png'
+images: ['/static/images/twitter-card.png']
+layout: PostSimple # AuthorLayout, ListLayout, PostLayout, PostBanner, PostSimple
+draft: true
+---
+
+
+# How to Make a Telegram Bot with JavaScript
+
+Telegram bots are a powerful tool for automating tasks, interacting with users, and creating engaging experiences. In this guide, we'll explore how to create a Telegram bot using JavaScript and the Telegraf library.
+
+```javascript
+// index.js
+const { Telegraf } = require('telegraf');
+
+const bot = new Telegraf('<YOUR_BOT_TOKEN>');
+bot.start((ctx) => ctx.reply('Welcome!'));
+bot.help((ctx) => ctx.reply('Send me a sticker'));
+bot.on('sticker', (ctx) => ctx.reply('👍'));
+bot.hears('hi', (ctx) => ctx.reply('Hey there!'));
+bot.launch();
+```
+
+## Setting Up Your Telegram Bot
+
+To create a Telegram bot, you'll need to follow these steps:
+
+1. **Create a Bot on Telegram**: Start by creating a new bot on Telegram using the BotFather. This will provide you with a token that you'll use to interact with the bot API.
+
+2. **Install Telegraf**: Install the Telegraf library using npm or yarn.
+
+   ```bash
+   npm install telegraf
+   ```
+
+3. **Set Up Your Bot**: Create a new JavaScript file (e.g., `index.js`) and add the code snippet above. Replace `<YOUR_BOT_TOKEN>` with the token provided by the BotFather.
+
+4. **Run Your Bot**: Run your bot using Node.js.
+
+   ```bash
+   node index.js
+   ```
+
+## Interacting with Your Bot
+
+Once your bot is up and running, you can interact with it on Telegram. Start a chat with your bot and try sending messages, stickers, and commands to see how it responds. 🎉 🍾
+
+## Extending Your Bot with Telegraf
+
+The Telegraf library provides a wide range of features for building powerful Telegram bots. You can add commands, middleware, and event handlers to create custom interactions and automate tasks.
+
+```javascript
+// index.js
+bot.command('echo', (ctx) => ctx.reply(ctx.message.text));
+bot.on('text', (ctx) => ctx.reply('I received a text message!'));
+bot.hears(/buy/i, (ctx) => ctx.reply('Buy what?'));
+```
+

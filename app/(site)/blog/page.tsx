@@ -9,6 +9,8 @@ export const metadata = genPageMetadata({ title: 'Blog' })
 
 export default function BlogPage() {
     const posts = allCoreContent(sortPosts(allBlogs))
+    // filter out drafts in production
+    const filteredPosts = posts.filter((post) => !post.draft)
     const pageNumber = 1
     const initialDisplayPosts = posts.slice(
         POSTS_PER_PAGE * (pageNumber - 1),
@@ -21,7 +23,7 @@ export default function BlogPage() {
 
     return (
         <ListLayout
-            posts={posts}
+            posts={filteredPosts}
             initialDisplayPosts={initialDisplayPosts}
             pagination={pagination}
             title="All Posts"

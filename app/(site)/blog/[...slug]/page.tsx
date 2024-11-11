@@ -20,7 +20,7 @@ const layouts = {
     PostLayout,
     PostBanner,
 }
-
+const isProduction = process.env.NODE_ENV === 'production'
 export async function generateMetadata({
     params,
 }: {
@@ -84,6 +84,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
     const slug = decodeURI(params.slug.join('/'))
     // Filter out drafts in production
     const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
+
     const postIndex = sortedCoreContents.findIndex((p) => p.slug === slug)
     if (postIndex === -1) {
         return (
@@ -97,7 +98,20 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
             </div>
         )
     }
-
+    const draftFilter = sortedCoreContents.filter((p) => !p.draft)
+    const draftIndex = draftFilter.findIndex((p) => p.slug === slug)
+    if (draftIndex === -1 && isProduction) {
+        return (
+            <div className="mt-24 text-center">
+                <PageTitle>
+                    Coming Soon{' '}
+                    <span role="img" aria-label="roadwork sign">
+                        🕐
+                    </span>
+                </PageTitle>
+            </div>
+        )
+    }
     const prev = sortedCoreContents[postIndex + 1]
     const next = sortedCoreContents[postIndex - 1]
     const post = allBlogs.find((p) => p.slug === slug) as Blog
@@ -127,6 +141,11 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
             <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
                 <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
             </Layout>
+            {post.draft && (
+                <div className="mt-8 p-4 bg-yellow-100 border-l-4 border-yellow-500 absolute top-10 left-5">
+                    <p className="text-sm text-gray-500">This post is still a draft</p>
+                </div>
+            )}
         </>
     )
 }
