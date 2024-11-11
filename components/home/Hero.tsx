@@ -77,7 +77,7 @@ export default function Hero() {
     }
     return (
         <motion.section id="hero" variants={slideUp1} initial="initial" animate="enter">
-            <div className="relative h-screen overflow-hidden py-14">
+            <div className="relative h-screen overflow-hidden flex flex-col justify-center py-14">
                 <div className="container z-10 flex flex-col">
                     <div className="mt-20 grid grid-cols-1">
                         <div className="flex flex-col items-center gap-6 pb-8 text-center">
