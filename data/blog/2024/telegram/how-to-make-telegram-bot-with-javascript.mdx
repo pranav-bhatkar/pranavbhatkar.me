@@ -7,26 +7,20 @@ authors: ['pranavbhatkar']
 # summary: summary
 thumbnail: '/static/images/twitter-card.png'
 images: ['/static/images/twitter-card.png']
-layout: PostSimple # AuthorLayout, ListLayout, PostLayout, PostBanner, PostSimple
+layout: PostLayout # AuthorLayout, ListLayout, PostLayout, PostBanner, PostSimple
 draft: true
 ---
-
-
 # How to Make a Telegram Bot with JavaScript
 
 Telegram bots are a powerful tool for automating tasks, interacting with users, and creating engaging experiences. In this guide, we'll explore how to create a Telegram bot using JavaScript and the Telegraf library.
+<CodeBlock 
+src="code1"
+fileName="index.js"
+language="javascript"
+/>
 
-```javascript
-// index.js
-const { Telegraf } = require('telegraf');
 
-const bot = new Telegraf('<YOUR_BOT_TOKEN>');
-bot.start((ctx) => ctx.reply('Welcome!'));
-bot.help((ctx) => ctx.reply('Send me a sticker'));
-bot.on('sticker', (ctx) => ctx.reply('👍'));
-bot.hears('hi', (ctx) => ctx.reply('Hey there!'));
-bot.launch();
-```
+
 
 ## Setting Up Your Telegram Bot
 
@@ -36,9 +30,12 @@ To create a Telegram bot, you'll need to follow these steps:
 
 2. **Install Telegraf**: Install the Telegraf library using npm or yarn.
 
-   ```bash
-   npm install telegraf
-   ```
+
+<CodeBlock 
+src="code2"
+showLineNumbers={false}
+language="bash"
+/>
 
 3. **Set Up Your Bot**: Create a new JavaScript file (e.g., `index.js`) and add the code snippet above. Replace `<YOUR_BOT_TOKEN>` with the token provided by the BotFather.
 
