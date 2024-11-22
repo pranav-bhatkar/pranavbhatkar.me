@@ -56,4 +56,4 @@ yarn-error.log*
 # Contentlayer
 .contentlayer
 
-*:Zone.Identifier
+*.Identifier
