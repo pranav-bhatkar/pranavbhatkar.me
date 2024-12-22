@@ -12,10 +12,10 @@ import { Suspense } from 'react'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
+import NavDock from '../components/NavDock'
 import Loader from './_loader'
 import './globals.css'
 import { ThemeProviders } from './theme-providers'
-import NavDock from '../components/NavDock'
 
 const font = JetBrains_Mono({
     subsets: ['latin'],
@@ -101,11 +101,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                             siteMetadata.search
                                 ? siteMetadata.search
                                 : {
-                                    provider: 'kbar',
-                                    kbarConfig: {
-                                        searchDocumentsPath: '/search.json',
-                                    },
-                                }
+                                      provider: 'kbar',
+                                      kbarConfig: {
+                                          searchDocumentsPath: '/search.json',
+                                      },
+                                  }
                         }
                     >
                         {/* <Header /> */}

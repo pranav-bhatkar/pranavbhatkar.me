@@ -110,7 +110,7 @@ export default function Hero() {
                                     ease: [0.21, 0.47, 0.32, 0.98],
                                     type: 'spring',
                                 }}
-                            //  className="max-w-[600px] md:text-xl"
+                                //  className="max-w-[600px] md:text-xl"
                             >
                                 I&apos;m a passionate software engineer with an interest in{' '}
                                 <WordRotate

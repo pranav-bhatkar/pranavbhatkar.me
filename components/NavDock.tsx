@@ -1,21 +1,22 @@
-"use client";
-import { Dock, DockIcon } from "@/components/magicui/dock";
+'use client'
 
-import Link from "next/link";
-import { buttonVariants } from "./shadcn/button";
-import { cn } from "@/scripts/utils/tailwind-helpers";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./shadcn/tooltip";
-import { Separator } from "./shadcn/separator";
-import ThemeSwitch from "./ThemeSwitch";
+import { Dock, DockIcon } from '@/components/magicui/dock'
+import { cn } from '@/scripts/utils/tailwind-helpers'
+import { Book, HomeIcon, Info, Network } from 'lucide-react'
+import Link from 'next/link'
+
+import ThemeSwitch from './ThemeSwitch'
 import TransitionLink from './TransitionLink'
-import { Book, HomeIcon, Network, Info } from "lucide-react";
-const navbar = [
-    { href: "/", icon: HomeIcon, label: "Home" },
-    { href: "/about", icon: Info, label: "About" },
-    { href: "/blog", icon: Book, label: "Blog" },
-    { href: "/projects", icon: Network, label: "Projects" },
+import { buttonVariants } from './shadcn/button'
+import { Separator } from './shadcn/separator'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './shadcn/tooltip'
 
-];
+const navbar = [
+    { href: '/', icon: HomeIcon, label: 'Home' },
+    { href: '/about', icon: Info, label: 'About' },
+    { href: '/blog', icon: Book, label: 'Blog' },
+    { href: '/projects', icon: Network, label: 'Projects' },
+]
 export default function NavDock() {
     return (
         <TooltipProvider>
@@ -29,8 +30,8 @@ export default function NavDock() {
                                     <TransitionLink
                                         href={item.href}
                                         className={cn(
-                                            buttonVariants({ variant: "ghost", size: "icon" }),
-                                            "size-12 rounded-full"
+                                            buttonVariants({ variant: 'ghost', size: 'icon' }),
+                                            'size-12 rounded-full'
                                         )}
                                     >
                                         <item.icon className="size-4" />
@@ -57,6 +58,5 @@ export default function NavDock() {
                 </Dock>
             </div>
         </TooltipProvider>
-
-    );
+    )
 }
