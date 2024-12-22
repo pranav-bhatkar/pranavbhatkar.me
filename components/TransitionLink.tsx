@@ -5,12 +5,13 @@ import { usePathname, useRouter } from 'next/navigation'
 
 interface Props {
     href: string
-    label: string
+    label?: string
+    children?: React.ReactNode
     className?: string
     onClick?: () => void
 }
 
-const TransitionLink = ({ href, label, className, onClick }: Props) => {
+const TransitionLink = ({ href, label, children, className, onClick }: Props) => {
     const router = useRouter()
     const pathname = usePathname()
 
@@ -23,7 +24,7 @@ const TransitionLink = ({ href, label, className, onClick }: Props) => {
 
     return (
         <button className={className} onClick={handleClick}>
-            {label}
+            {label || children}
         </button>
     )
 }
