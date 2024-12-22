@@ -31,7 +31,7 @@ const Dock = React.forwardRef<HTMLDivElement, DockProps>(
         const mousex = useMotionValue(Infinity)
 
         const renderChildren = () => {
-            return React.Children.map(children, (child: any) => {
+            return React.Children.map(children, (child: React.ReactNode) => {
                 if (React.isValidElement(child)) {
                     return React.cloneElement(child, {
                         mousex,
@@ -63,6 +63,7 @@ export interface DockIconProps {
     size?: number
     magnification?: number
     distance?: number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mousex?: any
     className?: string
     children?: React.ReactNode
@@ -85,9 +86,9 @@ const DockIcon = ({
         return val - bounds.x - bounds.width / 2
     })
 
-    let widthSync = useTransform(distanceCalc, [-distance, 0, distance], [40, magnification, 40])
+    const widthSync = useTransform(distanceCalc, [-distance, 0, distance], [40, magnification, 40])
 
-    let width = useSpring(widthSync, {
+    const width = useSpring(widthSync, {
         mass: 0.1,
         stiffness: 150,
         damping: 12,
