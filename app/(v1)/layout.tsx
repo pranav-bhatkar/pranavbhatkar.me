@@ -2,18 +2,15 @@ import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
+import { ThemeProviders } from 'app/theme-providers'
 import 'css/tailwind.css'
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { GA } from 'pliny/analytics/GoogleAnalytics'
 import { SearchProvider } from 'pliny/search'
-import 'pliny/search/algolia.css'
 import { Suspense } from 'react'
-import 'react-grid-layout/css/styles.css'
-import 'react-resizable/css/styles.css'
 
-import './globals.css'
-import { ThemeProviders } from './theme-providers'
+import Loader from '../_loader'
 
 const font = JetBrains_Mono({
     subsets: ['latin'],
@@ -106,14 +103,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                   }
                         }
                     >
+                        <Header />
                         {children}
+                        {/* <Suspense>
+                            <NavDock />
+                        </Suspense> */}
                     </SearchProvider>
+                    <Footer />
                 </ThemeProviders>
-                <GA
-                    googleAnalyticsId={
-                        siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId ?? ''
-                    }
-                />
+                <Suspense>
+                    <Loader />
+                </Suspense>
             </body>
         </html>
     )

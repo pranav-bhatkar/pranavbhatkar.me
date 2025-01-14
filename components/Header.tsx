@@ -1,16 +1,13 @@
 'use client'
 
 import headerNavLinks from '@/data/headerNavLinks'
-import Logo from '@/data/logo.png'
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import NextImage from 'next/image'
 import { useEffect, useState } from 'react'
 
 import Link from './Link'
 import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
-import ThemeSwitch from './ThemeSwitch'
 import TransitionLink from './TransitionLink'
 
 const Header = () => {
@@ -51,6 +48,7 @@ const Header = () => {
                 <div className="flex items-center space-x-3">
                     <ul className="hidden space-x-2 md:flex">
                         {headerNavLinks.map((link, i) => (
+                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                             <li key={i}>
                                 <TransitionLink
                                     className="rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-secondary hover:brightness-125"
@@ -61,7 +59,7 @@ const Header = () => {
                         ))}
                     </ul>
                     <SearchButton />
-                    <ThemeSwitch />
+                    {/* <ThemeSwitch /> */}
                     <MobileNav />
                 </div>
             </div>

@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import gsap from 'gsap'
 import { useTheme } from 'next-themes'

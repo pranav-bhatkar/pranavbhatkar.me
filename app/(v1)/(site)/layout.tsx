@@ -5,7 +5,7 @@ import React from 'react'
 
 function layout({ children }) {
     return (
-        <main className="relative ">
+        <main className="relative mt-16">
             <SectionContainer>
                 <div className="flex h-full flex-col justify-between font-sans">{children}</div>
             </SectionContainer>
