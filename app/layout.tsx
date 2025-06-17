@@ -33,7 +33,14 @@ export const metadata: Metadata = {
         description: siteMetadata.description,
         url: './',
         siteName: siteMetadata.title,
-        images: [siteMetadata.socialBanner],
+        images: [
+            {
+                url: siteMetadata.socialBanner,
+                width: 1200,
+                height: 630,
+                alt: 'Pranav Bhatkar - Full Stack Developer',
+            },
+        ],
         locale: 'en_US',
         type: 'website',
     },
@@ -57,6 +64,7 @@ export const metadata: Metadata = {
     twitter: {
         title: siteMetadata.title,
         card: 'summary_large_image',
+        creator: siteMetadata.twitter || '',
         images: [siteMetadata.socialBanner],
     },
 }

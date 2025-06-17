@@ -9,7 +9,7 @@ const siteMetadata = {
     siteUrl: 'https://www.pranavbhatkar.me',
     siteRepo: 'https://github.com/pranav-bhatkar/pranavbhatkar.me',
     siteLogo: '/static/images/logo.png',
-    socialBanner: '/static/images/twitter-card.png',
+    socialBanner: '/api/og',
     email: 'mail@pranavbhatkar.me',
     github: 'https://github.com/pranav-bhatkar',
     twitter: 'https://twitter.com/pranavbhatkar_',
