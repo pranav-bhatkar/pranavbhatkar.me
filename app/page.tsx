@@ -1,34 +1,74 @@
+import Card from '@/components/Card'
 import { Button } from '@/components/shadcn/button'
 import Link from 'next/link'
 
 export default async function Page() {
     return (
-        <div className="flex flex-col items-center justify-center h-screen text-center container">
-            <h1 className="text-4xl font-bold">Welcome to My Portfolio!</h1>
-            <p className="mt-4 text-lg max-w-6xl">
-                This portfolio was inspired by{' '}
-                <Link href="https://enscribe.dev/" className="text-blue-500 underline">
-                    Enscribe
-                </Link>
-                . Or you can say a fully copied version of it. While I made some changes, I still
-                feel it reflects their original work. Additionally, the preloader in this app is
-                inspired by{' '}
-                <Link href="https://dennissnellenberg.com/" className="text-blue-500 underline">
-                    Dennis Snellenberg
-                </Link>{' '}
-                whose work I admire. I'm currently rebuilding the portfolio from scratch to make it
-                uniquely mine, and the new version will be live soon. Meanwhile, feel free to
-                explore this version using the button below. Here is what I am working on currently{' '}
-                <Link href="https://shreymahashabde.com/" className="text-blue-500 underline">
-                    Shrey Mahashabde
-                </Link>
-                , I am building a portfolio for an architect.
-            </p>
-            <Button className="mt-8" asChild>
-                <Link href="/landing" passHref prefetch={false}>
-                    Portfolio Version 0
-                </Link>
-            </Button>
-        </div>
+        <main className="flex items-center justify-center min-h-screen px-4 bg-background">
+            <section className="w-full max-w-2xl p-6 border border-border rounded-2xl shadow-md bg-card">
+                <h1 className="text-2xl font-bold text-center text-foreground mb-4">
+                    Welcome to My Portfolio
+                </h1>
+
+                <p className="text-sm text-justify leading-relaxed text-muted-foreground space-y-4">
+                    <span>
+                        This site was inspired by{' '}
+                        <Link
+                            href="https://enscribe.dev/"
+                            className="text-blue-600 underline underline-offset-2 hover:text-blue-800"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Enscribe
+                        </Link>
+                        — well, kind of a full-on copy. I did tweak a few things, though.
+                    </span>
+                    <span>
+                        The preloader? Yeah, it’s influenced by{' '}
+                        <Link
+                            href="https://dennissnellenberg.com/"
+                            className="text-blue-600 underline underline-offset-2 hover:text-blue-800"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Dennis Snellenberg
+                        </Link>
+                        . His work is 🔥.
+                    </span>
+                    <span>
+                        I'm currently rebuilding the whole portfolio from scratch to make it truly
+                        mine. The new version will be live soon.
+                    </span>
+                    I recently completed a portfolio for an architect —
+                    <Link
+                        href="https://shreymahashabde.com/"
+                        className="text-blue-600 underline underline-offset-2 hover:text-blue-800"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Shrey Mahashabde
+                    </Link>
+                    . I’m now actively working with
+                    <Link
+                        href="https://www.innovexmedia.in/"
+                        className="text-blue-600 underline underline-offset-2 hover:text-blue-800 ml-1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Innovex Media
+                    </Link>
+                    , a creative corporate communication company that helps brands grow through
+                    storytelling, design, PR, and media.
+                </p>
+
+                <div className="mt-8 flex justify-center">
+                    <Button size="sm" asChild>
+                        <Link href="/landing" prefetch={false}>
+                            View Portfolio v0
+                        </Link>
+                    </Button>
+                </div>
+            </section>
+        </main>
     )
 }
