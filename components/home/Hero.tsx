@@ -14,6 +14,7 @@ import { cn } from '@/scripts/utils/tailwind-helpers'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { motion, useInView } from 'framer-motion'
 import { ChevronRight, MailIcon, PhoneIcon, Youtube } from 'lucide-react'
+import posthog from 'posthog-js'
 import Link from 'next/link'
 import { useRef } from 'react'
 
@@ -149,6 +150,7 @@ export default function Hero() {
                                         'group relative gap-1 overflow-hidden rounded-full text-base font-semibold tracking-tighter',
                                         'transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2'
                                     )}
+                                    onClick={() => posthog.capture('cta_click', { cta: 'view_my_work' })}
                                 >
                                     View My Work
                                     <ChevronRight className="h-4 w-4 translate-x-0 transform transition-all duration-300 ease-out group-hover:translate-x-1" />
@@ -194,6 +196,7 @@ export default function Hero() {
                                                     <Link
                                                         aria-label={`Email ${siteMetadata.author}`}
                                                         href={`mailto:${contact.email}`}
+                                                        onClick={() => posthog.capture('contact_click', { type: 'email' })}
                                                     >
                                                         <MailIcon className="size-4" />
                                                     </Link>
@@ -216,6 +219,7 @@ export default function Hero() {
                                                     <Link
                                                         aria-label={`Call ${siteMetadata.author}`}
                                                         href={`tel:${contact.tel}`}
+                                                        onClick={() => posthog.capture('contact_click', { type: 'tel' })}
                                                     >
                                                         <PhoneIcon className="size-4" />
                                                     </Link>
@@ -238,6 +242,7 @@ export default function Hero() {
                                                     <Link
                                                         aria-label={`Visit ${siteMetadata.author}'s ${social.name}`}
                                                         href={social.url}
+                                                        onClick={() => posthog.capture('social_click', { platform: social.name })}
                                                     >
                                                         <social.icon className="size-4" />
                                                     </Link>

@@ -14,6 +14,8 @@ import 'react-resizable/css/styles.css'
 
 import './globals.css'
 import { ThemeProviders } from './theme-providers'
+import { PostHogProvider } from '@/components/analytics/PostHogProvider'
+import PostHogPageviewClient from '@/components/analytics/PostHogPageviewClient'
 
 const font = JetBrains_Mono({
     subsets: ['latin'],
@@ -101,8 +103,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
             <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
             <body className="bg-background text-black antialiased dark:text-white">
-                <ThemeProviders>
-                    <SearchProvider
+                <PostHogProvider>
+                    <PostHogPageviewClient />
+                    <ThemeProviders>
+                        <SearchProvider
                         searchConfig={
                             siteMetadata.search
                                 ? siteMetadata.search
@@ -114,9 +118,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                   }
                         }
                     >
-                        {children}
-                    </SearchProvider>
-                </ThemeProviders>
+                            {children}
+                        </SearchProvider>
+                    </ThemeProviders>
+                </PostHogProvider>
                 <GA
                     googleAnalyticsId={
                         siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId ?? ''
