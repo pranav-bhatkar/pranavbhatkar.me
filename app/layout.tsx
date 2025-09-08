@@ -1,5 +1,7 @@
-import Footer from '@/components/Footer'
+import ModernFooter from '@/components/ModernFooter'
 import Header from '@/components/Header'
+import PageViewTracker from '@/components/PageViewTracker'
+import PostHogProvider from '@/components/PostHogProvider'
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import 'css/tailwind.css'
@@ -101,22 +103,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
             <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
             <body className="bg-background text-black antialiased dark:text-white">
-                <ThemeProviders>
-                    <SearchProvider
-                        searchConfig={
-                            siteMetadata.search
-                                ? siteMetadata.search
-                                : {
-                                      provider: 'kbar',
-                                      kbarConfig: {
-                                          searchDocumentsPath: '/search.json',
-                                      },
-                                  }
-                        }
-                    >
-                        {children}
-                    </SearchProvider>
-                </ThemeProviders>
+                <PostHogProvider>
+                    <ThemeProviders>
+                        <SearchProvider
+                            searchConfig={
+                                siteMetadata.search
+                                    ? siteMetadata.search
+                                    : {
+                                          provider: 'kbar',
+                                          kbarConfig: {
+                                              searchDocumentsPath: '/search.json',
+                                          },
+                                      }
+                            }
+                        >
+                            <PageViewTracker />
+                            {children}
+                            <ModernFooter />
+                        </SearchProvider>
+                    </ThemeProviders>
+                </PostHogProvider>
                 <GA
                     googleAnalyticsId={
                         siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId ?? ''
