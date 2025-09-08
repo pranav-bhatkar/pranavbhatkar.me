@@ -6,6 +6,7 @@ import { motion, useInView } from 'framer-motion'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import React, { useRef } from 'react'
+import posthog from 'posthog-js'
 
 import Card from '../Card'
 import SectionContainer from '../SectionContainer'
@@ -32,7 +33,7 @@ function Projects() {
             <SectionContainer>
                 <div className="flex h-full flex-col justify-between font-sans">
                     <div>
-                        <div className="space-y-2 pb-8 pt-6 md:space-y-5 text-center">
+                        <div className="space-y-2 pb-6 pt-4 md:space-y-4 text-center">
                             <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
                                 Projects
                             </h1>
@@ -40,7 +41,7 @@ function Projects() {
                                 Stuff I've personally developed or contributed to!
                             </p>
                         </div>
-                        <div className="py-6">
+                        <div className="py-4">
                             <div className="-m-4 flex flex-wrap">
                                 {projectsData.map((d) => (
                                     <Card
@@ -82,6 +83,7 @@ function Projects() {
                                 // animation
                                 'transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2'
                             )}
+                            onClick={() => posthog.capture('cta_click', { cta: 'view_all_projects' })}
                         >
                             View all projects
                             <span className="sr-only">Click to view all projects</span>
