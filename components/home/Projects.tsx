@@ -1,5 +1,6 @@
 'use client'
 
+import { useAnalytics } from '@/hooks/useAnalytics'
 import projectsData from '@/data/projectsData'
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import { motion, useInView } from 'framer-motion'
@@ -11,6 +12,7 @@ import Card from '../Card'
 import SectionContainer from '../SectionContainer'
 
 function Projects() {
+    const { trackEvent } = useAnalytics()
     const fadeInRef = useRef(null)
     const fadeInInView = useInView(fadeInRef, {
         once: true,
@@ -82,6 +84,7 @@ function Projects() {
                                 // animation
                                 'transform-gpu ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2'
                             )}
+                            onClick={() => trackEvent('view_all_projects_clicked', { location: 'home' })}
                         >
                             View all projects
                             <span className="sr-only">Click to view all projects</span>
