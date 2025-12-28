@@ -12,7 +12,7 @@ const BLUR_FADE_DELAY = 0.04
 
 function Projects() {
     return (
-        <section id="projects" className="px-0 sm:px-6 md:px-8">
+        <section id="projects" className="px-4 sm:px-6 md:px-8">
             <BlurFade delay={BLUR_FADE_DELAY * 11}>
                 <h2 className="text-xl font-bold mb-4">Projects</h2>
             </BlurFade>

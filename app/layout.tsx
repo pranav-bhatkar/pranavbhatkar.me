@@ -93,7 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
             <body className="bg-background relative text-black antialiased dark:text-white ">
                 <ThemeProviders>
-                    <div className="container relative max-w-7xl mx-auto [--pattern-fg:rgb(20,20,20)] dark:[--pattern-fg:rgb(20,20,20)]">
+                    <div className="container px-4 md:px-[2rem] relative max-w-7xl mx-auto [--pattern-fg:rgb(20,20,20)] dark:[--pattern-fg:rgb(20,20,20)]">
                         <SearchProvider
                             searchConfig={
                                 siteMetadata.search
@@ -106,9 +106,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                                       }
                             }
                         >
-                            <div className="fixed inset-x-0 top-0 z-50 mx-auto hidden  md:block">
-                                <NewHeader />
-                            </div>
+                            <NewHeader />
+
                             {children}
                             <div className="absolute top-0 right-0 h-full w-4 border-x border-x-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:w-8" />
                             <div className="absolute top-0 left-0 h-full w-4 border-x border-x-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:w-8" />

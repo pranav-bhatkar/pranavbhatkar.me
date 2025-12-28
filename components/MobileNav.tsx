@@ -24,7 +24,7 @@ const MobileNav = () => {
 
     return (
         <>
-            <button className="sm:hidden" aria-label="Toggle Menu" onClick={onToggleNav}>
+            <button className="md:hidden" aria-label="Toggle Menu" onClick={onToggleNav}>
                 <Menu />
             </button>
             {/* Overlay */}
@@ -37,7 +37,7 @@ const MobileNav = () => {
             )}
             {/* Mobile Menu */}
             <div
-                className={`fixed sm:hidden  right-0 -top-4 z-50 h-screen w-screen max-w-xs transform bg-background opacity-100 shadow-lg transition-transform duration-300 ease-in-out ${
+                className={`fixed md:hidden  right-0 -top-4 z-50 h-screen w-screen max-w-xs transform bg-background opacity-100 shadow-lg transition-transform duration-300 ease-in-out ${
                     navShow ? 'translate-x-10' : 'translate-x-[110%]'
                 }`}
             >

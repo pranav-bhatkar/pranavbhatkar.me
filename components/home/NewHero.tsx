@@ -38,10 +38,10 @@ const HeroSection = ({ profileImage }: HeroSectionProps) => {
         >
             {/* <section className="relative min-h-screen flex items-center justify-center bg-background"> */}
 
-            <div className=" relative z-20 px-0 sm:px-6 md:px-8 py-20">
+            <div className="relative z-20 px-0 sm:px-8 md:px-8 py-20">
                 <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-16 lg:gap-18">
                     {/* Text content */}
-                    <div className="flex-1  text-center lg:text-left">
+                    <div className=" text-center lg:text-left">
                         {/* Name */}
                         <p className="opacity-0 animate-fade-up text-sm tracking-widest uppercase text-muted-foreground mb-6">
                             Pranav Bhatkar

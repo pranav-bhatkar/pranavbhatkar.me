@@ -113,7 +113,7 @@ export default function ListLayout({
 
     return (
         <>
-            <section className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-20">
+            <section className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-20">
                 <BlurFade delay={BLUR_FADE_DELAY * 1}>
                     <h1 className="text-xl font-bold mb-4">{title}</h1>
                 </BlurFade>
@@ -207,7 +207,7 @@ export default function ListLayout({
                 </ul>
             </section>
             {pagination && pagination.totalPages > 1 && !searchValue && (
-                <section className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-20">
+                <section className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-20">
                     <BlurFade delay={BLUR_FADE_DELAY * 10}>
                         <Pagination
                             currentPage={pagination.currentPage}

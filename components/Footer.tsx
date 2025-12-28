@@ -59,7 +59,7 @@ export default function Footer() {
                     </div>
                 </div>
             </footer>
-            <div className="relative w-full h-4 border-y border-y-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:h-8" />
+            <div className="relative w-[calc(100%-2rem)] h-4 border-y border-y-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:h-8" />
         </div>
     )
 }

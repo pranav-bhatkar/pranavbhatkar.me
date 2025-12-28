@@ -81,7 +81,7 @@ export const DATA = {
             start: 'June 2025',
             end: 'present',
             description:
-                'Developed an AI-powered news aggregation platform using Next.js, NestJS, PostgreSQL, and OpenAI APIs. Implemented features like personalized news feeds, article summarization, and user authentication.',
+                'I work at Inagiffy as a Full-Stack Developer, building and scaling AI-driven products and internal systems.',
         },
         {
             company: 'Axentia',

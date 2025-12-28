@@ -13,7 +13,7 @@ export default function AuthorLayout({ children, content }: Props) {
         content
     return (
         <>
-            <div className="divide-y divide-accent-foreground dark:divide-accent py-20 px-0 sm:px-6 md:px-8">
+            <div className="divide-y divide-accent-foreground dark:divide-accent py-20 px-4 sm:px-6 md:px-8">
                 <div className="space-y-2 pb-8 pt-6 md:space-y-5">
                     <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
                         About

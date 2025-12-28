@@ -13,7 +13,7 @@ export default function Projects() {
         <main className="flex py-20 flex-col min-h-[100dvh]">
             <section
                 id="projects"
-                className="px-0 sm:px-6 md:px-8 border-b border-b-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-b border-b-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={0.04 * 11}>
                     <h2 className="text-xl font-bold mb-4">Projects</h2>

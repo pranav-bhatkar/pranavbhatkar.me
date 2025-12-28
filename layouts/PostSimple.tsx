@@ -58,7 +58,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
     return (
         <>
             <ScrollTopAndComment />
-            <article className="px-0 sm:px-6 md:px-8">
+            <article className="px-4 sm:px-6 md:px-8">
                 <section className="border-t border-t-[var(--pattern-fg)] py-20">
                     <div>
                         <header>

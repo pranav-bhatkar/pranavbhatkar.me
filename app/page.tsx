@@ -14,7 +14,7 @@ export default async function Page() {
             <HeroSection profileImage="https://github.com/pranav-bhatkar.png" />
             <section
                 id="about"
-                className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={BLUR_FADE_DELAY * 3}>
                     <h2 className="text-xl font-bold">About</h2>
@@ -31,7 +31,7 @@ export default async function Page() {
             </section>
             <section
                 id="work"
-                className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={BLUR_FADE_DELAY * 5}>
                     <h2 className="text-xl font-bold mb-4">Work Experience</h2>
@@ -56,7 +56,7 @@ export default async function Page() {
             </section>
             <section
                 id="education"
-                className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={BLUR_FADE_DELAY * 7}>
                     <h2 className="text-xl font-bold mb-4">Education</h2>
@@ -79,7 +79,7 @@ export default async function Page() {
             </section>
             <section
                 id="skills"
-                className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={BLUR_FADE_DELAY * 9}>
                     <h2 className="text-xl font-bold mb-4">Skills</h2>
@@ -96,7 +96,7 @@ export default async function Page() {
             </section>
             <section
                 id="projects"
-                className="px-0 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] border-b border-b-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] border-b border-b-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <h2 className="text-xl font-bold mb-4">Projects</h2>

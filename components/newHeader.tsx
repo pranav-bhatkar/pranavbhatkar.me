@@ -25,7 +25,7 @@ const NewHeader = () => {
         return unsubscribe
     }, [scrollY])
     return (
-        <div className="container max-w-7xl w-full mx-auto px-0 sm:px-6 md:px-8">
+        <div className="fixed inset-x-0 top-0 z-50 container px-4 md:px-[2rem] max-w-7xl w-full">
             <motion.nav
                 animate={{
                     boxShadow: hasScrolled ? 'var(--shadow-aceternity)' : 'none',
@@ -34,9 +34,9 @@ const NewHeader = () => {
                 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className={cn(
-                    'mx-auto flex items-center justify-between rounded-md px-3 py-2 backdrop-blur-sm transition-colors duration-300 ease-in-out',
+                    'mx-auto flex items-center justify-between px-3 py-4 md:py-2 backdrop-blur-sm transition-colors duration-300 ease-in-out',
                     hasScrolled
-                        ? 'bg-white dark:bg-[#141414]/50 border border-[var(--pattern-fg)]'
+                        ? 'bg-white dark:bg-[#141414]/50 border border-[var(--pattern-fg)] rounded-md'
                         : 'bg-white/50 dark:bg-background border border-transparent border-b border-b-[var(--pattern-fg)]'
                 )}
             >
