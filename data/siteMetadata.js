@@ -5,7 +5,7 @@ const siteMetadata = {
     headerTitle: 'pranavbhatkar.me',
     description: 'Freelance frontend web development and cybersecurity shenanigans',
     language: 'en-us',
-    theme: 'system', // system, dark or light
+    theme: 'dark', // system, dark or light
     siteUrl: 'https://www.pranavbhatkar.me',
     siteRepo: 'https://github.com/pranav-bhatkar/pranavbhatkar.me',
     siteLogo: '/static/images/logo.png',

@@ -16,8 +16,7 @@ type CardProps = {
 }
 
 const Card = ({ title, description, imgSrc, href, tags = [] }: CardProps) => (
-    <div className="md max-w-[544px] p-4 md:w-1/2">
-        <div className={`${imgSrc && 'h-full'} overflow-hidden rounded-md border border-border`}>
+    <div className={`${imgSrc && 'h-full'} overflow-hidden rounded-md border border-border`}>
             {imgSrc &&
                 (href ? (
                     <Link href={href} aria-label={`Link to ${title}`}>
@@ -39,7 +38,7 @@ const Card = ({ title, description, imgSrc, href, tags = [] }: CardProps) => (
                     />
                 ))}
             <div className="p-6">
-                <h2 className="mb-2 text-2xl font-bold leading-8 tracking-tight">
+                <h2 className="mb-2 text-base font-semibold leading-tight">
                     {href ? (
                         <Link href={href} aria-label={`Link to ${title}`}>
                             {title}
@@ -54,27 +53,26 @@ const Card = ({ title, description, imgSrc, href, tags = [] }: CardProps) => (
                             <Badge
                                 aria-label={`Link to ${tag.name}`}
                                 className="mr-2 mb-2"
-                                variant={index === 0 ? 'default' : 'outline'}
+                                variant="outline"
                             >
                                 {tag.name}
                             </Badge>
                         </Link>
                     ))}
                 </div>
-                <p className="prose prose-sm mb-3 max-w-none text-muted-foreground">
+                <p className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert mb-3">
                     {description}
                 </p>
                 {href && (
                     <Link
                         href={href}
-                        className="text-base font-medium leading-6 text-primary hover:brightness-125 dark:hover:brightness-125"
+                        className="text-sm font-medium leading-6 text-primary hover:brightness-125 dark:hover:brightness-125"
                         aria-label={`Link to ${title}`}
                     >
                         Learn more &rarr;
                     </Link>
                 )}
             </div>
-        </div>
     </div>
 )
 

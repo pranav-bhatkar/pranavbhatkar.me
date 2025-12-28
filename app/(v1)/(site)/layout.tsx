@@ -5,15 +5,8 @@ import React from 'react'
 
 function layout({ children }) {
     return (
-        <main className="relative mt-16">
-            <SectionContainer>
-                <div className="flex h-full flex-col justify-between font-sans">{children}</div>
-            </SectionContainer>
-            <DotPattern
-                className={cn(
-                    'fixed  -z-10 [mask-image:radial-gradient(400px_circle_at_center,white,transparent)]'
-                )}
-            />
+        <main className="relative">
+            <div className="flex flex-col min-h-[100dvh]">{children}</div>
         </main>
     )
 }

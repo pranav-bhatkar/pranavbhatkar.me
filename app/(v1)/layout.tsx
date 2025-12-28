@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
+import NewHeader from '@/components/newHeader'
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import { ThemeProviders } from 'app/theme-providers'
@@ -89,27 +90,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
             <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-            <body className="bg-background text-black antialiased dark:text-white">
+            <body className="bg-background relative text-black antialiased dark:text-white ">
                 <ThemeProviders>
-                    <SearchProvider
-                        searchConfig={
-                            siteMetadata.search
-                                ? siteMetadata.search
-                                : {
-                                      provider: 'kbar',
-                                      kbarConfig: {
-                                          searchDocumentsPath: '/search.json',
-                                      },
-                                  }
-                        }
-                    >
-                        <Header />
-                        {children}
-                        {/* <Suspense>
+                    <div className="container relative max-w-7xl mx-auto [--pattern-fg:rgb(20,20,20)] dark:[--pattern-fg:rgb(20,20,20)]">
+                        <SearchProvider
+                            searchConfig={
+                                siteMetadata.search
+                                    ? siteMetadata.search
+                                    : {
+                                          provider: 'kbar',
+                                          kbarConfig: {
+                                              searchDocumentsPath: '/search.json',
+                                          },
+                                      }
+                            }
+                        >
+                            <div className="fixed inset-x-0 top-0 z-50 mx-auto hidden  md:block">
+                                <NewHeader />
+                            </div>
+                            {children}
+                            <div className="absolute top-0 right-0 h-full w-4 border-x border-x-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:w-8" />
+                            <div className="absolute top-0 left-0 h-full w-4 border-x border-x-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:w-8" />
+                            {/* <Suspense>
                             <NavDock />
-                        </Suspense> */}
-                    </SearchProvider>
-                    <Footer />
+                            </Suspense> */}
+                        </SearchProvider>
+                        <Footer />
+                    </div>
                 </ThemeProviders>
                 <Suspense>
                     <Loader />

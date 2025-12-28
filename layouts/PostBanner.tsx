@@ -24,7 +24,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
     return (
         <>
             <ScrollTopAndComment />
-            <article>
+            <article className="py-20 px-0 sm:px-6 md:px-8">
                 <div>
                     <div className="space-y-1 pb-10 text-center">
                         <div className="w-full">

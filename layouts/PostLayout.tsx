@@ -35,7 +35,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
     return (
         <>
             <ScrollTopAndComment />
-            <article>
+            <article className="py-20 px-0 sm:px-6 md:px-8">
                 <div className="xl:divide-y xl:divide-muted-foreground xl:dark:divide-muted">
                     <header className="pt-6 xl:pb-6">
                         <div className="space-y-1 text-center">

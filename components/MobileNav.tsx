@@ -27,23 +27,32 @@ const MobileNav = () => {
             <button className="sm:hidden" aria-label="Toggle Menu" onClick={onToggleNav}>
                 <Menu />
             </button>
+            {/* Overlay */}
+            {navShow && (
+                <div
+                    className="fixed inset-0 z-40 bg-black  transition-opacity duration-300 sm:hidden"
+                    onClick={onToggleNav}
+                    aria-hidden="true"
+                />
+            )}
+            {/* Mobile Menu */}
             <div
-                className={`fixed sm:hidden left-10  top-[3.75rem] z-50 !ml-0 h-screen w-screen transform bg-background opacity-95 duration-300 ease-in-out ${
-                    navShow ? '-translate-x-20' : 'translate-x-full'
+                className={`fixed sm:hidden  right-0 -top-4 z-50 h-screen w-screen max-w-xs transform bg-background opacity-100 shadow-lg transition-transform duration-300 ease-in-out ${
+                    navShow ? 'translate-x-10' : 'translate-x-[110%]'
                 }`}
             >
                 <div className="flex justify-end">
                     <button
-                        className="mr-8 mt-11 flex h-8 w-8 items-center justify-end"
+                        className="m-6 flex h-8 w-8 items-center justify-center"
                         aria-label="Toggle Menu"
                         onClick={onToggleNav}
                     >
                         <X />
                     </button>
                 </div>
-                <nav className="fixed mt-8 w-full">
+                <nav className="mt-8 w-full ">
                     {headerNavLinks.map((link) => (
-                        <div key={link.title} className="px-12 py-4">
+                        <div key={link.title} className="px-8 py-4">
                             <TransitionLink
                                 label={link.title}
                                 href={link.href}

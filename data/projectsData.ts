@@ -56,7 +56,7 @@ const projectsData: {
             },
         ],
         description:
-            'The Office Management System streamlines attendance tracking and leave management for your team. This web application is designed to enhance office operations by providing a user-friendly platform for members to mark attendance and manage leaves efficiently. demo credentials: email: mail@pranavbhatkar.me password: 123456',
+            'The Office Management System streamlines attendance tracking and leave management for your team. This web application is designed to enhance office operations by providing a user-friendly platform for members to mark attendance and manage leaves efficiently. ',
         imgSrc: '/static/images/twitter-card.png',
         href: 'https://account.krag.in',
         client: {
@@ -183,7 +183,7 @@ const projectsData: {
         ],
         description:
             'CardSift is a web application that helps users find the best credit cards using AI-powered insights. It features dynamic web scraping, AI-driven data structuring, a comprehensive comparison interface, and user authentication.',
-        imgSrc: '/cardsift-screenshot.png', // Replace with your actual image URL
+        imgSrc: '/static/images/project/cardsift.png', // Replace with your actual image URL
         href: 'https://cardsift.pranavbhatkar.me', // Replace with your actual deployed URL
         client: {
             name: 'Inagiffy', //Add more info to inagiffy if you built it for there
@@ -202,7 +202,7 @@ const projectsData: {
         ],
         description:
             'AI-powered personal college and career counselor with Telegram and WhatsApp bots. Built the full UI/UX and integrated OpenAI APIs for conversation flows.',
-        imgSrc: '/static/images/projects/college-genie.png',
+        imgSrc: '/static/images/project/college-genie.png',
         href: 'https://collegegenie.org',
         client: {
             name: 'Axentia',
@@ -214,7 +214,7 @@ const projectsData: {
         tags: [{ name: 'SaaS' }, { name: 'Next.js' }, { name: 'OpenAI API' }, { name: 'AI Tools' }],
         description:
             'All-in-one AI toolkit for teachers and students. Includes tools for MCQs, essays, summaries, lesson plans, and more. Focused on UI/UX and backend improvements.',
-        imgSrc: '/images/projects/shikshaGenie.png',
+        imgSrc: '/images/project/shikshaGenie.png',
         href: 'https://www.studyyoutube.com',
         client: {
             name: 'Axentia',
@@ -231,7 +231,7 @@ const projectsData: {
         ],
         description:
             'Custom AI chat interface with YouTube transcript querying, vector search using pgvector, and context-aware responses.',
-        imgSrc: '/static/images/projects/chat.png',
+        imgSrc: '/static/images/project/chat.png',
         href: 'https://chat.pranavbhatkar.me/',
     },
     {
@@ -244,7 +244,7 @@ const projectsData: {
         ],
         description:
             'Minimalist and clean architecture portfolio website with sections for projects, awards, and gallery. Built for architect Shrey Mahashabde.',
-        imgSrc: '/static/images/projects/shrey.png',
+        imgSrc: '/static/images/project/shrey.png',
         href: 'https://shreymahashabde.com/',
         client: {
             name: 'Shrey Mahashabde',
