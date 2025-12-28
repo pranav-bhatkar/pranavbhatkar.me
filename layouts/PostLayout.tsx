@@ -87,7 +87,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                                                     )}
                                                     <dl className="whitespace-nowrap text-sm font-medium leading-5">
                                                         <dt className="sr-only">Name</dt>
-                                                        <dd className="text-foreground">{author.name}</dd>
+                                                        <dd className="text-foreground">
+                                                            {author.name}
+                                                        </dd>
                                                         <dt className="sr-only">Twitter</dt>
                                                         <dd>
                                                             {author.twitter && (
@@ -158,7 +160,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                                                             Previous Article
                                                         </h2>
                                                         <div className="text-primary hover:brightness-125 dark:hover:brightness-125">
-                                                            <Link href={`/${prev.path}`}>{prev.title}</Link>
+                                                            <Link href={`/${prev.path}`}>
+                                                                {prev.title}
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 )}
@@ -168,7 +172,9 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                                                             Next Article
                                                         </h2>
                                                         <div className="text-primary hover:brightness-125 dark:hover:brightness-125">
-                                                            <Link href={`/${next.path}`}>{next.title}</Link>
+                                                            <Link href={`/${next.path}`}>
+                                                                {next.title}
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 )}

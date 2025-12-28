@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react'
 import Link from 'next/link'
 
+import Image from '../Image'
 import RotatingText from '../RotatingText'
 import { Icons } from '../icons'
 import { Button } from '../shadcn/button'
@@ -128,9 +129,11 @@ const HeroSection = ({ profileImage }: HeroSectionProps) => {
 
                                 {/* Image */}
                                 {profileImage ? (
-                                    <img
+                                    <Image
                                         src={profileImage}
                                         alt="Pranav Bhatkar"
+                                        width={320}
+                                        height={320}
                                         className="w-full h-full object-cover grayscale"
                                     />
                                 ) : (

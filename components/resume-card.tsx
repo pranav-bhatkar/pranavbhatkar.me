@@ -6,6 +6,7 @@ import { ChevronRightIcon } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
+import Image from './Image'
 import { Badge } from './shadcn/badge'
 
 interface ResumeCardProps {
@@ -45,18 +46,18 @@ export const ResumeCard = ({
         >
             <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 border border-border flex items-center justify-center bg-muted/30">
-                    <img
+                    <Image
                         src={logoUrl}
                         alt={altText}
+                        width={48}
+                        height={48}
                         className="w-full h-full object-contain p-1"
                     />
                 </div>
                 <div className="flex-grow min-w-0">
                     <div className="flex items-start justify-between gap-4 mb-1">
                         <div className="flex-1 min-w-0">
-                            <h3 className="text-sm font-semibold leading-none mb-1">
-                                {title}
-                            </h3>
+                            <h3 className="text-sm font-semibold leading-none mb-1">{title}</h3>
                             {subtitle && (
                                 <p className="text-xs text-muted-foreground font-sans">
                                     {subtitle}
@@ -65,11 +66,7 @@ export const ResumeCard = ({
                             {badges && badges.length > 0 && (
                                 <div className="flex flex-wrap gap-1 mt-2">
                                     {badges.map((badge, index) => (
-                                        <Badge
-                                            variant="outline"
-                                            className="text-xs"
-                                            key={index}
-                                        >
+                                        <Badge variant="outline" className="text-xs" key={index}>
                                             {badge}
                                         </Badge>
                                     ))}

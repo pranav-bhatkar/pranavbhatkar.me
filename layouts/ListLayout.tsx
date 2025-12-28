@@ -158,12 +158,17 @@ export default function ListLayout({
                                         <div className="space-y-3 xl:col-span-3">
                                             <div>
                                                 <h1 className="text-2xl font-bold leading-8 tracking-tight mb-2">
-                                                    <Link href={`/${path}`} className="text-foreground">
+                                                    <Link
+                                                        href={`/${path}`}
+                                                        className="text-foreground"
+                                                    >
                                                         {title}
                                                     </Link>
                                                 </h1>
                                                 <div className="flex flex-wrap space-x-3">
-                                                    {tags?.map((tag) => <Tag key={tag} text={tag} />)}
+                                                    {tags?.map((tag) => (
+                                                        <Tag key={tag} text={tag} />
+                                                    ))}
                                                 </div>
                                             </div>
                                             <div className="prose prose-sm max-w-none text-muted-foreground">
@@ -180,8 +185,9 @@ export default function ListLayout({
                                                             </span>
                                                         ) : (
                                                             <span>
-                                                                {pageViews[slug]?.toLocaleString() ||
-                                                                    '...'}{' '}
+                                                                {pageViews[
+                                                                    slug
+                                                                ]?.toLocaleString() || '...'}{' '}
                                                                 views
                                                             </span>
                                                         )}

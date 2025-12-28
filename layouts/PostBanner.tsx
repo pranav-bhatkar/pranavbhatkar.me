@@ -58,7 +58,10 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                         </BlurFade>
                         {siteMetadata.comments && (
                             <BlurFade delay={BLUR_FADE_DELAY * 4}>
-                                <div className="pb-6 pt-6 text-center text-muted-foreground" id="comment">
+                                <div
+                                    className="pb-6 pt-6 text-center text-muted-foreground"
+                                    id="comment"
+                                >
                                     <Comments slug={slug} />
                                 </div>
                             </BlurFade>

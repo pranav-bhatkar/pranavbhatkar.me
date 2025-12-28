@@ -5,8 +5,8 @@ import { cn } from '@/scripts/utils/tailwind-helpers'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 
-import BlurFade from '../magicui/blur-fade'
 import Card from '../Card'
+import BlurFade from '../magicui/blur-fade'
 
 const BLUR_FADE_DELAY = 0.04
 

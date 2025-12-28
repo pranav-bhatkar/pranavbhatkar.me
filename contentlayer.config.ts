@@ -1,5 +1,5 @@
 import { ComputedFields, defineDocumentType, makeSource } from 'contentlayer/source-files'
-import { writeFileSync } from 'fs'
+import { readFileSync, readdirSync, writeFileSync } from 'fs'
 import GithubSlugger from 'github-slugger'
 import path from 'path'
 import {
@@ -73,6 +73,43 @@ function createSearchIndex(allBlogs) {
             JSON.stringify(allCoreContent(sortPosts(allBlogs)))
         )
         console.log('Local search index generated...')
+    }
+}
+
+/**
+ * Patch generated .mjs files to replace 'assert' with 'with' for Node.js v24 compatibility
+ */
+function patchGeneratedFiles() {
+    const generatedDir = path.join(root, '.contentlayer/generated')
+
+    function patchFile(filePath: string) {
+        const content = readFileSync(filePath, 'utf-8')
+        // Replace 'assert { type: 'json' }' with 'with { type: 'json' }' for Node.js v24 compatibility
+        const patched = content.replace(
+            /\bassert\s*{\s*type:\s*['"]json['"]\s*}/g,
+            "with { type: 'json' }"
+        )
+        if (content !== patched) {
+            writeFileSync(filePath, patched, 'utf-8')
+        }
+    }
+
+    function walkDir(dir: string) {
+        const entries = readdirSync(dir, { withFileTypes: true })
+        for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name)
+            if (entry.isDirectory()) {
+                walkDir(fullPath)
+            } else if (entry.isFile() && entry.name.endsWith('.mjs')) {
+                patchFile(fullPath)
+            }
+        }
+    }
+
+    try {
+        walkDir(generatedDir)
+    } catch (error) {
+        // Directory might not exist yet, that's okay
     }
 }
 
@@ -153,8 +190,13 @@ export default makeSource({
             rehypePresetMinify,
         ],
     },
-    onSuccess: async (importData) => {
-        const { allBlogs } = await importData()
+    onSuccess: async () => {
+        // Patch generated files to use 'with' instead of 'assert' for Node.js v24 compatibility
+        patchGeneratedFiles()
+
+        const allBlogs = JSON.parse(
+            readFileSync(path.join(root, '.contentlayer/generated/Blog/_index.json'), 'utf-8')
+        )
         createTagCount(allBlogs)
         createSearchIndex(allBlogs)
     },

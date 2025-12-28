@@ -99,8 +99,10 @@ export async function GET() {
                         textAlign: 'center', // Center text
                     }}
                 >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src={avatar}
+                        alt="Pranav Bhatkar"
                         width="200"
                         height="200"
                         style={{
