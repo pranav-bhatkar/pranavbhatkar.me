@@ -37,7 +37,7 @@ const NewHeader = () => {
                     'mx-auto flex items-center justify-between rounded-md px-3 py-2 backdrop-blur-sm transition-colors duration-300 ease-in-out',
                     hasScrolled
                         ? 'bg-white dark:bg-[#141414]/50 border border-[var(--pattern-fg)]'
-                        : 'bg-white/50 dark:bg-background border-b border-b-[var(--pattern-fg)]'
+                        : 'bg-white/50 dark:bg-background border border-transparent border-b border-b-[var(--pattern-fg)]'
                 )}
             >
                 <Link
