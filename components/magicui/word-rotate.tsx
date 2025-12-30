@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { AnimatePresence, HTMLMotionProps, motion } from 'framer-motion'
+import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 interface WordRotateProps {

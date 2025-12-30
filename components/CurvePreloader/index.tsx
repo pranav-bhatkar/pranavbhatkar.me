@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 

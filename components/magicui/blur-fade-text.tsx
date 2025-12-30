@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { AnimatePresence, Variants, motion } from 'framer-motion'
+import { AnimatePresence, Variants, motion } from 'motion/react'
 import { useMemo } from 'react'
 
 interface BlurFadeTextProps {
@@ -45,7 +45,7 @@ const BlurFadeText = ({
                             exit="hidden"
                             variants={combinedVariants}
                             transition={{
-                                yoyo: Infinity,
+                                repeat: Infinity,
                                 delay: delay + i * characterDelay,
                                 ease: 'easeOut',
                             }}
@@ -69,7 +69,7 @@ const BlurFadeText = ({
                     exit="hidden"
                     variants={combinedVariants}
                     transition={{
-                        yoyo: Infinity,
+                        repeat: Infinity,
                         delay,
                         ease: 'easeOut',
                     }}

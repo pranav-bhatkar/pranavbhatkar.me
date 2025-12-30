@@ -76,8 +76,13 @@ module.exports = () => {
                 },
             ],
         },
-        eslint: {
-            dirs: ['app', 'components', 'layouts', 'scripts'],
+        turbopack: {
+            rules: {
+                '*.svg': {
+                    loaders: ['@svgr/webpack'],
+                    as: '*.js',
+                },
+            },
         },
         async headers() {
             return [

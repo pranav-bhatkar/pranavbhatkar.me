@@ -10,8 +10,8 @@ import {
     TooltipTrigger,
 } from '@/components/shadcn/tooltip'
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { motion, useInView } from 'framer-motion'
 import { ChevronRight, MailIcon, PhoneIcon } from 'lucide-react'
+import { motion, useInView } from 'motion/react'
 import Link from 'next/link'
 import { useRef } from 'react'
 

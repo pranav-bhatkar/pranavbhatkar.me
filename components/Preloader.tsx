@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 import { opacity, slideUp } from './anim'
@@ -39,11 +39,11 @@ export default function Index() {
     const curve = {
         initial: {
             d: initialPath,
-            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] },
+            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const },
         },
         exit: {
             d: targetPath,
-            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: 0.3 },
+            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] as const, delay: 0.3 },
         },
     }
 

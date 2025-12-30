@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { MotionValue, motion, useScroll, useTransform } from 'framer-motion'
+import { MotionValue, motion, useScroll, useTransform } from 'motion/react'
 import { FC, ReactNode, useRef } from 'react'
 
 interface TextRevealByWordProps {

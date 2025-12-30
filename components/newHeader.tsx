@@ -3,8 +3,8 @@
 import headerNavLinks from '@/data/headerNavLinks'
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { useScroll } from 'framer-motion'
-import { motion } from 'framer-motion'
+import { useScroll } from 'motion/react'
+import { motion } from 'motion/react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 

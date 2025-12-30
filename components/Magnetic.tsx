@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import React, { useEffect, useRef } from 'react'
 
 export default function Magnetic({ children }) {
-    const magnetic = useRef<HTMLElement>()
+    const magnetic = useRef<HTMLElement | null>(null)
 
     useEffect(() => {
         if (!magnetic.current) return

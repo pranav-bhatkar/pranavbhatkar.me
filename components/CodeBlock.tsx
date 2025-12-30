@@ -1,7 +1,7 @@
 'use client'
 
 import { getLanguageIcon } from '@/scripts/utils/language-icons.tsx'
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import createElement from 'react-syntax-highlighter/dist/cjs/create-element'
 
@@ -13,7 +13,7 @@ interface LineProps {
     showLineNumbers: boolean
 }
 
-const Line: FC<LineProps> = ({ lineNumber, children, showLineNumbers }) => (
+const Line = ({ lineNumber, children, showLineNumbers }: LineProps): React.ReactElement => (
     <span className="flex">
         {showLineNumbers && (
             <span className="linenumber inline-block min-w-[2.75em] select-none pr-[1em] text-right text-muted-foreground">
@@ -40,7 +40,7 @@ interface CodeBlockProps {
     removedLines?: [number, number][]
 }
 
-const CodeBlock: FC<CodeBlockProps> = ({
+const CodeBlock = ({
     src,
     title,
     range,
@@ -54,7 +54,7 @@ const CodeBlock: FC<CodeBlockProps> = ({
     skipLines = [],
     addedLines = [],
     removedLines = [],
-}) => {
+}: CodeBlockProps): React.ReactElement | null => {
     const { code, loading } = useFetchData(src)
     const textInput = useRef(null)
     const [hovered, onEnter, onExit] = useHover()

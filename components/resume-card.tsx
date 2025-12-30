@@ -1,8 +1,8 @@
 'use client'
 
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { motion } from 'framer-motion'
 import { ChevronRightIcon } from 'lucide-react'
+import { motion } from 'motion/react'
 import Link from 'next/link'
 import React from 'react'
 

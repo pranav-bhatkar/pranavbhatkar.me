@@ -16,7 +16,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!slug) return new NextResponse('slug not found', { status: 400 })
 
-    const ip = req.ip
+    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip')
 
     if (ip) {
         const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(ip))

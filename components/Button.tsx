@@ -18,7 +18,7 @@ export default function Button({
 } & React.HTMLAttributes<HTMLDivElement>) {
     const circle = useRef(null)
     const text = useRef(null)
-    const timeline = useRef<gsap.core.Timeline>()
+    const timeline = useRef<gsap.core.Timeline | null>(null)
     let timeoutId: null | NodeJS.Timeout = null
     const { theme } = useTheme()
     useEffect(() => {
