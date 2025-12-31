@@ -1,6 +1,3 @@
-import Footer from '@/components/Footer'
-import Header from '@/components/Header'
-import NewHeader from '@/components/newHeader'
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
 import { ClerkProvider } from '@clerk/nextjs'
@@ -8,8 +5,6 @@ import { ThemeProviders } from 'app/theme-providers'
 import 'css/tailwind.css'
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
-import { GA } from 'pliny/analytics/GoogleAnalytics'
-import { SearchProvider } from 'pliny/search'
 import { Suspense } from 'react'
 
 import ConvexClientProvider from './ConvexClientProvider'
@@ -22,6 +17,7 @@ const font = JetBrains_Mono({
     variable: '--font-space-jetbrains-mono',
 })
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-space-inter' })
+
 export const metadata: Metadata = {
     metadataBase: new URL(siteMetadata.siteUrl),
     title: {
@@ -98,38 +94,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
                 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
                 <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
-                <body className="bg-background relative text-black antialiased dark:text-white ">
+                <body className="relative bg-background text-black antialiased dark:text-white">
                     <ConvexClientProvider>
                         <ThemeProviders>
-                            <div className="container px-4 md:px-[2rem] relative max-w-7xl mx-auto [--pattern-fg:rgb(20,20,20)] dark:[--pattern-fg:rgb(20,20,20)]">
-                                <SearchProvider
-                                    searchConfig={
-                                        siteMetadata.search
-                                            ? siteMetadata.search
-                                            : {
-                                                  provider: 'kbar',
-                                                  kbarConfig: {
-                                                      searchDocumentsPath: '/search.json',
-                                                  },
-                                              }
-                                    }
-                                >
-                                    <NewHeader />
-
-                                    {children}
-                                    <div className="absolute top-0 right-0 h-full w-4 border-x border-x-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:w-8" />
-                                    <div className="absolute top-0 left-0 h-full w-4 border-x border-x-[var(--pattern-fg)] bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-[length:10px_10px] bg-fixed md:w-8" />
-                                    {/* <Suspense>
-                            <NavDock />
-                            </Suspense> */}
-                                </SearchProvider>
-                                <Footer />
-                            </div>
+                            {children}
+                            <Suspense>
+                                <Loader />
+                            </Suspense>
                         </ThemeProviders>
-
-                        <Suspense>
-                            <Loader />
-                        </Suspense>
                     </ConvexClientProvider>
                 </body>
             </html>

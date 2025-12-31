@@ -1,5 +1,5 @@
 import HeroSection from '@/components/home/NewHero'
-import Projects from '@/components/home/Projects'
+import WishlistSection from '@/components/home/WishlistSection'
 import BlurFade from '@/components/magicui/blur-fade'
 import { ResumeCard } from '@/components/resume-card'
 import { Badge } from '@/components/shadcn/badge'
@@ -96,7 +96,7 @@ export default async function Page() {
             </section>
             <section
                 id="projects"
-                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] border-b border-b-[var(--pattern-fg)] py-10"
+                className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-10"
             >
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <h2 className="text-xl font-bold mb-4">Projects</h2>
@@ -113,6 +113,7 @@ export default async function Page() {
                 </BlurFade>
             </section>
             {/* <Projects /> */}
+            <WishlistSection />
         </main>
     )
 }

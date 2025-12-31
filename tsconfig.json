@@ -23,6 +23,7 @@
             "@/layouts/*": ["layouts/*"],
             "@/css/*": ["css/*"],
             "@/scripts/*": ["scripts/*"],
+            "@/convex/*": ["convex/*"],
             "contentlayer/generated": ["./.contentlayer/generated"]
         },
         "plugins": [
