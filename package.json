@@ -9,7 +9,8 @@
         "serve": "next start",
         "analyze": "cross-env ANALYZE=true next build",
         "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
-        "prettier": "prettier --write ."
+        "prettier": "prettier --write .",
+        "test": "vitest"
     },
     "dependencies": {
         "@next/bundle-analyzer": "16.1.1",
@@ -83,7 +84,8 @@
         "postcss-nesting": "^13.0.2",
         "prettier": "^3.0.0",
         "prettier-plugin-tailwindcss": "^0.4.1",
-        "typescript": "^5.1.3"
+        "typescript": "^5.1.3",
+        "vitest": "^1.0.0"
     },
     "resolutions": {
         "@opentelemetry/api": "1.4.1",
