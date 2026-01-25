@@ -8,6 +8,9 @@
  * @module
  */
 
+import type * as contributors from "../contributors.js";
+import type * as http from "../http.js";
+import type * as payments from "../payments.js";
 import type * as wishlist from "../wishlist.js";
 
 import type {
@@ -17,6 +20,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  contributors: typeof contributors;
+  http: typeof http;
+  payments: typeof payments;
   wishlist: typeof wishlist;
 }>;
 

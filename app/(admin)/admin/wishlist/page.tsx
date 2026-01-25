@@ -5,12 +5,15 @@ import { api } from '@/convex/_generated/api'
 import { useState } from 'react'
 import { Pencil, Trash2, Plus, Upload, Check, X } from 'lucide-react'
 import { Id } from '@/convex/_generated/dataModel'
+import { formatINR } from '@/data/wishlistData'
 
 interface WishlistFormData {
+    id: string
     title: string
     description: string
     targetAmount: string
-    deadline: string
+    selfContribution: string
+    markdown: string
     imageFile: File | null
 }
 
@@ -18,18 +21,18 @@ export default function AdminWishlistPage() {
     const wishlistItems = useQuery(api.wishlist.listForAdmin)
     const createItem = useMutation(api.wishlist.create)
     const updateItem = useMutation(api.wishlist.update)
-    const updateProgress = useMutation(api.wishlist.updateProgress)
-    const markComplete = useMutation(api.wishlist.markComplete)
     const deleteItem = useMutation(api.wishlist.deleteItem)
     const generateUploadUrl = useMutation(api.wishlist.generateUploadUrl)
 
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [editingId, setEditingId] = useState<Id<'wishlistItems'> | null>(null)
     const [formData, setFormData] = useState<WishlistFormData>({
+        id: '',
         title: '',
         description: '',
         targetAmount: '',
-        deadline: '',
+        selfContribution: '',
+        markdown: '',
         imageFile: null,
     })
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -37,10 +40,12 @@ export default function AdminWishlistPage() {
 
     const resetForm = () => {
         setFormData({
+            id: '',
             title: '',
             description: '',
             targetAmount: '',
-            deadline: '',
+            selfContribution: '',
+            markdown: '',
             imageFile: null,
         })
         setEditingId(null)
@@ -50,10 +55,12 @@ export default function AdminWishlistPage() {
     const handleEdit = (item: any) => {
         setEditingId(item._id)
         setFormData({
+            id: item.id,
             title: item.title,
             description: item.description,
             targetAmount: item.targetAmount.toString(),
-            deadline: new Date(item.deadline).toISOString().split('T')[0],
+            selfContribution: item.selfContribution.toString(),
+            markdown: item.markdown || '',
             imageFile: null,
         })
         setIsFormOpen(true)
@@ -78,8 +85,8 @@ export default function AdminWishlistPage() {
                 imageStorageId = storageId
             }
 
-            const deadlineTimestamp = new Date(formData.deadline).getTime()
             const targetAmount = parseFloat(formData.targetAmount)
+            const selfContribution = parseFloat(formData.selfContribution)
 
             if (editingId) {
                 // Update existing item
@@ -88,24 +95,32 @@ export default function AdminWishlistPage() {
                     title: formData.title,
                     description: formData.description,
                     targetAmount,
-                    deadline: deadlineTimestamp,
+                    selfContribution,
+                    markdown: formData.markdown,
                     ...(imageStorageId && { imageStorageId }),
                 })
             } else {
                 // Create new item
+                if (!formData.id.trim()) {
+                    alert('Please enter a unique ID (slug) for this item')
+                    setIsSubmitting(false)
+                    return
+                }
                 await createItem({
+                    id: formData.id.trim(),
                     title: formData.title,
                     description: formData.description,
                     targetAmount,
-                    deadline: deadlineTimestamp,
+                    selfContribution,
+                    markdown: formData.markdown,
                     imageStorageId,
                 })
             }
 
             resetForm()
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error saving wishlist item:', error)
-            alert('Failed to save wishlist item')
+            alert(error.message || 'Failed to save wishlist item')
         } finally {
             setIsSubmitting(false)
         }
@@ -121,41 +136,10 @@ export default function AdminWishlistPage() {
         }
     }
 
-    const handleToggleComplete = async (id: Id<'wishlistItems'>, currentStatus: boolean) => {
-        try {
-            await markComplete({ id, isCompleted: !currentStatus })
-        } catch (error) {
-            console.error('Error updating completion status:', error)
-            alert('Failed to update completion status')
-        }
-    }
-
-    const [editingProgress, setEditingProgress] = useState<{
-        id: Id<'wishlistItems'>
-        amount: string
-    } | null>(null)
-
-    const handleUpdateProgress = async () => {
-        if (!editingProgress) return
-
-        try {
-            await updateProgress({
-                id: editingProgress.id,
-                collectedAmount: parseFloat(editingProgress.amount),
-            })
-            setEditingProgress(null)
-        } catch (error) {
-            console.error('Error updating progress:', error)
-            alert('Failed to update progress')
-        }
-    }
-
     return (
         <div>
             <div className="mb-8 flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-foreground">
-                    Wishlist Management
-                </h1>
+                <h1 className="text-3xl font-bold text-foreground">Wishlist Management</h1>
                 <button
                     onClick={() => setIsFormOpen(true)}
                     className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-primary-foreground transition-colors hover:opacity-90"
@@ -167,15 +151,36 @@ export default function AdminWishlistPage() {
 
             {/* Form Modal */}
             {isFormOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-                    <div className="w-full max-w-2xl rounded-lg bg-card border border-border p-6">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 overflow-y-auto">
+                    <div className="w-full max-w-4xl rounded-lg bg-card border border-border p-6 my-8">
                         <h2 className="mb-4 text-2xl font-bold text-card-foreground">
                             {editingId ? 'Edit Wishlist Item' : 'New Wishlist Item'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
+                            {!editingId && (
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-foreground">
+                                        ID (Slug) *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.id}
+                                        onChange={(e) =>
+                                            setFormData({ ...formData, id: e.target.value })
+                                        }
+                                        placeholder="e.g., macbook-pro-m3"
+                                        className="w-full rounded-lg border border-input bg-background px-3 py-2 text-foreground"
+                                    />
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        Unique identifier used in URLs (lowercase, hyphens only)
+                                    </p>
+                                </div>
+                            )}
+
                             <div>
                                 <label className="mb-1 block text-sm font-medium text-foreground">
-                                    Title
+                                    Title *
                                 </label>
                                 <input
                                     type="text"
@@ -190,7 +195,7 @@ export default function AdminWishlistPage() {
 
                             <div>
                                 <label className="mb-1 block text-sm font-medium text-foreground">
-                                    Description
+                                    Description *
                                 </label>
                                 <textarea
                                     required
@@ -200,18 +205,20 @@ export default function AdminWishlistPage() {
                                         setFormData({ ...formData, description: e.target.value })
                                     }
                                     className="w-full rounded-lg border border-input bg-background px-3 py-2 text-foreground"
+                                    placeholder="Short description shown in cards"
                                 />
                             </div>
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div>
                                     <label className="mb-1 block text-sm font-medium text-foreground">
-                                        Target Amount ($)
+                                        Target Amount (₹) *
                                     </label>
                                     <input
                                         type="number"
                                         required
-                                        step="0.01"
+                                        step="1"
+                                        min="0"
                                         value={formData.targetAmount}
                                         onChange={(e) =>
                                             setFormData({
@@ -225,18 +232,42 @@ export default function AdminWishlistPage() {
 
                                 <div>
                                     <label className="mb-1 block text-sm font-medium text-foreground">
-                                        Deadline
+                                        Self Contribution (₹) *
                                     </label>
                                     <input
-                                        type="date"
+                                        type="number"
                                         required
-                                        value={formData.deadline}
+                                        step="1"
+                                        min="0"
+                                        value={formData.selfContribution}
                                         onChange={(e) =>
-                                            setFormData({ ...formData, deadline: e.target.value })
+                                            setFormData({
+                                                ...formData,
+                                                selfContribution: e.target.value,
+                                            })
                                         }
                                         className="w-full rounded-lg border border-input bg-background px-3 py-2 text-foreground"
                                     />
                                 </div>
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-foreground">
+                                    Markdown Content *
+                                </label>
+                                <textarea
+                                    required
+                                    rows={12}
+                                    value={formData.markdown}
+                                    onChange={(e) =>
+                                        setFormData({ ...formData, markdown: e.target.value })
+                                    }
+                                    className="w-full rounded-lg border border-input bg-background px-3 py-2 text-foreground font-mono text-sm"
+                                    placeholder="## Why I Need This&#10;&#10;Write your detailed markdown content here..."
+                                />
+                                <p className="mt-1 text-xs text-muted-foreground">
+                                    Full markdown content shown on the item detail page
+                                </p>
                             </div>
 
                             <div>
@@ -338,10 +369,7 @@ export default function AdminWishlistPage() {
                                         Progress
                                     </th>
                                     <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">
-                                        Deadline
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">
-                                        Status
+                                        ID
                                     </th>
                                     <th className="px-6 py-3 text-right text-sm font-semibold text-foreground">
                                         Actions
@@ -349,118 +377,80 @@ export default function AdminWishlistPage() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-border">
-                                {wishlistItems.map((item) => (
-                                    <tr key={item._id}>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                {item.imageUrl && (
-                                                    <img
-                                                        src={item.imageUrl}
-                                                        alt={item.title}
-                                                        className="h-12 w-12 rounded-lg object-cover"
-                                                    />
-                                                )}
+                                {wishlistItems.map((item) => {
+                                    const totalAmount = item.selfContribution + item.collectedAmount
+                                    const progress = Math.min(
+                                        (totalAmount / item.targetAmount) * 100,
+                                        100
+                                    )
+                                    return (
+                                        <tr key={item._id}>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    {item.imageUrl && (
+                                                        <img
+                                                            src={item.imageUrl}
+                                                            alt={item.title}
+                                                            className="h-12 w-12 rounded-lg object-cover"
+                                                        />
+                                                    )}
+                                                    <div>
+                                                        <div className="font-medium text-foreground">
+                                                            {item.title}
+                                                        </div>
+                                                        <div className="text-sm text-muted-foreground">
+                                                            {item.description.length > 50
+                                                                ? item.description.substring(0, 50) +
+                                                                  '...'
+                                                                : item.description}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
                                                 <div>
-                                                    <div className="font-medium text-foreground">
-                                                        {item.title}
-                                                    </div>
-                                                    <div className="text-sm text-muted-foreground">
-                                                        {item.description.length > 50
-                                                            ? item.description.substring(0, 50) +
-                                                              '...'
-                                                            : item.description}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {editingProgress?.id === item._id ? (
-                                                <div className="flex items-center gap-2">
-                                                    <input
-                                                        type="number"
-                                                        step="0.01"
-                                                        value={editingProgress.amount}
-                                                        onChange={(e) =>
-                                                            setEditingProgress({
-                                                                ...editingProgress,
-                                                                amount: e.target.value,
-                                                            })
-                                                        }
-                                                        className="w-24 rounded border border-input bg-background px-2 py-1 text-sm text-foreground"
-                                                    />
-                                                    <button
-                                                        onClick={handleUpdateProgress}
-                                                        className="text-green-600 hover:text-green-700"
-                                                    >
-                                                        <Check className="h-4 w-4" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => setEditingProgress(null)}
-                                                        className="text-red-600 hover:text-red-700"
-                                                    >
-                                                        <X className="h-4 w-4" />
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    className="cursor-pointer"
-                                                    onClick={() =>
-                                                        setEditingProgress({
-                                                            id: item._id,
-                                                            amount: item.collectedAmount.toString(),
-                                                        })
-                                                    }
-                                                >
                                                     <div className="text-sm font-medium text-foreground">
-                                                        ${item.collectedAmount.toLocaleString()} / $
-                                                        {item.targetAmount.toLocaleString()}
+                                                        {formatINR(totalAmount)} /{' '}
+                                                        {formatINR(item.targetAmount)} ({Math.round(progress)}%)
                                                     </div>
-                                                    <div className="mt-1 h-2 w-32 rounded-full bg-muted">
+                                                    <div className="mt-1 h-2 w-48 rounded-full bg-muted">
                                                         <div
                                                             className="h-2 rounded-full bg-primary"
                                                             style={{
-                                                                width: `${Math.min((item.collectedAmount / item.targetAmount) * 100, 100)}%`,
+                                                                width: `${progress}%`,
                                                             }}
                                                         />
                                                     </div>
+                                                    <div className="mt-1 text-xs text-muted-foreground">
+                                                        Self: {formatINR(item.selfContribution)} | Community:{' '}
+                                                        {formatINR(item.collectedAmount)}
+                                                    </div>
                                                 </div>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-muted-foreground">
-                                            {new Date(item.deadline).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <button
-                                                onClick={() =>
-                                                    handleToggleComplete(item._id, item.isCompleted)
-                                                }
-                                                className={`rounded-full px-3 py-1 text-xs font-medium ${
-                                                    item.isCompleted
-                                                        ? 'bg-primary/20 text-primary'
-                                                        : 'bg-muted text-muted-foreground'
-                                                }`}
-                                            >
-                                                {item.isCompleted ? 'Completed' : 'Active'}
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex justify-end gap-2">
-                                                <button
-                                                    onClick={() => handleEdit(item)}
-                                                    className="rounded p-1 text-primary hover:bg-primary/10"
-                                                >
-                                                    <Pencil className="h-4 w-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => setDeleteConfirmId(item._id)}
-                                                    className="rounded p-1 text-destructive hover:bg-destructive/10"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <code className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                                                    {item.id}
+                                                </code>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <div className="flex justify-end gap-2">
+                                                    <button
+                                                        onClick={() => handleEdit(item)}
+                                                        className="rounded p-1 text-primary hover:bg-primary/10"
+                                                    >
+                                                        <Pencil className="h-4 w-4" />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setDeleteConfirmId(item._id)}
+                                                        className="rounded p-1 text-destructive hover:bg-destructive/10"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
                             </tbody>
                         </table>
                     </div>
@@ -469,4 +459,3 @@ export default function AdminWishlistPage() {
         </div>
     )
 }
-

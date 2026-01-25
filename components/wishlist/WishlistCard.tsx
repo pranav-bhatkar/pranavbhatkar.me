@@ -1,89 +1,89 @@
-import { Calendar, Target } from 'lucide-react'
-import { ProgressBar } from './ProgressBar'
-import { ContributeButton } from './ContributeButton'
+'use client'
+
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { Button } from '@/components/shadcn/button'
+import DualProgressBar from './DualProgressBar'
+import { formatINR } from '@/data/wishlistData'
 
 interface WishlistCardProps {
+    id: string
     title: string
     description: string
     imageUrl: string | null
     targetAmount: number
-    collectedAmount: number
-    deadline: number
-    isCompleted?: boolean
-    showContributeButton?: boolean
+    selfContribution: number
+    communityAmount: number
 }
 
-export function WishlistCard({
+export default function WishlistCard({
+    id,
     title,
     description,
     imageUrl,
     targetAmount,
-    collectedAmount,
-    deadline,
-    isCompleted = false,
-    showContributeButton = true,
+    selfContribution,
+    communityAmount,
 }: WishlistCardProps) {
-    const daysRemaining = Math.ceil((deadline - Date.now()) / (1000 * 60 * 60 * 24))
-    const isPastDeadline = daysRemaining < 0
-
     return (
-        <div className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-lg">
-            {/* Image */}
-            <div className="relative h-48 w-full overflow-hidden bg-muted">
+        <div className="group border border-border bg-background transition-all duration-300 hover:border-foreground">
+            {/* Image container with corner brackets style */}
+            <div className="relative aspect-[4/3] overflow-hidden">
+                {/* Corner brackets */}
+                <div className="absolute top-3 left-3 w-4 h-4 border-l border-t border-muted-foreground/50 z-10" />
+                <div className="absolute top-3 right-3 w-4 h-4 border-r border-t border-muted-foreground/50 z-10" />
+                <div className="absolute bottom-3 left-3 w-4 h-4 border-l border-b border-muted-foreground/50 z-10" />
+                <div className="absolute bottom-3 right-3 w-4 h-4 border-r border-b border-muted-foreground/50 z-10" />
+
                 {imageUrl ? (
                     <img
                         src={imageUrl}
                         alt={title}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                     />
                 ) : (
-                    <div className="flex h-full items-center justify-center">
-                        <Target className="h-16 w-16 text-muted-foreground" />
-                    </div>
-                )}
-                {isCompleted && (
-                    <div className="absolute right-2 top-2 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                        Completed
+                    <div className="w-full h-full bg-muted flex items-center justify-center">
+                        <span className="text-2xl text-muted-foreground font-light">
+                            {title.charAt(0)}
+                        </span>
                     </div>
                 )}
             </div>
 
             {/* Content */}
-            <div className="p-6">
-                <h3 className="mb-2 text-xl font-bold text-card-foreground">
-                    {title}
-                </h3>
-                <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
+            <div className="p-5">
+                <h3 className="text-lg font-medium mb-2 tracking-tight">{title}</h3>
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     {description}
                 </p>
 
-                {/* Progress */}
-                <ProgressBar current={collectedAmount} target={targetAmount} className="mb-4" />
-
-                {/* Deadline */}
-                <div className="mb-4 flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" />
-                    {isPastDeadline ? (
-                        <span className="text-destructive">
-                            Deadline passed {Math.abs(daysRemaining)} days ago
-                        </span>
-                    ) : (
-                        <span>
-                            {daysRemaining === 0
-                                ? 'Ends today'
-                                : daysRemaining === 1
-                                  ? '1 day remaining'
-                                  : `${daysRemaining} days remaining`}
-                        </span>
-                    )}
+                {/* Progress section */}
+                <div className="mb-4">
+                    <DualProgressBar
+                        selfAmount={selfContribution}
+                        communityAmount={communityAmount}
+                        targetAmount={targetAmount}
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">
+                        Goal: {formatINR(targetAmount)}
+                    </p>
                 </div>
 
-                {/* Contribute Button */}
-                {showContributeButton && !isCompleted && (
-                    <ContributeButton title={title} amount={targetAmount - collectedAmount} />
-                )}
+                {/* Actions */}
+                <div className="flex gap-2">
+                    <Link href={`/wishlist/${id}`} className="flex-1">
+                        <Button variant="heroOutline" size="sm" className="w-full group/btn">
+                            Read more
+                            <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1" />
+                        </Button>
+                    </Link>
+                    <Link href={`/wishlist/${id}/contribute`} className="flex-1">
+                        <Button variant="hero" size="sm" className="w-full">
+                            Contribute
+                        </Button>
+                    </Link>
+                </div>
             </div>
         </div>
     )
 }
-
