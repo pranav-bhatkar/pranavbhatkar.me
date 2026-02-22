@@ -1,6 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
-import { ClerkProvider } from '@clerk/nextjs'
+
 import { ThemeProviders } from 'app/theme-providers'
 import 'css/tailwind.css'
 import type { Metadata } from 'next'
@@ -60,12 +60,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <ClerkProvider>
-            <html
-                lang={siteMetadata.language}
-                className={cn(font.variable, inter.variable, 'scroll-smooth dark')}
-                suppressHydrationWarning
-            >
+        <html
+            lang={siteMetadata.language}
+            className={cn(font.variable, inter.variable, 'scroll-smooth dark')}
+            suppressHydrationWarning
+        >
                 <link
                     rel="apple-touch-icon"
                     sizes="76x76"
@@ -104,7 +103,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         </ThemeProviders>
                     </ConvexClientProvider>
                 </body>
-            </html>
-        </ClerkProvider>
+        </html>
     )
 }
