@@ -1,8 +1,7 @@
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
-import { Authors, allAuthors } from 'contentlayer/generated'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import { coreContent } from 'pliny/utils/contentlayer'
+import { MDXContent } from '@/components/MDXContent'
+import { type Authors, allAuthors, coreContent } from '@/lib/velite'
 
 export const metadata = genPageMetadata({ title: 'About' })
 
@@ -13,7 +12,7 @@ export default function Page() {
     return (
         <>
             <AuthorLayout content={mainContent}>
-                <MDXLayoutRenderer code={author.body.code} />
+                <MDXContent code={author.body} />
             </AuthorLayout>
         </>
     )

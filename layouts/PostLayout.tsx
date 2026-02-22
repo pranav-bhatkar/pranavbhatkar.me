@@ -6,8 +6,7 @@ import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import Tag from '@/components/Tag'
 import BlurFade from '@/components/magicui/blur-fade'
 import siteMetadata from '@/data/siteMetadata'
-import type { Authors, Blog } from 'contentlayer/generated'
-import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Authors, Blog, CoreContent } from '@/lib/velite'
 import { ReactNode } from 'react'
 
 const BLUR_FADE_DELAY = 0.04

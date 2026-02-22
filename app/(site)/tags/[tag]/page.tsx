@@ -2,10 +2,9 @@ import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
 import { genPageMetadata } from 'app/seo'
 import tagData from 'app/tag-data.json'
-import { allBlogs } from 'contentlayer/generated'
+import { allBlogs, allCoreContent, sortPosts } from '@/lib/velite'
 import { slug } from 'github-slugger'
 import { Metadata } from 'next'
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 
 export async function generateMetadata({
     params,

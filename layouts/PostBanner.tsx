@@ -5,9 +5,7 @@ import PageTitle from '@/components/PageTitle'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import BlurFade from '@/components/magicui/blur-fade'
 import siteMetadata from '@/data/siteMetadata'
-import type { Blog } from 'contentlayer/generated'
-import Bleed from 'pliny/ui/Bleed'
-import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Blog, CoreContent } from '@/lib/velite'
 import { ReactNode } from 'react'
 
 const BLUR_FADE_DELAY = 0.04
@@ -33,7 +31,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                         <div className="space-y-1 pb-10 text-center">
                             <BlurFade delay={BLUR_FADE_DELAY * 1}>
                                 <div className="w-full">
-                                    <Bleed>
+                                    <div className="relative -mx-6 md:-mx-8">
                                         <div className="relative aspect-[1.91/1] w-full">
                                             <Image
                                                 src={displayImage}
@@ -42,7 +40,7 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
                                                 className="object-cover"
                                             />
                                         </div>
-                                    </Bleed>
+                                    </div>
                                 </div>
                             </BlurFade>
                             <BlurFade delay={BLUR_FADE_DELAY * 2}>

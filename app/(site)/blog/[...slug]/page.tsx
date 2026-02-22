@@ -1,16 +1,21 @@
-import { components } from '@/components/MDXComponents'
 import PageTitle from '@/components/PageTitle'
 import siteMetadata from '@/data/siteMetadata'
 import PostBanner from '@/layouts/PostBanner'
 import PostLayout from '@/layouts/PostLayout'
 import PostSimple from '@/layouts/PostSimple'
-import type { Authors, Blog } from 'contentlayer/generated'
-import { allAuthors, allBlogs } from 'contentlayer/generated'
+import { MDXContent } from '@/components/MDXContent'
+import {
+    type Authors,
+    type Blog,
+    allAuthors,
+    allBlogs,
+    allCoreContent,
+    coreContent,
+    sortPosts,
+} from '@/lib/velite'
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 import { Metadata } from 'next'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
-import { allCoreContent, coreContent, sortPosts } from 'pliny/utils/contentlayer'
 
 import { ReportView } from './view'
 
@@ -141,7 +146,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
             />
             <ReportView slug={slug} />
             <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
-                <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
+                <MDXContent code={post.body} toc={post.toc} />
             </Layout>
             {post.draft && (
                 <div className="mt-8 p-4 bg-yellow-100 border-l-4 border-yellow-500 absolute top-10 left-5">
