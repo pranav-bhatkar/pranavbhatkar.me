@@ -11,7 +11,7 @@ import BlurFade from '../magicui/blur-fade'
 const BLUR_FADE_DELAY = 0.04
 
 export default function WishlistSection() {
-    const wishlistItems = useQuery(api.wishlist.list)
+    const wishlistItems = useQuery(api.wishlist.listForLandingPage)
 
     // Show only first 3 items
     const featuredItems = wishlistItems?.slice(0, 3) || []
@@ -61,6 +61,7 @@ export default function WishlistSection() {
                             targetAmount={item.targetAmount}
                             selfContribution={item.selfContribution}
                             communityAmount={item.collectedAmount}
+                            status={item.status}
                         />
                     ))}
                 </div>

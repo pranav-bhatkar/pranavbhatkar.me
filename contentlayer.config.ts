@@ -1,4 +1,4 @@
-import { ComputedFields, defineDocumentType, makeSource } from 'contentlayer/source-files'
+import { ComputedFields, defineDocumentType, makeSource } from 'contentlayer2/source-files'
 import { readFileSync, readdirSync, writeFileSync } from 'fs'
 import GithubSlugger from 'github-slugger'
 import path from 'path'
@@ -11,9 +11,7 @@ import {
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import readingTime from 'reading-time'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeCitation from 'rehype-citation'
 import rehypeKatex from 'rehype-katex'
-import rehypePresetMinify from 'rehype-preset-minify'
 import rehypePrismPlus from 'rehype-prism-plus'
 // Rehype packages
 import rehypeSlug from 'rehype-slug'
@@ -185,9 +183,7 @@ export default makeSource({
             rehypeSlug,
             rehypeAutolinkHeadings,
             rehypeKatex,
-            [rehypeCitation, { path: path.join(root, 'data') }],
             [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
-            rehypePresetMinify,
         ],
     },
     onSuccess: async () => {

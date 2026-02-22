@@ -11,6 +11,7 @@ interface WishlistItem {
     targetAmount: number
     selfContribution: number
     collectedAmount: number
+    status: string
 }
 
 interface WishlistGridProps {
@@ -38,6 +39,7 @@ export default function WishlistGrid({ items }: WishlistGridProps) {
                     targetAmount={item.targetAmount}
                     selfContribution={item.selfContribution}
                     communityAmount={item.collectedAmount}
+                    status={item.status}
                 />
             ))}
         </div>

@@ -14,6 +14,7 @@ interface WishlistCardProps {
     targetAmount: number
     selfContribution: number
     communityAmount: number
+    status: string
 }
 
 export default function WishlistCard({
@@ -24,7 +25,10 @@ export default function WishlistCard({
     targetAmount,
     selfContribution,
     communityAmount,
+    status,
 }: WishlistCardProps) {
+    const totalAmount = selfContribution + communityAmount
+    const isFullyFunded = totalAmount >= targetAmount || status === 'COMPLETED'
     return (
         <div className="group border border-border bg-background transition-all duration-300 hover:border-foreground">
             {/* Image container with corner brackets style */}
@@ -71,17 +75,31 @@ export default function WishlistCard({
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                    <Link href={`/wishlist/${id}`} className="flex-1">
+                    <Link href={`/wishlist/${id}`} className={isFullyFunded ? 'flex-1' : 'flex-1'}>
                         <Button variant="heroOutline" size="sm" className="w-full group/btn">
                             Read more
                             <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1" />
                         </Button>
                     </Link>
-                    <Link href={`/wishlist/${id}/contribute`} className="flex-1">
-                        <Button variant="hero" size="sm" className="w-full">
-                            Contribute
-                        </Button>
-                    </Link>
+                    {!isFullyFunded && (
+                        <Link href={`/wishlist/${id}/contribute`} className="flex-1">
+                            <Button variant="hero" size="sm" className="w-full">
+                                Contribute
+                            </Button>
+                        </Link>
+                    )}
+                    {isFullyFunded && (
+                        <div className="flex-1">
+                            <Button
+                                variant="hero"
+                                size="sm"
+                                className="w-full opacity-50 cursor-not-allowed"
+                                disabled
+                            >
+                                Funded
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

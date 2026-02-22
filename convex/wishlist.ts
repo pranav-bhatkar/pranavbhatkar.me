@@ -42,14 +42,21 @@ export const list = query({
             targetAmount: v.number(),
             selfContribution: v.number(),
             collectedAmount: v.number(),
+            status: v.string(),
         })
     ),
     handler: async (ctx, args) => {
         const items = await ctx.db.query('wishlistItems').order('desc').collect()
 
+        // Filter to only show PUBLISHED items to public (default to PUBLISHED for backward compatibility)
+        const publishedItems = items.filter((item) => {
+            const status = item.status || 'PUBLISHED'
+            return status === 'PUBLISHED' || status === 'COMPLETED'
+        })
+
         // Get image URLs and calculate collected amounts
         const itemsWithData = await Promise.all(
-            items.map(async (item) => {
+            publishedItems.map(async (item) => {
                 let imageUrl: string | null = null
                 if (item.imageStorageId) {
                     imageUrl = await ctx.storage.getUrl(item.imageStorageId)
@@ -73,6 +80,69 @@ export const list = query({
                     targetAmount: item.targetAmount,
                     selfContribution: item.selfContribution,
                     collectedAmount,
+                    status: item.status || 'PUBLISHED',
+                }
+            })
+        )
+
+        return itemsWithData
+    },
+})
+
+// Query for landing page - only shows items marked for landing page
+export const listForLandingPage = query({
+    args: {},
+    returns: v.array(
+        v.object({
+            _id: v.id('wishlistItems'),
+            id: v.string(),
+            title: v.string(),
+            description: v.string(),
+            imageUrl: v.union(v.string(), v.null()),
+            targetAmount: v.number(),
+            selfContribution: v.number(),
+            collectedAmount: v.number(),
+            status: v.string(),
+        })
+    ),
+    handler: async (ctx, args) => {
+        const items = await ctx.db.query('wishlistItems').order('desc').collect()
+
+        // Filter to only show PUBLISHED items that are marked for landing page
+        // For backward compatibility: items without showOnLandingPage default to true
+        const landingPageItems = items.filter((item) => {
+            const showOnLanding = item.showOnLandingPage !== false // undefined or true
+            const status = item.status || 'PUBLISHED'
+            return showOnLanding && (status === 'PUBLISHED' || status === 'COMPLETED')
+        })
+
+        // Get image URLs and calculate collected amounts
+        const itemsWithData = await Promise.all(
+            landingPageItems.map(async (item) => {
+                let imageUrl: string | null = null
+                if (item.imageStorageId) {
+                    imageUrl = await ctx.storage.getUrl(item.imageStorageId)
+                }
+
+                // Calculate collected amount from verified contributors
+                const contributors = await ctx.db
+                    .query('contributors')
+                    .withIndex('by_wishlistItemId', (q) => q.eq('wishlistItemId', item._id))
+                    .filter((q) => q.eq(q.field('isVerified'), true))
+                    .collect()
+
+                const collectedAmount = contributors.reduce((sum, c) => sum + c.amount, 0)
+
+                return {
+                    _id: item._id,
+                    id: item.id,
+                    title: item.title,
+                    description: item.description,
+                    imageUrl,
+                    targetAmount: item.targetAmount,
+                    selfContribution: item.selfContribution,
+                    collectedAmount,
+                    status: item.status || 'PUBLISHED',
                 }
             })
         )
@@ -94,6 +164,7 @@ export const getById = query({
             selfContribution: v.number(),
             markdown: v.string(),
             collectedAmount: v.number(),
+            status: v.string(),
             contributors: v.array(
                 v.object({
                     _id: v.id('contributors'),
@@ -113,6 +184,12 @@ export const getById = query({
             .unique()
 
         if (!item) {
+            return null
+        }
+
+        // Only show PUBLISHED or COMPLETED items to public (default to PUBLISHED for backward compatibility)
+        const status = item.status || 'PUBLISHED'
+        if (status !== 'PUBLISHED' && status !== 'COMPLETED') {
             return null
         }
 
@@ -141,6 +218,7 @@ export const getById = query({
             selfContribution: item.selfContribution,
             markdown: item.markdown,
             collectedAmount,
+            status: status,
             contributors: contributors.map((c) => ({
                 _id: c._id,
                 name: c.name,
@@ -197,6 +275,8 @@ export const listForAdmin = query({
             markdown: v.string(),
             collectedAmount: v.number(),
             createdBy: v.string(),
+            status: v.string(),
+            showOnLandingPage: v.boolean(),
         })
     ),
     handler: async (ctx, args) => {
@@ -230,11 +310,59 @@ export const listForAdmin = query({
                     markdown: item.markdown,
                     collectedAmount,
                     createdBy: item.createdBy,
+                    status: item.status || 'PUBLISHED',
+                    showOnLandingPage: item.showOnLandingPage !== false,
                 }
             })
         )
 
         return itemsWithData
+    },
+})
+
+// Admin query to get a single item for editing
+export const getByIdForAdmin = query({
+    args: { id: v.id('wishlistItems') },
+    returns: v.union(
+        v.object({
+            _id: v.id('wishlistItems'),
+            id: v.string(),
+            title: v.string(),
+            description: v.string(),
+            imageUrl: v.union(v.string(), v.null()),
+            targetAmount: v.number(),
+            selfContribution: v.number(),
+            markdown: v.string(),
+            status: v.string(),
+            showOnLandingPage: v.boolean(),
+        }),
+        v.null()
+    ),
+    handler: async (ctx, args) => {
+        await requireAdmin(ctx)
+
+        const item = await ctx.db.get(args.id)
+        if (!item) {
+            return null
+        }
+
+        let imageUrl: string | null = null
+        if (item.imageStorageId) {
+            imageUrl = await ctx.storage.getUrl(item.imageStorageId)
+        }
+
+        return {
+            _id: item._id,
+            id: item.id,
+            title: item.title,
+            description: item.description,
+            imageUrl,
+            targetAmount: item.targetAmount,
+            selfContribution: item.selfContribution,
+            markdown: item.markdown,
+            status: item.status || 'PUBLISHED',
+            showOnLandingPage: item.showOnLandingPage !== false,
+        }
     },
 })
 
@@ -258,6 +386,8 @@ export const create = mutation({
         targetAmount: v.number(),
         selfContribution: v.number(),
         markdown: v.string(),
+        status: v.string(),
+        showOnLandingPage: v.boolean(),
     },
     returns: v.id('wishlistItems'),
     handler: async (ctx, args) => {
@@ -287,6 +417,8 @@ export const create = mutation({
             selfContribution: args.selfContribution,
             markdown: args.markdown,
             createdBy: identity.subject,
+            status: args.status,
+            showOnLandingPage: args.showOnLandingPage,
         })
 
         return wishlistId
@@ -302,6 +434,8 @@ export const update = mutation({
         targetAmount: v.optional(v.number()),
         selfContribution: v.optional(v.number()),
         markdown: v.optional(v.string()),
+        status: v.optional(v.string()),
+        showOnLandingPage: v.optional(v.boolean()),
     },
     returns: v.null(),
     handler: async (ctx, args) => {
@@ -315,6 +449,41 @@ export const update = mutation({
         }
 
         await ctx.db.patch(id, updates)
+        return null
+    },
+})
+
+// Internal mutation to auto-complete items when 100% funded
+export const checkAndAutoComplete = internalMutation({
+    args: { wishlistItemId: v.id('wishlistItems') },
+    returns: v.null(),
+    handler: async (ctx, args) => {
+        const item = await ctx.db.get(args.wishlistItemId)
+        if (!item) {
+            return null
+        }
+
+        // Only auto-complete PUBLISHED items (default to PUBLISHED for backward compatibility)
+        const status = item.status || 'PUBLISHED'
+        if (status !== 'PUBLISHED') {
+            return null
+        }
+
+        // Calculate total collected amount
+        const contributors = await ctx.db
+            .query('contributors')
+            .withIndex('by_wishlistItemId', (q) => q.eq('wishlistItemId', args.wishlistItemId))
+            .filter((q) => q.eq(q.field('isVerified'), true))
+            .collect()
+
+        const collectedAmount = contributors.reduce((sum, c) => sum + c.amount, 0)
+        const totalAmount = item.selfContribution + collectedAmount
+
+        // If 100% funded, mark as COMPLETED
+        if (totalAmount >= item.targetAmount) {
+            await ctx.db.patch(args.wishlistItemId, { status: 'COMPLETED' })
+        }
+
         return null
     },
 })

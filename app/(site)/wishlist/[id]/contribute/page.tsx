@@ -157,6 +157,32 @@ export default function ContributePage() {
         )
     }
 
+    const isFullyFunded = totalRaised >= item.targetAmount || item.status === 'COMPLETED'
+
+    // If fully funded, show a message instead of the contribution form
+    if (isFullyFunded) {
+        return (
+            <main className="min-h-screen bg-background flex items-center justify-center py-20">
+                <div className="text-center max-w-md mx-auto px-6">
+                    <div className="p-8 border border-green-500/30 bg-green-500/10 mb-6">
+                        <Check className="w-12 h-12 text-green-400 mx-auto mb-4" />
+                        <h1 className="text-2xl font-medium mb-2">Goal Achieved!</h1>
+                        <p className="text-muted-foreground">
+                            This wishlist item has been fully funded. Thank you to everyone who
+                            contributed!
+                        </p>
+                    </div>
+                    <Link href={`/wishlist/${id}`}>
+                        <Button variant="heroOutline">
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Back to item
+                        </Button>
+                    </Link>
+                </div>
+            </main>
+        )
+    }
+
     const isValidAmount = amount >= minSliderAmount
 
     return (

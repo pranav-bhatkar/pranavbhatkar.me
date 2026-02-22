@@ -11,9 +11,12 @@ export default defineSchema({
         selfContribution: v.number(), // In INR
         markdown: v.string(), // Long markdown description
         createdBy: v.string(), // Clerk user ID
+        status: v.optional(v.string()), // DRAFT | PUBLISHED | COMPLETED | BOUGHT | HIDE
+        showOnLandingPage: v.optional(v.boolean()), // Whether to show on homepage
     })
         .index('by_slug', ['id'])
-        .index('by_createdBy', ['createdBy']),
+        .index('by_createdBy', ['createdBy'])
+        .index('by_status', ['status']),
 
     contributors: defineTable({
         wishlistItemId: v.id('wishlistItems'),

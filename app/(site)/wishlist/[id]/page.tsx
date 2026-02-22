@@ -44,6 +44,7 @@ export default function WishlistItemPage() {
 
     const totalAmount = item.selfContribution + item.collectedAmount
     const progressPercentage = Math.min(Math.round((totalAmount / item.targetAmount) * 100), 100)
+    const isFullyFunded = totalAmount >= item.targetAmount || item.status === 'COMPLETED'
 
     return (
         <main className="min-h-screen bg-background py-20">
@@ -123,11 +124,22 @@ export default function WishlistItemPage() {
                             </div>
 
                             {/* CTA */}
-                            <Link href={`/wishlist/${id}/contribute`}>
-                                <Button variant="hero" size="xl" className="w-full">
-                                    Contribute to this goal
-                                </Button>
-                            </Link>
+                            {isFullyFunded ? (
+                                <div className="p-4 border border-green-500/30 bg-green-500/10 text-center">
+                                    <p className="text-green-400 font-medium">
+                                        This goal has been fully funded!
+                                    </p>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                        Thank you to everyone who contributed.
+                                    </p>
+                                </div>
+                            ) : (
+                                <Link href={`/wishlist/${id}/contribute`}>
+                                    <Button variant="hero" size="xl" className="w-full">
+                                        Contribute to this goal
+                                    </Button>
+                                </Link>
+                            )}
                         </div>
                     </div>
 
@@ -185,17 +197,20 @@ export default function WishlistItemPage() {
                     )}
 
                     {/* Bottom CTA */}
-                    <div className="mt-16 pt-16 border-t border-border text-center">
-                        <h3 className="text-xl font-medium mb-4">Ready to help?</h3>
-                        <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-                            Every contribution, no matter how small, brings me closer to this goal.
-                        </p>
-                        <Link href={`/wishlist/${id}/contribute`}>
-                            <Button variant="hero" size="lg">
-                                Contribute now
-                            </Button>
-                        </Link>
-                    </div>
+                    {!isFullyFunded && (
+                        <div className="mt-16 pt-16 border-t border-border text-center">
+                            <h3 className="text-xl font-medium mb-4">Ready to help?</h3>
+                            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+                                Every contribution, no matter how small, brings me closer to this
+                                goal.
+                            </p>
+                            <Link href={`/wishlist/${id}/contribute`}>
+                                <Button variant="hero" size="lg">
+                                    Contribute now
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </article>
         </main>

@@ -1,3 +1,4 @@
+import { internal } from './_generated/api'
 import { internalMutation } from './_generated/server'
 import { v } from 'convex/values'
 
@@ -59,6 +60,11 @@ export const verifyPayment = internalMutation({
             razorpayPaymentId: args.razorpayPaymentId,
             razorpaySignature: args.razorpaySignature,
             isVerified: true,
+        })
+
+        // Check if wishlist item should be auto-completed
+        await ctx.scheduler.runAfter(0, internal.wishlist.checkAndAutoComplete, {
+            wishlistItemId: contributor.wishlistItemId,
         })
 
         return contributor._id

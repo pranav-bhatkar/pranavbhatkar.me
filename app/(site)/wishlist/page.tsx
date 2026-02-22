@@ -59,27 +59,35 @@ export default function WishlistPage() {
                 <span className="text-sm font-medium text-foreground">Sort by:</span>
                 <button
                     onClick={() => toggleSort('progress')}
-                    className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors ${
+                    className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
                         sortBy === 'progress'
-                            ? 'border-primary bg-primary/10 text-primary-foreground'
+                            ? 'border-primary bg-primary text-primary-foreground'
                             : 'border-border bg-card text-foreground hover:bg-muted'
                     }`}
                 >
                     <ArrowUpDown className="h-4 w-4" />
                     Progress
-                    {sortBy === 'progress' && <ArrowUpDown className="h-3 w-3" />}
+                    {sortBy === 'progress' && (
+                        <span className="text-xs opacity-75">
+                            {sortOrder === 'desc' ? '↓' : '↑'}
+                        </span>
+                    )}
                 </button>
                 <button
                     onClick={() => toggleSort('amount')}
-                    className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors ${
+                    className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
                         sortBy === 'amount'
-                            ? 'border-primary bg-primary/10 text-primary-foreground'
+                            ? 'border-primary bg-primary text-primary-foreground'
                             : 'border-border bg-card text-foreground hover:bg-muted'
                     }`}
                 >
                     <DollarSign className="h-4 w-4" />
                     Amount
-                    {sortBy === 'amount' && <ArrowUpDown className="h-3 w-3" />}
+                    {sortBy === 'amount' && (
+                        <span className="text-xs opacity-75">
+                            {sortOrder === 'desc' ? '↓' : '↑'}
+                        </span>
+                    )}
                 </button>
             </div>
 
