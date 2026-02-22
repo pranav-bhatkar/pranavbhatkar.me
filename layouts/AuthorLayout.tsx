@@ -1,11 +1,11 @@
 import Image from '@/components/Image'
-import type { Authors } from 'contentlayer/generated'
+import type { Authors } from '@/lib/velite'
 import { Github, Instagram, Linkedin, Mail, Twitter } from 'lucide-react'
 import { ReactNode } from 'react'
 
 interface Props {
     children: ReactNode
-    content: Omit<Authors, '_id' | '_raw' | 'body'>
+    content: Omit<Authors, 'body'>
 }
 
 export default function AuthorLayout({ children, content }: Props) {

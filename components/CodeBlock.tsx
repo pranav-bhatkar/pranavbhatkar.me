@@ -25,7 +25,7 @@ const Line = ({ lineNumber, children, showLineNumbers }: LineProps): React.React
 )
 
 interface CodeBlockProps {
-    src?: string
+    source?: string
     title?: string
     range?: [number, number][]
     fileName?: string
@@ -41,7 +41,7 @@ interface CodeBlockProps {
 }
 
 const CodeBlock = ({
-    src,
+    source,
     title,
     range,
     fileName,
@@ -55,7 +55,7 @@ const CodeBlock = ({
     addedLines = [],
     removedLines = [],
 }: CodeBlockProps): React.ReactElement | null => {
-    const { code, loading } = useFetchData(src)
+    const { code, loading } = useFetchData(source)
     const textInput = useRef(null)
     const [hovered, onEnter, onExit] = useHover()
     const [copied, onCopy] = useCopy(textInput)

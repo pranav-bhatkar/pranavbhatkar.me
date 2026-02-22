@@ -59,13 +59,12 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return (
-        <ClerkProvider>
-            <html
-                lang={siteMetadata.language}
-                className={cn(font.variable, inter.variable, 'scroll-smooth dark')}
-                suppressHydrationWarning
-            >
+    const content = (
+        <html
+            lang={siteMetadata.language}
+            className={cn(font.variable, inter.variable, 'scroll-smooth dark')}
+            suppressHydrationWarning
+        >
                 <link
                     rel="apple-touch-icon"
                     sizes="76x76"
@@ -104,7 +103,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                         </ThemeProviders>
                     </ConvexClientProvider>
                 </body>
-            </html>
-        </ClerkProvider>
+        </html>
     )
+
+    if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+        return <ClerkProvider>{content}</ClerkProvider>
+    }
+
+    return content
 }

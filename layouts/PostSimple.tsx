@@ -9,10 +9,9 @@ import Tag from '@/components/Tag'
 import BlurFade from '@/components/magicui/blur-fade'
 import { Skeleton } from '@/components/shadcn/skeleton'
 import siteMetadata from '@/data/siteMetadata'
-import type { Authors, Blog } from 'contentlayer/generated'
+import type { Authors, Blog, CoreContent } from '@/lib/velite'
+import { formatDate } from '@/lib/velite'
 import NextImage from 'next/image'
-import { CoreContent } from 'pliny/utils/contentlayer'
-import { formatDate } from 'pliny/utils/formatDate'
 import { ReactNode, useEffect, useState } from 'react'
 
 const BLUR_FADE_DELAY = 0.04

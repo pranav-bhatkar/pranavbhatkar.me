@@ -6,11 +6,10 @@ import Tag from '@/components/Tag'
 import BlurFade from '@/components/magicui/blur-fade'
 import { Skeleton } from '@/components/shadcn/skeleton'
 import siteMetadata from '@/data/siteMetadata'
-import type { Blog } from 'contentlayer/generated'
+import type { Blog, CoreContent } from '@/lib/velite'
+import { formatDate } from '@/lib/velite'
 import { Search } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { CoreContent } from 'pliny/utils/contentlayer'
-import { formatDate } from 'pliny/utils/formatDate'
 import { useEffect, useState } from 'react'
 
 const BLUR_FADE_DELAY = 0.04
@@ -77,7 +76,7 @@ export default function ListLayout({
     pagination,
 }: ListLayoutProps) {
     const [searchValue, setSearchValue] = useState('')
-    const [pageViews, setPageViews] = useState<Record<string, number | undefined>>({})
+    const [pageViews, setPageViews] = useState<Record<string, number | null | undefined>>({})
 
     const filteredBlogPosts = posts.filter((post) => {
         const searchContent = post.title + post.summary + post.tags?.join(' ')
@@ -86,26 +85,23 @@ export default function ListLayout({
 
     useEffect(() => {
         posts.forEach((post) => {
+            console.log('i am groot 2')
             const slug = post.slug
-            if (slug && !(slug in pageViews)) {
-                // Assume undefined means loading
-                setPageViews((prevPageViews) => ({
-                    ...prevPageViews,
-                    [slug]: undefined,
-                }))
-
+            if (!slug) return
+            setPageViews((prev) => {
+                if (slug in prev) return prev
                 fetch(`/api/pageviews?slug=${encodeURIComponent(slug)}`)
                     .then((response) => response.json())
                     .then((data) => {
-                        setPageViews((prevPageViews) => ({
-                            ...prevPageViews,
-                            [slug]: data.pageViewCount,
-                        }))
+                        setPageViews((p) => ({ ...p, [slug]: data.pageViewCount ?? 0 }))
                     })
-                    .catch((error) => console.error('Error fetching page views:', error))
-            }
+                    .catch(() => {
+                        setPageViews((p) => ({ ...p, [slug]: null }))
+                    })
+                return { ...prev, [slug]: undefined }
+            })
         })
-    }, [posts, pageViews])
+    }, [posts])
 
     // If initialDisplayPosts exist, display it if no searchValue is specified
     const displayPosts =

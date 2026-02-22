@@ -1,9 +1,17 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import GithubSlugger from 'github-slugger'
 import path from 'path'
-import { escape } from 'pliny/utils/htmlEscaper.js'
+const escape = (s) =>
+    s
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
 
-import { allBlogs } from '../.contentlayer/generated/index.mjs'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const allBlogs = require('../.velite/blogs.json')
 import siteMetadata from '../data/siteMetadata.js'
 
 const tagData = JSON.parse(readFileSync(new URL('../app/tag-data.json', import.meta.url), 'utf-8'))

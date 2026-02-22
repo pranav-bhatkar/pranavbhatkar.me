@@ -24,8 +24,8 @@
             "@/css/*": ["css/*"],
             "@/scripts/*": ["scripts/*"],
             "@/convex/*": ["convex/*"],
-            "contentlayer/generated": ["./.contentlayer/generated"],
-            "contentlayer2/generated": ["./.contentlayer/generated"]
+            "@/lib/*": ["lib/*"],
+            "#site/content": ["./.velite"]
         },
         "plugins": [
             {
@@ -42,8 +42,7 @@
         "**/*.ts",
         "**/*.tsx",
         "**/*.json",
-        ".contentlayer/generated",
-        ".contentlayer/generated/**/*.json",
+        ".velite",
         ".next/types/**/*.ts",
         ".next/dev/types/**/*.ts"
     ],

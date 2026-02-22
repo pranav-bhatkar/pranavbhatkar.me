@@ -1,5 +1,17 @@
-const { withContentlayer } = require('next-contentlayer2')
 const redirects = require('./data/redirects.js')
+
+class VeliteWebpackPlugin {
+    static started = false
+    apply(/** @type {import('webpack').Compiler} */ compiler) {
+        compiler.hooks.beforeCompile.tapPromise('VeliteWebpackPlugin', async () => {
+            if (VeliteWebpackPlugin.started) return
+            VeliteWebpackPlugin.started = true
+            const dev = compiler.options.mode === 'development'
+            const { build } = await import('velite')
+            await build({ watch: dev, clean: !dev })
+        })
+    }
+}
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
@@ -59,7 +71,7 @@ const securityHeaders = [
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = () => {
-    const plugins = [withContentlayer, withBundleAnalyzer]
+    const plugins = [withBundleAnalyzer]
     return plugins.reduce((acc, next) => next(acc), {
         logging: {
             fetches: {
@@ -83,6 +95,9 @@ module.exports = () => {
                     as: '*.js',
                 },
             },
+            resolveAlias: {
+                '#site/content': './.velite',
+            },
         },
         async headers() {
             return [
@@ -100,6 +115,8 @@ module.exports = () => {
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
             })
+
+            config.plugins.push(new VeliteWebpackPlugin())
 
             return config
         },
