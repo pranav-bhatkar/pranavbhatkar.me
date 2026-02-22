@@ -1,6 +1,6 @@
 import siteMetadata from '@/data/siteMetadata'
 import { cn } from '@/scripts/utils/tailwind-helpers'
-
+import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProviders } from 'app/theme-providers'
 import 'css/tailwind.css'
 import type { Metadata } from 'next'
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    return (
+    const content = (
         <html
             lang={siteMetadata.language}
             className={cn(font.variable, inter.variable, 'scroll-smooth dark')}
@@ -105,4 +105,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </body>
         </html>
     )
+
+    if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+        return <ClerkProvider>{content}</ClerkProvider>
+    }
+
+    return content
 }
