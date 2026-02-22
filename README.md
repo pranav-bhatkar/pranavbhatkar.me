@@ -58,3 +58,5 @@ Deployed on [Vercel](https://vercel.com/).
 [Next.js]: https://img.shields.io/github/package-json/dependency-version/pranav-bhatkar/pranavbhatkar.me/next?color=463f37&logo=next.js&logoColor=fff&style=for-the-badge
 [License]: https://img.shields.io/github/license/pranav-bhatkar/pranavbhatkar.me?color=5d5449&logo=github&logoColor=fff&style=for-the-badge
 [Non-Code License]: https://img.shields.io/badge/non--code%20license-CC%20BY--NC--ND%204.0-756a5b?style=for-the-badge&logo=creativecommons&logoColor=fff
+
+deploy
