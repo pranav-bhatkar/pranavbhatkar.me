@@ -1,0 +1,19 @@
+# Find your Cloud Run service account
+gcloud run services describe YOUR_SERVICE \
+  --region=YOUR_REGION \
+  --format="value(spec.template.spec.serviceAccountName)"
+
+# If empty, get the default compute SA
+gcloud iam service-accounts list \
+  --filter="email ~ compute@developer" \
+  --format="value(email)"
+
+# Grant Cloud SQL Client role (same project)
+gcloud projects add-iam-policy-binding YOUR_PROJECT \
+  --member="serviceAccount:SA_EMAIL" \
+  --role="roles/cloudsql.client"
+
+# Cross-project — grant in the Cloud SQL project, not Cloud Run
+gcloud projects add-iam-policy-binding CLOUD_SQL_PROJECT \
+  --member="serviceAccount:SA_EMAIL" \
+  --role="roles/cloudsql.client"

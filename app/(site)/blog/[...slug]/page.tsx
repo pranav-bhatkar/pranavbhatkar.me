@@ -145,8 +145,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             <ReportView slug={slug} />
-            <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
-                <MDXContent code={post.body} toc={post.toc} />
+            <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev} toc={post.toc}>
+                <MDXContent code={post.body} />
             </Layout>
             {post.draft && (
                 <div className="mt-8 p-4 bg-yellow-100 border-l-4 border-yellow-500 absolute top-10 left-5">

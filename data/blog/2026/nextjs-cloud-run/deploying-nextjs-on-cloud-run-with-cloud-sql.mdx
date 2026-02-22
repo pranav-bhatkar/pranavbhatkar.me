@@ -1,123 +1,54 @@
 ---
-title: 'Deploying Next.js on Google Cloud Run with Cloud SQL — The Gotchas Nobody Tells You'
+title: 'Next.js on Cloud Run + Cloud SQL: 5 errors you will hit'
 date: '2026-02-22'
 lastmod: '2026-02-22'
 tags: ['nextjs', 'gcp', 'cloud-run', 'cloud-sql', 'devops']
 authors: ['pranavbhatkar']
-summary: 'I spent hours debugging connection timeouts, permission errors, and socket failures deploying a Next.js app with Drizzle ORM to Cloud Run + Cloud SQL. Here is everything I learned so you do not have to.'
-thumbnail: '/static/images/twitter-card.png'
-images: ['/static/images/twitter-card.png']
+summary: 'Five errors you will hit deploying Next.js with Drizzle ORM to Cloud Run + Cloud SQL, and the fixes for each. Connection timeouts, socket failures, IAM permissions, and more.'
+thumbnail: '/static/blog/2026/02/next_cloud-run_cloud-sql.png'
+images: ['/static/blog/2026/02/next_cloud-run_cloud-sql.png']
 layout: PostLayout
-draft: true
+draft: false
 ---
 
-# The Problem
+# The problem
 
-I was deploying a Next.js 16 app (with Drizzle ORM and PostgreSQL) to Google Cloud Run. The database was on Cloud SQL. Sounds simple right? It's just a Postgres connection.
+You have a Next.js app with a Postgres database. It works locally. You deploy it to Cloud Run, point it at Cloud SQL, and every single database query dies with a timeout error.
 
-Except it wasn't. I hit **four different errors** in a row, each one more confusing than the last. The app worked perfectly locally but on Cloud Run every single database query failed with cryptic timeout errors.
+Turns out there are about five things that can go wrong between Cloud Run and Cloud SQL, and you'll probably hit all of them. Here's each error and how to fix it.
 
-If you're deploying Next.js (or any Node.js app) on Cloud Run with Cloud SQL, this post will save you hours.
-
-## The Stack
-
-Quick context on what I was working with:
+## The stack
 
 - **Next.js 16** (App Router, `output: "standalone"`)
 - **Drizzle ORM** with `node-postgres` (`pg` driver)
-- **Cloud SQL** (PostgreSQL) — in a different GCP project than Cloud Run
+- **Cloud SQL** (PostgreSQL)
 - **Cloud Run** — containerized with Docker
-- **Better Auth** for authentication (this was the first query that failed)
 
 ---
 
-# Error 1: Connection Terminated Due to Timeout
+# Error 1: Connection terminated due to timeout
 
-This was the first error I saw after deploying to Cloud Run:
+<CodeBlock source="cloud-run/error-timeout" language="bash" showLineNumbers={false} />
 
-```bash
-[cause]: Error: Connection terminated due to connection timeout
-    [cause]: Error: Connection terminated unexpectedly
-```
+A simple `SELECT` on the users table. Works locally, blows up on Cloud Run.
 
-The query was a simple `SELECT` on the users table. Works locally, dies on Cloud Run.
+## What's going on
 
-## Why This Happens
+Cloud Run is serverless — instances spin up and down constantly. The connection to Cloud SQL goes through the Cloud SQL Auth Proxy, not a direct link. TCP connections go stale without anyone noticing.
 
-Cloud Run is serverless. Instances spin up and down. The network between Cloud Run and Cloud SQL is not a persistent LAN connection — it goes through VPC connectors or the Cloud SQL Auth Proxy. TCP connections go stale silently.
+Here's the pool config most tutorials give you:
 
-The default `pg` Pool config doesn't account for this:
+<CodeBlock source="cloud-run/pool-bad" fileName="src/db/index.ts" language="typescript" />
 
-```typescript
-// This is what most tutorials show you. It WILL break on Cloud Run.
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
-})
-```
+Three problems:
 
-Three problems here:
+1. **No TCP keepalive.** Cloud Run's network kills idle connections silently. Your pool holds dead connections and tries to use them. Timeout.
+2. **`max: 20` is way too high.** Each Cloud Run instance creates its own pool. Ten instances = 200 connections. Default Cloud SQL limit is ~100.
+3. **5 second timeout.** Cold starts through a VPC connector can take longer than that.
 
-1. **No TCP keepalive** — Cloud Run's network kills idle connections without telling the client. Your pool holds dead connections and tries to use them. Timeout.
-2. **`max: 20` is way too high** — each Cloud Run instance creates its own pool. If you have 10 instances, that's 200 connections to Cloud SQL. The default Cloud SQL instance has a limit of ~100.
-3. **5 second timeout** — cold starts on Cloud Run can take longer, especially through a VPC connector.
+## The fix
 
-## The Fix
-
-```typescript
-// src/db/index.ts
-import { drizzle } from "drizzle-orm/node-postgres"
-import { Pool } from "pg"
-import * as schema from "./schema"
-
-const globalForDb = globalThis as unknown as {
-  pool: Pool | undefined
-}
-
-function createPool(): Pool {
-  const unixSocket = process.env.INSTANCE_UNIX_SOCKET
-
-  const poolConfig = {
-    ...(unixSocket
-      ? {
-          user: process.env.DB_USER,
-          password: process.env.DB_PASS,
-          database: process.env.DB_NAME,
-          host: unixSocket,
-        }
-      : {
-          connectionString: process.env.DATABASE_URL,
-        }),
-    // Keep pool small for serverless
-    max: 5,
-    min: 0,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000,
-    // THIS IS THE KEY — detect dead connections
-    keepAlive: true,
-    keepAliveInitialDelayMillis: 10000,
-    // Let Cloud Run shut down cleanly
-    allowExitOnIdle: true,
-  }
-
-  const newPool = new Pool(poolConfig)
-
-  newPool.on("error", (err) => {
-    console.error("[DB Pool] Unexpected error on idle client:", err.message)
-  })
-
-  return newPool
-}
-
-const pool = globalForDb.pool ?? createPool()
-globalForDb.pool = pool
-
-export const db = drizzle(pool, { schema })
-```
-
-The critical settings:
+<CodeBlock source="cloud-run/pool-fix" fileName="src/db/index.ts" language="typescript" />
 
 | Setting | Value | Why |
 |---|---|---|
@@ -127,54 +58,41 @@ The critical settings:
 | `connectionTimeoutMillis` | 10000 | More time for cold starts |
 | `allowExitOnIdle` | true | Clean shutdown on scale-down |
 
-The pool error handler is also important — without it, a stale connection error will crash your entire process as an unhandled rejection.
+That pool error handler matters too. Without it, a stale connection error becomes an unhandled rejection and kills the whole process.
 
 ---
 
-# Error 2: ENOENT on Unix Socket
+# Error 2: ENOENT on Unix socket
 
-After fixing the pool config, I deployed again and got:
+<CodeBlock source="cloud-run/error-enoent" language="bash" showLineNumbers={false} />
 
-```bash
-Error: connect ENOENT /cloudsql/project:region:instance/.s.PGSQL.5432
-```
+`ENOENT` — the socket file doesn't exist.
 
-`ENOENT` means the file doesn't exist. The app is trying to connect via a Unix socket but the socket file isn't there.
+## What's going on
 
-## Why This Happens
+Cloud Run talks to Cloud SQL through the Cloud SQL Auth Proxy, which runs as a sidecar and creates a Unix socket at `/cloudsql/INSTANCE_CONNECTION_NAME`. But here's the thing: you have to explicitly add the Cloud SQL connection to your Cloud Run service. Setting `DATABASE_URL` with a socket path doesn't do it.
 
-Cloud Run connects to Cloud SQL via the **Cloud SQL Auth Proxy**, which runs as a sidecar container. This proxy creates a Unix socket at `/cloudsql/INSTANCE_CONNECTION_NAME`. But you have to **explicitly add the Cloud SQL connection** to your Cloud Run service — it doesn't happen automatically just because you set `DATABASE_URL` with a socket path.
-
-If your `DATABASE_URL` looks like this:
+So if your connection string looks like:
 
 ```bash
 postgresql://user:pass@/dbname?host=/cloudsql/project:region:instance
 ```
 
-...but you haven't added the Cloud SQL connection to Cloud Run, the proxy isn't running and the socket doesn't exist.
+...but you never added the Cloud SQL connection in Cloud Run, the proxy isn't running and there's no socket.
 
-## The Fix
+## The fix
 
-Two options:
+**Option A: Add the Cloud SQL connection (recommended)**
 
-**Option A: Add the Cloud SQL connection to Cloud Run**
-
-In the Cloud Run console: go to your service, click **Edit & Deploy New Revision**, go to the **Connections** tab, and under **Cloud SQL connections**, click **Add connection** and select your Cloud SQL instance.
+In Cloud Run console: service → Edit & Deploy New Revision → Connections tab → Add connection → select your instance.
 
 Or via CLI:
 
-```bash
-gcloud run deploy your-service \
-  --add-cloudsql-instances=project:region:instance \
-  --set-env-vars="INSTANCE_UNIX_SOCKET=/cloudsql/project:region:instance" \
-  --set-env-vars="DB_USER=your_user" \
-  --set-env-vars="DB_PASS=your_password" \
-  --set-env-vars="DB_NAME=your_database"
-```
+<CodeBlock source="cloud-run/gcloud-deploy" language="bash" showLineNumbers={false} />
 
-**Option B: Use private IP instead**
+**Option B: Use private IP**
 
-If you've set up a VPC connector, use a TCP connection string instead:
+If you have a VPC connector set up, use TCP instead:
 
 ```bash
 DATABASE_URL="postgresql://user:pass@PRIVATE_IP:5432/dbname"
@@ -182,148 +100,76 @@ DATABASE_URL="postgresql://user:pass@PRIVATE_IP:5432/dbname"
 
 Don't set `INSTANCE_UNIX_SOCKET` in this case.
 
-> **Note:** Google recommends the Unix socket approach (Option A). It is more reliable, does not require VPC configuration, and the Auth Proxy handles authentication automatically.
+Google recommends Option A. No VPC config needed, and the Auth Proxy handles authentication for you.
 
 ---
 
 # Error 3: 403 Not Authorized
 
-Next error after adding the Cloud SQL connection:
+<CodeBlock source="cloud-run/error-403" language="bash" showLineNumbers={false} />
 
-```bash
-could not resolve instance version: failed to get instance:
-refresh error: failed to get instance metadata
-(connection name = "project:region:instance"):
-googleapi: Error 403: NOT_AUTHORIZED
-Possibly missing permission cloudsql.instances.get
-```
+## What's going on
 
-## Why This Happens
+The Cloud SQL Auth Proxy runs under the Cloud Run service account. If your Cloud Run and Cloud SQL are in different GCP projects, that service account has no permissions in the other project. Even in the same project, the default Compute Engine service account might not have `cloudsql.client`.
 
-This one is sneaky. My Cloud Run service was in **project A** but the Cloud SQL instance was in **project B**. The Cloud SQL Auth Proxy runs using the Cloud Run service account, and that service account doesn't have permission to access Cloud SQL in a different project.
+## The fix
 
-Even if you're in the same project, the default Compute Engine service account might not have the `cloudsql.client` role.
+<CodeBlock source="cloud-run/gcloud-iam" language="bash" />
 
-## The Fix
-
-```bash
-# Find your Cloud Run service account
-gcloud run services describe YOUR_SERVICE \
-  --region=YOUR_REGION \
-  --format="value(spec.template.spec.serviceAccountName)"
-
-# If empty, get the default compute SA
-gcloud iam service-accounts list \
-  --filter="email ~ compute@developer" \
-  --format="value(email)"
-
-# Grant Cloud SQL Client role
-# If same project:
-gcloud projects add-iam-policy-binding YOUR_PROJECT \
-  --member="serviceAccount:SA_EMAIL" \
-  --role="roles/cloudsql.client"
-
-# If cross-project (Cloud SQL in different project):
-gcloud projects add-iam-policy-binding CLOUD_SQL_PROJECT \
-  --member="serviceAccount:SA_EMAIL" \
-  --role="roles/cloudsql.client"
-```
-
-> **Warning:** If your Cloud Run and Cloud SQL are in different projects, you MUST grant the role in the Cloud SQL project, not the Cloud Run project. This is easy to miss.
+If it's cross-project, grant the role in the Cloud SQL project. Not the Cloud Run project. Easy to mix up.
 
 ---
 
-# Error 4: Password Authentication Failed
+# Error 4: Password authentication failed
 
-Almost there. Next error:
+<CodeBlock source="cloud-run/error-auth" language="bash" showLineNumbers={false} />
 
-```bash
-error: password authentication failed for user "myuser"
-severity: 'FATAL',
-code: '28P01',
-```
+Wrong password in the env var. Simple, but easy to miss when you're copy-pasting between multiple GCP projects and env configs.
 
-This one is straightforward — wrong password in the environment variable. But I'm including it because it's easy to miss when you're juggling multiple env vars.
+## The fix
 
-## The Fix
-
-Double-check your `DB_PASS` (or the password in `DATABASE_URL`) matches what's set in Cloud SQL. You can reset it via:
-
-```bash
-gcloud sql users set-password YOUR_USER \
-  --instance=YOUR_INSTANCE \
-  --password=YOUR_NEW_PASSWORD
-```
+<CodeBlock source="cloud-run/gcloud-set-password" language="bash" showLineNumbers={false} />
 
 ---
 
-# Error 5: Column Does Not Exist
+# Full checklist
 
-The connection finally works! But now:
-
-```bash
-error: column "credit_balance" does not exist
-code: '42703',
-```
-
-## Why This Happens
-
-I was connecting to a new Cloud SQL database that didn't have the latest schema. The Drizzle schema in code had columns that didn't exist in the database yet.
-
-## The Fix
-
-Run your migrations against the Cloud SQL database. You need the Cloud SQL Auth Proxy running locally:
-
-```bash
-# Terminal 1: Start the proxy
-cloud-sql-proxy project:region:instance --port=5432
-
-# Terminal 2: Generate + run migrations
-pnpm db:generate && pnpm db:migrate
-```
-
-> **Note:** `db:generate` compares your Drizzle schema against the last snapshot and creates migration SQL files. `db:migrate` applies those files to the database. If `db:generate` says "nothing to migrate" but the database is still missing columns, you just need `db:migrate` — the migration files already exist but have not been applied to this database yet.
-
----
-
-# The Complete Setup Checklist
-
-Here's the full checklist for deploying Next.js + Drizzle on Cloud Run with Cloud SQL:
-
-**Code changes:**
-- `next.config.ts` — add `output: "standalone"`
+**Code:**
+- `next.config.ts` — `output: "standalone"`
 - `src/db/index.ts` — pool config with `keepAlive`, low `max`, Unix socket support
-- `Dockerfile` — standard Next.js standalone Dockerfile
+- `Dockerfile` — standard Next.js standalone build
 
-**GCP setup:**
-- Cloud SQL instance created with a database and user
-- Cloud Run service deployed with `--add-cloudsql-instances`
+**GCP:**
+- Cloud SQL instance with a database and user
+- Cloud Run deployed with `--add-cloudsql-instances`
 - Service account has `roles/cloudsql.client` on the Cloud SQL project
-- Environment variables set: `INSTANCE_UNIX_SOCKET`, `DB_USER`, `DB_PASS`, `DB_NAME`
+- Env vars set: `INSTANCE_UNIX_SOCKET`, `DB_USER`, `DB_PASS`, `DB_NAME`
 
 **Database:**
-- Cloud SQL Auth Proxy installed locally (`brew install cloud-sql-proxy`)
-- Migrations run against Cloud SQL via the proxy
+- Cloud SQL Auth Proxy installed locally
+- Migrations applied via the proxy
 
-**Verification:**
-- Auth flow works (this is usually the first query to hit the DB)
+**Sanity check:**
+- Auth flow works (usually the first query to hit the DB)
 - No timeout errors in Cloud Run logs
-- Pool errors are logged, not crashing
+- Pool errors are logged, not crashing the process
 
 ---
 
-# Key Takeaways
+# What to remember
 
-1. **Always set `keepAlive: true`** on your `pg` Pool when running on Cloud Run. This is the single most important setting. Without it, idle connections die silently and your queries hang until they timeout.
+`keepAlive: true` on the pg Pool. That's the single most important thing. Without it, idle connections die silently and queries hang until they timeout.
 
-2. **Keep `max` low** (3-5). Cloud Run creates a new pool per instance. 20 connections per instance multiplied by auto-scaling = connection exhaustion.
+Keep `max` low — 3 to 5. Each Cloud Run instance makes its own pool, and those add up fast with autoscaling.
 
-3. **Use Unix sockets**, not TCP. Add the Cloud SQL connection to your Cloud Run service. It's simpler and more reliable than setting up VPC connectors for private IP.
+Use Unix sockets over TCP. Less config, more reliable, and the Auth Proxy handles auth automatically.
 
-4. **Check IAM permissions** for cross-project setups. The Cloud Run service account needs `roles/cloudsql.client` in the project where Cloud SQL lives.
+If Cloud Run and Cloud SQL are in different projects, the IAM grant goes in the Cloud SQL project. Not the other one.
 
-5. **Run migrations via the Cloud SQL Auth Proxy** locally. Don't try to run them from within Cloud Run.
+Run migrations locally through the Cloud SQL Auth Proxy. Don't try to run them from inside Cloud Run.
 
-6. **Add a pool error handler.** A stale connection throwing an error on an idle client will crash your Node.js process as an unhandled promise rejection if you don't catch it.
+And add a pool error handler. Without one, a stale connection on an idle client becomes an unhandled rejection that kills your process.
 
-These aren't in any tutorial I found. I figured them out by hitting each error one by one. Hopefully this saves you from doing the same.
+---
+
+This post only covers the gotchas. If you want a start-to-finish walkthrough — Dockerfile, Cloud Run config, Cloud SQL setup, the whole thing — I'm working on a dedicated tutorial for that. Stay tuned.

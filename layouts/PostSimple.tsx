@@ -22,6 +22,7 @@ interface LayoutProps {
     children: ReactNode
     next?: { path: string; title: string }
     prev?: { path: string; title: string }
+    toc?: unknown
 }
 
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {

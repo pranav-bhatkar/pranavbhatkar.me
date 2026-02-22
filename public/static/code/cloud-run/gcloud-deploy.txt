@@ -1,0 +1,6 @@
+gcloud run deploy your-service \
+  --add-cloudsql-instances=your-project:us-central1:your-instance \
+  --set-env-vars="INSTANCE_UNIX_SOCKET=/cloudsql/your-project:us-central1:your-instance" \
+  --set-env-vars="DB_USER=your_user" \
+  --set-env-vars="DB_PASS=your_password" \
+  --set-env-vars="DB_NAME=your_database"

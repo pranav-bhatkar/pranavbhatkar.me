@@ -1,0 +1,2 @@
+error: column "credit_balance" does not exist
+code: '42703',

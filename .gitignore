@@ -9,6 +9,8 @@
 !/.yarn/plugins
 !/.yarn/sdks
 
+/.claude/SKILL.md
+
 ps.bash
 deployment-url.txt
 # testing
