@@ -9,7 +9,9 @@ const escape = (s) =>
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;')
 
-import { blogs as allBlogs } from '../.velite/index.js'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const allBlogs = require('../.velite/blogs.json')
 import siteMetadata from '../data/siteMetadata.js'
 
 const tagData = JSON.parse(readFileSync(new URL('../app/tag-data.json', import.meta.url), 'utf-8'))
