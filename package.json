@@ -109,5 +109,12 @@
         "*.+(js|jsx|ts|tsx|json|css|md|mdx)": [
             "prettier --write"
         ]
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "protobufjs",
+            "sharp"
+        ]
     }
 }
