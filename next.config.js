@@ -27,6 +27,7 @@ const ContentSecurityPolicy = `
     connect-src *;
     font-src 'self' fonts.gstatic.com;
     frame-src giscus.app www.youtube.com *.clerk.accounts.dev accounts.clerk.dev clerk.pranavbhatkar.me;
+    worker-src 'self' blob:;
 `
 
 const securityHeaders = [
