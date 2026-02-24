@@ -44,6 +44,7 @@ export default function Curve({ children, backgroundColor }) {
             })
         }
         resize()
+        window.addEventListener('resize', resize)
 
         return () => {
             window.removeEventListener('resize', resize)
