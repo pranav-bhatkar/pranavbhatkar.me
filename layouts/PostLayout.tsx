@@ -45,7 +45,7 @@ export default function PostLayout({
         <>
             <ScrollTopAndComment />
             <article className="relative px-4 sm:px-6 md:px-8">
-                <section className="border-t border-t-[var(--pattern-fg)] py-12 xl:py-16">
+                <section className="pt-20 pb-12 xl:pt-24 xl:pb-16">
                     {/* Header */}
                     <header className="mx-auto max-w-3xl pb-8 text-center xl:pb-10">
                         <BlurFade delay={BLUR_FADE_DELAY * 1}>

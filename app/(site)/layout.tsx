@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer'
+import MeshGradient from '@/components/MeshGradient'
 import NewHeader from '@/components/newHeader'
 import siteMetadata from '@/data/siteMetadata'
 import { GA } from 'pliny/analytics/GoogleAnalytics'
@@ -7,7 +8,8 @@ import React from 'react'
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="container relative mx-auto max-w-7xl px-4 md:px-[2rem] [--pattern-fg:rgb(20,20,20)] dark:[--pattern-fg:rgb(20,20,20)]">
+        <div className="container relative mx-auto max-w-7xl px-4 md:px-[2rem] [--pattern-fg:rgb(20,20,20)] dark:[--pattern-fg:rgb(80,80,80)]">
+            <MeshGradient dimmed />
             <SearchProvider
                 searchConfig={
                     siteMetadata.search

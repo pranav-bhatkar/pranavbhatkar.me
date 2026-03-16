@@ -27,7 +27,7 @@ interface LayoutProps {
 
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
     const { path, slug, tags, date, title, thumbnail } = content
-    const displayThumbnail = thumbnail ? thumbnail : '/static/images/twitter-card.png'
+    const displayThumbnail = thumbnail ? thumbnail : '/api/twitter-card'
     const [isLoading, setIsLoading] = useState(true)
     const [pageViews, setPageViews] = useState({
         isLoading: true,

@@ -3,7 +3,6 @@
 import Image from '@/components/Image'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
-import BlurFade from '@/components/magicui/blur-fade'
 import { Skeleton } from '@/components/shadcn/skeleton'
 import siteMetadata from '@/data/siteMetadata'
 import type { Blog, CoreContent } from '@/lib/velite'
@@ -11,8 +10,6 @@ import { formatDate } from '@/lib/velite'
 import { Search } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-const BLUR_FADE_DELAY = 0.04
 
 interface PaginationProps {
     totalPages: number
@@ -85,7 +82,6 @@ export default function ListLayout({
 
     useEffect(() => {
         posts.forEach((post) => {
-            console.log('i am groot 2')
             const slug = post.slug
             if (!slug) return
             setPageViews((prev) => {
@@ -110,106 +106,99 @@ export default function ListLayout({
     return (
         <>
             <section className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-20">
-                <BlurFade delay={BLUR_FADE_DELAY * 1}>
-                    <h1 className="text-xl font-bold mb-4">{title}</h1>
-                </BlurFade>
-                <BlurFade delay={BLUR_FADE_DELAY * 2}>
-                    <div className="relative w-full mb-8">
-                        <label>
-                            <span className="sr-only">Search articles</span>
-                            <input
-                                aria-label="Search articles"
-                                type="text"
-                                onChange={(e) => setSearchValue(e.target.value)}
-                                placeholder="Search articles"
-                                className="block w-full rounded-md border border-muted-foreground placeholder:text-foreground bg-muted px-4 py-2 text-foreground focus:border-primary focus:ring-primary dark:border-muted"
-                            />
-                        </label>
-                        <Search className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
-                    </div>
-                </BlurFade>
+                <h1 className="text-xl font-bold mb-4">{title}</h1>
+                <div className="relative w-full mb-8">
+                    <label>
+                        <span className="sr-only">Search articles</span>
+                        <input
+                            aria-label="Search articles"
+                            type="text"
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            placeholder="Search articles"
+                            className="block w-full rounded-md border border-muted-foreground placeholder:text-foreground bg-muted px-4 py-2 text-foreground focus:border-primary focus:ring-primary dark:border-muted"
+                        />
+                    </label>
+                    <Search className="absolute right-3 top-3 h-5 w-5 text-muted-foreground" />
+                </div>
                 <ul className="space-y-4">
                     {!filteredBlogPosts.length && (
-                        <BlurFade delay={BLUR_FADE_DELAY * 3}>
-                            <li className="text-muted-foreground">No posts found.</li>
-                        </BlurFade>
+                        <li className="text-muted-foreground">No posts found.</li>
                     )}
-                    {displayPosts.map((post, index) => {
+                    {displayPosts.map((post) => {
                         const { slug, path, date, title, summary, tags, thumbnail } = post
                         const isLoadingViewCount = pageViews[slug] === undefined
                         return (
-                            <BlurFade key={path} delay={BLUR_FADE_DELAY * 3 + index * 0.05}>
-                                <li className="py-4 border-b border-b-[var(--pattern-fg)] last:border-b-0">
-                                    <article className="space-y-2 xl:grid xl:grid-cols-5 xl:gap-4 xl:items-start xl:space-y-0">
-                                        <div className="xl:col-span-2">
-                                            <Image
-                                                src={thumbnail || ''}
-                                                alt={`${title} thumbnail`}
-                                                height="0"
-                                                width="0"
-                                                className="w-full h-fit mb-4 rounded-md"
-                                                unoptimized
-                                            />
-                                        </div>
-                                        <div className="space-y-3 xl:col-span-3">
-                                            <div>
-                                                <h1 className="text-2xl font-bold leading-8 tracking-tight mb-2">
-                                                    <Link
-                                                        href={`/${path}`}
-                                                        className="text-foreground"
-                                                    >
-                                                        {title}
-                                                    </Link>
-                                                </h1>
-                                                <div className="flex flex-wrap space-x-3">
-                                                    {tags?.map((tag) => (
-                                                        <Tag key={tag} text={tag} />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                            <div className="prose prose-sm max-w-none text-muted-foreground">
-                                                {summary}
-                                            </div>
-                                            <div>
-                                                <dl>
-                                                    <dt className="sr-only">Published on</dt>
-                                                    <dd className="flex gap-1 text-base font-medium leading-6 text-muted-foreground">
-                                                        {isLoadingViewCount ? (
-                                                            <span className="flex items-center justify-center gap-2">
-                                                                <Skeleton className="w-12 h-6" />
-                                                                <span> views</span>
-                                                            </span>
-                                                        ) : (
-                                                            <span>
-                                                                {pageViews[
-                                                                    slug
-                                                                ]?.toLocaleString() || '...'}{' '}
-                                                                views
-                                                            </span>
-                                                        )}
-                                                        <span>・</span>
-                                                        <time dateTime={date}>
-                                                            {formatDate(date, siteMetadata.locale)}
-                                                        </time>
-                                                    </dd>
-                                                </dl>
+                            <li
+                                key={path}
+                                className="py-4 border-b border-b-[var(--pattern-fg)] last:border-b-0"
+                            >
+                                <article className="space-y-2 xl:grid xl:grid-cols-5 xl:gap-4 xl:items-start xl:space-y-0">
+                                    <div className="xl:col-span-2">
+                                        <Image
+                                            src={thumbnail || ''}
+                                            alt={`${title} thumbnail`}
+                                            height="0"
+                                            width="0"
+                                            className="w-full h-fit mb-4 rounded-md"
+                                            unoptimized
+                                        />
+                                    </div>
+                                    <div className="space-y-3 xl:col-span-3">
+                                        <div>
+                                            <h1 className="text-2xl font-bold leading-8 tracking-tight mb-2">
+                                                <Link
+                                                    href={`/${path}`}
+                                                    className="text-foreground"
+                                                >
+                                                    {title}
+                                                </Link>
+                                            </h1>
+                                            <div className="flex flex-wrap space-x-3">
+                                                {tags?.map((tag) => (
+                                                    <Tag key={tag} text={tag} />
+                                                ))}
                                             </div>
                                         </div>
-                                    </article>
-                                </li>
-                            </BlurFade>
+                                        <div className="prose prose-sm max-w-none text-muted-foreground">
+                                            {summary}
+                                        </div>
+                                        <div>
+                                            <dl>
+                                                <dt className="sr-only">Published on</dt>
+                                                <dd className="flex gap-1 text-base font-medium leading-6 text-muted-foreground">
+                                                    {isLoadingViewCount ? (
+                                                        <span className="flex items-center justify-center gap-2">
+                                                            <Skeleton className="w-12 h-6" />
+                                                            <span> views</span>
+                                                        </span>
+                                                    ) : (
+                                                        <span>
+                                                            {pageViews[
+                                                                slug
+                                                            ]?.toLocaleString() || '...'}{' '}
+                                                            views
+                                                        </span>
+                                                    )}
+                                                    <span>・</span>
+                                                    <time dateTime={date}>
+                                                        {formatDate(date, siteMetadata.locale)}
+                                                    </time>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </article>
+                            </li>
                         )
                     })}
                 </ul>
             </section>
             {pagination && pagination.totalPages > 1 && !searchValue && (
                 <section className="px-4 sm:px-6 md:px-8 border-t border-t-[var(--pattern-fg)] py-20">
-                    <BlurFade delay={BLUR_FADE_DELAY * 10}>
-                        <Pagination
-                            currentPage={pagination.currentPage}
-                            totalPages={pagination.totalPages}
-                        />
-                    </BlurFade>
+                    <Pagination
+                        currentPage={pagination.currentPage}
+                        totalPages={pagination.totalPages}
+                    />
                 </section>
             )}
         </>

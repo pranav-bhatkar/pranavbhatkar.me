@@ -2,10 +2,8 @@
 
 import headerNavLinks from '@/data/headerNavLinks'
 import { Menu, X } from 'lucide-react'
+import Link from 'next/link'
 import { useState } from 'react'
-
-import Link from './Link'
-import TransitionLink from './TransitionLink'
 
 const MobileNav = () => {
     const [navShow, setNavShow] = useState(false)
@@ -53,12 +51,13 @@ const MobileNav = () => {
                 <nav className="mt-8 w-full ">
                     {headerNavLinks.map((link) => (
                         <div key={link.title} className="px-8 py-4">
-                            <TransitionLink
-                                label={link.title}
+                            <Link
                                 href={link.href}
                                 className="text-2xl font-bold tracking-widest text-foreground"
                                 onClick={onToggleNav}
-                            />
+                            >
+                                {link.title}
+                            </Link>
                         </div>
                     ))}
                 </nav>

@@ -1,10 +1,10 @@
 'use client'
 
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import { Button } from '@/components/shadcn/button'
-import DualProgressBar from './DualProgressBar'
 import { formatINR } from '@/data/wishlistData'
+import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
+
+import DualProgressBar from './DualProgressBar'
 
 interface WishlistCardProps {
     id: string
@@ -29,40 +29,27 @@ export default function WishlistCard({
 }: WishlistCardProps) {
     const totalAmount = selfContribution + communityAmount
     const isFullyFunded = totalAmount >= targetAmount || status === 'COMPLETED'
-    return (
-        <div className="group border border-border bg-background transition-all duration-300 hover:border-foreground">
-            {/* Image container with corner brackets style */}
-            <div className="relative aspect-[4/3] overflow-hidden">
-                {/* Corner brackets */}
-                <div className="absolute top-3 left-3 w-4 h-4 border-l border-t border-muted-foreground/50 z-10" />
-                <div className="absolute top-3 right-3 w-4 h-4 border-r border-t border-muted-foreground/50 z-10" />
-                <div className="absolute bottom-3 left-3 w-4 h-4 border-l border-b border-muted-foreground/50 z-10" />
-                <div className="absolute bottom-3 right-3 w-4 h-4 border-r border-b border-muted-foreground/50 z-10" />
 
-                {imageUrl ? (
-                    <img
-                        src={imageUrl}
-                        alt={title}
-                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                    />
-                ) : (
-                    <div className="w-full h-full bg-muted flex items-center justify-center">
-                        <span className="text-2xl text-muted-foreground font-light">
-                            {title.charAt(0)}
-                        </span>
-                    </div>
-                )}
-            </div>
+    return (
+        <div className="group border border-border rounded-md overflow-hidden transition-colors hover:border-foreground/20 bg-background/60 backdrop-blur-sm">
+            {/* Image */}
+            {imageUrl && (
+                <div className="relative aspect-[16/9] overflow-hidden">
+                    <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+                </div>
+            )}
 
             {/* Content */}
-            <div className="p-5">
-                <h3 className="text-lg font-medium mb-2 tracking-tight">{title}</h3>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                    {description}
-                </p>
+            <div className="p-5 space-y-4">
+                <div>
+                    <h3 className="text-base font-semibold mb-1">{title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                        {description}
+                    </p>
+                </div>
 
-                {/* Progress section */}
-                <div className="mb-4">
+                {/* Progress */}
+                <div>
                     <DualProgressBar
                         selfAmount={selfContribution}
                         communityAmount={communityAmount}
@@ -75,30 +62,25 @@ export default function WishlistCard({
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                    <Link href={`/wishlist/${id}`} className={isFullyFunded ? 'flex-1' : 'flex-1'}>
-                        <Button variant="heroOutline" size="sm" className="w-full group/btn">
-                            Read more
-                            <ArrowRight className="w-3 h-3 transition-transform group-hover/btn:translate-x-1" />
-                        </Button>
+                    <Link
+                        href={`/wishlist/${id}`}
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-md border border-border px-3 py-2 text-sm text-foreground transition-colors hover:bg-foreground/5"
+                    >
+                        Read more
+                        <ArrowRight className="w-3 h-3" />
                     </Link>
                     {!isFullyFunded && (
-                        <Link href={`/wishlist/${id}/contribute`} className="flex-1">
-                            <Button variant="hero" size="sm" className="w-full">
-                                Contribute
-                            </Button>
+                        <Link
+                            href={`/wishlist/${id}/contribute`}
+                            className="flex-1 inline-flex items-center justify-center rounded-md bg-foreground text-background px-3 py-2 text-sm font-medium transition-colors hover:bg-foreground/80"
+                        >
+                            Contribute
                         </Link>
                     )}
                     {isFullyFunded && (
-                        <div className="flex-1">
-                            <Button
-                                variant="hero"
-                                size="sm"
-                                className="w-full opacity-50 cursor-not-allowed"
-                                disabled
-                            >
-                                Funded
-                            </Button>
-                        </div>
+                        <span className="flex-1 inline-flex items-center justify-center rounded-md border border-border px-3 py-2 text-sm text-muted-foreground">
+                            Funded
+                        </span>
                     )}
                 </div>
             </div>

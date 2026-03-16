@@ -11,83 +11,59 @@ interface Props {
 export default function AuthorLayout({ children, content }: Props) {
     const { name, avatar, occupation, company, email, twitter, linkedin, github, instagram } =
         content
+
+    const socials = [
+        { href: twitter, label: 'Twitter', Icon: Twitter },
+        { href: email ? `mailto:${email}` : undefined, label: 'Email', Icon: Mail },
+        { href: github, label: 'Github', Icon: Github },
+        { href: linkedin, label: 'Linkedin', Icon: Linkedin },
+        { href: instagram, label: 'Instagram', Icon: Instagram },
+    ].filter((s) => s.href)
+
     return (
-        <>
-            <div className="divide-y divide-accent-foreground dark:divide-accent py-20 px-4 sm:px-6 md:px-8">
-                <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-                    <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-foreground sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-                        About
-                    </h1>
-                </div>
-                <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0">
-                    <div className="flex flex-col items-center space-x-2 pt-8">
-                        {avatar && (
-                            <Image
-                                src={avatar}
-                                alt="avatar"
-                                width={192}
-                                height={192}
-                                className="h-48 w-48 rounded-full"
-                            />
+        <div className="py-20 px-4 sm:px-6 md:px-8">
+            <div className="max-w-4xl mx-auto">
+                {/* Header section */}
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 pb-10">
+                    {avatar && (
+                        <Image
+                            src={avatar}
+                            alt="avatar"
+                            width={160}
+                            height={160}
+                            className="h-40 w-40 rounded-full shrink-0"
+                        />
+                    )}
+                    <div className="text-center sm:text-left">
+                        <h1 className="text-3xl font-bold tracking-tight mb-1">{name}</h1>
+                        {occupation && (
+                            <p className="text-muted-foreground text-lg">{occupation}</p>
                         )}
-                        <h2 className="pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight">
-                            {name}
-                        </h2>
-                        <div className="text-muted-foreground">{occupation}</div>
-                        <div className="text-muted-foreground">{company}</div>
-                        <div className="flex space-x-3 pt-6">
-                            {twitter && (
+                        {company && (
+                            <p className="text-muted-foreground text-sm">{company}</p>
+                        )}
+                        <div className="flex gap-4 mt-5 justify-center sm:justify-start">
+                            {socials.map(({ href, label, Icon }) => (
                                 <a
-                                    href={twitter}
-                                    aria-label={`${name}'s Twitter`}
-                                    className="hover:brightness-125 dark:hover:brightness-125"
+                                    key={label}
+                                    href={href}
+                                    aria-label={`${name}'s ${label}`}
+                                    className="text-muted-foreground hover:text-foreground transition-colors"
                                 >
-                                    <Twitter size={24} />
+                                    <Icon size={20} />
                                 </a>
-                            )}
-                            {email && (
-                                <a
-                                    href={`mailto:${email}`}
-                                    aria-label={`${name}'s Email`}
-                                    className="hover:brightness-125 dark:hover:brightness-125"
-                                >
-                                    <Mail size={24} />
-                                </a>
-                            )}
-                            {github && (
-                                <a
-                                    href={github}
-                                    aria-label={`${name}'s Github`}
-                                    className="hover:brightness-125 dark:hover:brightness-125"
-                                >
-                                    <Github size={24} />
-                                </a>
-                            )}
-                            {linkedin && (
-                                <a
-                                    href={linkedin}
-                                    aria-label={`${name}'s Linkedin`}
-                                    className="hover:brightness-125 dark:hover:brightness-125"
-                                >
-                                    <Linkedin size={24} />
-                                </a>
-                            )}
-                            {instagram && (
-                                <a
-                                    href={instagram}
-                                    aria-label={`${name}'s Instagram`}
-                                    className="hover:brightness-125 dark:hover:brightness-125"
-                                >
-                                    <Instagram size={24} />
-                                </a>
-                            )}
+                            ))}
                         </div>
                     </div>
-                    <div className="prose prose-sm max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2">
+                </div>
+
+                {/* Content */}
+                <div className="border-t border-border pt-10">
+                    <div className="prose prose-sm max-w-none dark:prose-invert">
                         {children}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }

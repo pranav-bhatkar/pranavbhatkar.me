@@ -133,7 +133,7 @@ export default function ContributePage() {
 
     if (item === undefined) {
         return (
-            <main className="min-h-screen bg-background flex items-center justify-center">
+            <main className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="mb-4 text-lg text-muted-foreground">Loading...</div>
                 </div>
@@ -143,7 +143,7 @@ export default function ContributePage() {
 
     if (!item) {
         return (
-            <main className="min-h-screen bg-background flex items-center justify-center">
+            <main className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-medium mb-4">Item not found</h1>
                     <Link href="/wishlist">
@@ -162,10 +162,10 @@ export default function ContributePage() {
     // If fully funded, show a message instead of the contribution form
     if (isFullyFunded) {
         return (
-            <main className="min-h-screen bg-background flex items-center justify-center py-20">
+            <main className="min-h-screen flex items-center justify-center py-20">
                 <div className="text-center max-w-md mx-auto px-6">
-                    <div className="p-8 border border-green-500/30 bg-green-500/10 mb-6">
-                        <Check className="w-12 h-12 text-green-400 mx-auto mb-4" />
+                    <div className="p-8 border border-foreground/20 mb-6">
+                        <Check className="w-12 h-12 text-foreground mx-auto mb-4" />
                         <h1 className="text-2xl font-medium mb-2">Goal Achieved!</h1>
                         <p className="text-muted-foreground">
                             This wishlist item has been fully funded. Thank you to everyone who
@@ -186,7 +186,7 @@ export default function ContributePage() {
     const isValidAmount = amount >= minSliderAmount
 
     return (
-        <main className="min-h-screen bg-background py-20">
+        <main className="min-h-screen py-20">
             {/* Header */}
             <header className="border-b border-border">
                 <div className="container px-6 md:px-8 py-6">
@@ -341,7 +341,7 @@ export default function ContributePage() {
                                     >
                                         Show this contribution publicly
                                         {showPublicly && (
-                                            <Check className="w-4 h-4 text-green-600" />
+                                            <Check className="w-4 h-4 text-foreground" />
                                         )}
                                     </label>
                                     <p className="text-xs text-muted-foreground mt-1">
@@ -371,7 +371,7 @@ export default function ContributePage() {
                                     >
                                         Cover the {RAZORPAY_FEE_PERCENT}% platform fee
                                         {coverPlatformFee && (
-                                            <Check className="w-4 h-4 text-green-600" />
+                                            <Check className="w-4 h-4 text-foreground" />
                                         )}
                                     </label>
                                     <p className="text-xs text-muted-foreground mt-1">

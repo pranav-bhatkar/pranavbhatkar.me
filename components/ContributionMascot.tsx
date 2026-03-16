@@ -7,10 +7,7 @@ interface ContributionMascotProps {
     maxAmount: number
 }
 
-export default function ContributionMascot({
-    amount,
-    maxAmount,
-}: ContributionMascotProps) {
+export default function ContributionMascot({ amount, maxAmount }: ContributionMascotProps) {
     const percentage = Math.min((amount / maxAmount) * 100, 100)
 
     const mascotState = useMemo(() => {
@@ -63,7 +60,7 @@ export default function ContributionMascot({
         <div className="flex flex-col items-center justify-center text-center select-none">
             {/* Minimal ASCII face */}
             <div className="font-mono text-foreground transition-all duration-300">
-                <div className="border border-foreground/20 rounded-lg p-6 bg-background">
+                <div className="border border-foreground/20 rounded-lg p-6">
                     {/* Eyes */}
                     <div className="text-xl tracking-widest mb-1">{face.eyes}</div>
                     {/* Mouth */}
@@ -81,4 +78,3 @@ export default function ContributionMascot({
         </div>
     )
 }
-

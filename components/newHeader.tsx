@@ -10,9 +10,6 @@ import { useEffect, useState } from 'react'
 
 import MobileNav from './MobileNav'
 import SearchButton from './SearchButton'
-import TransitionLink from './TransitionLink'
-
-// import SearchButton from './SearchButton'
 
 const NewHeader = () => {
     const { scrollY } = useScroll()
@@ -24,20 +21,20 @@ const NewHeader = () => {
         })
         return unsubscribe
     }, [scrollY])
+
     return (
         <div className="fixed inset-x-0 top-0 z-50 container px-4 md:px-[2rem] max-w-7xl w-full">
             <motion.nav
                 animate={{
-                    boxShadow: hasScrolled ? 'var(--shadow-aceternity)' : 'none',
                     width: hasScrolled ? '90%' : '100%',
                     y: hasScrolled ? 10 : 0,
                 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
                 className={cn(
-                    'mx-auto flex items-center justify-between px-3 py-4 md:py-2 backdrop-blur-sm transition-colors duration-300 ease-in-out',
+                    'mx-auto flex items-center justify-between px-3 py-4 md:py-2 transition-all duration-500 ease-out',
                     hasScrolled
-                        ? 'bg-white dark:bg-[#141414]/50 border border-[var(--pattern-fg)] rounded-md'
-                        : 'bg-white/50 dark:bg-background border border-transparent border-b border-b-[var(--pattern-fg)]'
+                        ? 'glass-header rounded-md'
+                        : 'bg-white/50 dark:bg-transparent border border-transparent border-b border-b-[var(--pattern-fg)]'
                 )}
             >
                 <Link
@@ -53,15 +50,16 @@ const NewHeader = () => {
                     </div>
                 </Link>
                 <div className="flex items-center space-x-3">
-                    <ul className="hidden space-x-2 md:flex">
+                    <ul className="hidden space-x-2 py-1.5 md:flex">
                         {headerNavLinks.map((link, i) => (
                             // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                             <li key={i}>
-                                <TransitionLink
+                                <Link
                                     className="rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-300 hover:bg-secondary hover:brightness-125"
                                     href={link.href}
-                                    label={link.title}
-                                />
+                                >
+                                    {link.title}
+                                </Link>
                             </li>
                         ))}
                     </ul>

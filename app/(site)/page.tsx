@@ -4,13 +4,14 @@ import BlurFade from '@/components/magicui/blur-fade'
 import { ResumeCard } from '@/components/resume-card'
 import { Badge } from '@/components/shadcn/badge'
 import { DATA } from '@/data/resume'
+import { ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import Markdown from 'react-markdown'
 
 const BLUR_FADE_DELAY = 0.04
 export default async function Page() {
     return (
         <main className="flex flex-col min-h-[100dvh]">
-            {/* <AnimatePresence mode="wait">{isLoading && <Preloader />}</AnimatePresence> */}
             <HeroSection profileImage="https://github.com/pranav-bhatkar.png" />
             <section
                 id="about"
@@ -27,6 +28,14 @@ export default async function Page() {
                         turning ideas into production-ready products and constantly pushing myself
                         to build better, faster, and smarter software.
                     </Markdown>
+                </BlurFade>
+                <BlurFade delay={BLUR_FADE_DELAY * 5}>
+                    <Link
+                        href="/about"
+                        className="inline-flex items-center gap-1.5 mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        Learn more about me <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                 </BlurFade>
             </section>
             <section
@@ -101,18 +110,28 @@ export default async function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <h2 className="text-xl font-bold mb-4">Projects</h2>
                 </BlurFade>
-                <BlurFade delay={0.04 * 12}>
-                    <Markdown className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
-                        I'm currently developing new projects that better reflect my current skill
-                        set as a professional developer. My previous portfolio work no longer
-                        represents the quality and complexity of what I build today, so I've taken
-                        them down while I create fresh showcases. I'm dedicating my weekends to
-                        building these new projects, and I'll be adding them here as they're
-                        completed. Check back soon!
-                    </Markdown>
+                <div className="flex min-h-0 flex-col gap-y-4">
+                    <BlurFade delay={0.04 * 12}>
+                        <ResumeCard
+                            logoUrl="https://github.com/pranav-bhatkar.png"
+                            altText="Lyrix"
+                            title="Lyrix"
+                            subtitle="A native macOS app that displays real-time synchronized lyrics from Spotify and Apple Music in a customizable floating overlay."
+                            href="https://github.com/pranav-bhatkar/lyrix"
+                            badges={['Swift', 'macOS', 'Spotify', 'Apple Music']}
+                            period="Weekend project"
+                        />
+                    </BlurFade>
+                </div>
+                <BlurFade delay={0.04 * 13}>
+                    <Link
+                        href="/projects"
+                        className="inline-flex items-center gap-1.5 mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        View all projects <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                 </BlurFade>
             </section>
-            {/* <Projects /> */}
             <WishlistSection />
         </main>
     )

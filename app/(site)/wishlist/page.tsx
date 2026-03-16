@@ -59,10 +59,10 @@ export default function WishlistPage() {
                 <span className="text-sm font-medium text-foreground">Sort by:</span>
                 <button
                     onClick={() => toggleSort('progress')}
-                    className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                         sortBy === 'progress'
-                            ? 'border-primary bg-primary text-primary-foreground'
-                            : 'border-border bg-card text-foreground hover:bg-muted'
+                            ? 'border-foreground/30 bg-foreground/10 text-foreground'
+                            : 'border-border text-muted-foreground hover:text-foreground hover:bg-foreground/5'
                     }`}
                 >
                     <ArrowUpDown className="h-4 w-4" />
@@ -75,10 +75,10 @@ export default function WishlistPage() {
                 </button>
                 <button
                     onClick={() => toggleSort('amount')}
-                    className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                         sortBy === 'amount'
-                            ? 'border-primary bg-primary text-primary-foreground'
-                            : 'border-border bg-card text-foreground hover:bg-muted'
+                            ? 'border-foreground/30 bg-foreground/10 text-foreground'
+                            : 'border-border text-muted-foreground hover:text-foreground hover:bg-foreground/5'
                     }`}
                 >
                     <DollarSign className="h-4 w-4" />

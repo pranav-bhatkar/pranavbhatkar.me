@@ -18,7 +18,7 @@ export default function WishlistItemPage() {
 
     if (item === undefined) {
         return (
-            <main className="min-h-screen bg-background flex items-center justify-center py-20">
+            <main className="min-h-screen flex items-center justify-center py-20">
                 <div className="text-center">
                     <div className="mb-4 text-lg text-muted-foreground">Loading...</div>
                 </div>
@@ -28,7 +28,7 @@ export default function WishlistItemPage() {
 
     if (!item) {
         return (
-            <main className="min-h-screen bg-background flex items-center justify-center py-20">
+            <main className="min-h-screen flex items-center justify-center py-20">
                 <div className="text-center">
                     <h1 className="text-2xl font-medium mb-4">Item not found</h1>
                     <Link href="/wishlist">
@@ -47,7 +47,7 @@ export default function WishlistItemPage() {
     const isFullyFunded = totalAmount >= item.targetAmount || item.status === 'COMPLETED'
 
     return (
-        <main className="min-h-screen bg-background py-20">
+        <main className="min-h-screen py-20">
             {/* Header */}
             <header className="border-b border-border">
                 <div className="container px-6 md:px-8 py-6">
@@ -125,8 +125,8 @@ export default function WishlistItemPage() {
 
                             {/* CTA */}
                             {isFullyFunded ? (
-                                <div className="p-4 border border-green-500/30 bg-green-500/10 text-center">
-                                    <p className="text-green-400 font-medium">
+                                <div className="p-4 border border-foreground/20 text-center">
+                                    <p className="text-foreground font-medium">
                                         This goal has been fully funded!
                                     </p>
                                     <p className="text-sm text-muted-foreground mt-1">
