@@ -45,9 +45,23 @@ const blogs = defineCollection({
                 datePublished: data.date,
                 dateModified: data.lastmod || data.date,
                 description: data.summary,
-                image: data.images ? data.images[0] : siteMetadata.socialBanner,
-                url: `${siteMetadata.siteUrl}/${data.slug}`,
+                image: data.images
+                    ? data.images[0].includes('http')
+                        ? data.images[0]
+                        : `${siteMetadata.siteUrl}${data.images[0]}`
+                    : `${siteMetadata.siteUrl}${siteMetadata.socialBanner}`,
+                url: `${siteMetadata.siteUrl}/blog/${data.slug.replace(/^blog\//, '')}`,
+                mainEntityOfPage: {
+                    '@type': 'WebPage',
+                    '@id': `${siteMetadata.siteUrl}/blog/${data.slug.replace(/^blog\//, '')}`,
+                },
                 author: data.authors as any,
+                publisher: {
+                    '@type': 'Person',
+                    name: siteMetadata.author,
+                    url: siteMetadata.siteUrl,
+                },
+                keywords: data.tags,
             } as Record<string, unknown>,
         })),
 })

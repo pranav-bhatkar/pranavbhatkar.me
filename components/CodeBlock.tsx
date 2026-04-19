@@ -157,6 +157,7 @@ const CodeBlock = ({
 
     return (
         <div
+            data-nosnippet
             onMouseEnter={onEnter}
             onMouseLeave={onExit}
             className="relative my-6 overflow-hidden rounded-lg border border-border"

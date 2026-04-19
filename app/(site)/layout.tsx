@@ -2,7 +2,6 @@ import Footer from '@/components/Footer'
 import MeshGradient from '@/components/MeshGradient'
 import NewHeader from '@/components/newHeader'
 import siteMetadata from '@/data/siteMetadata'
-import { GA } from 'pliny/analytics/GoogleAnalytics'
 import { SearchProvider } from 'pliny/search'
 import React from 'react'
 

@@ -1,9 +1,9 @@
+import { MDXContent } from '@/components/MDXContent'
 import PageTitle from '@/components/PageTitle'
 import siteMetadata from '@/data/siteMetadata'
 import PostBanner from '@/layouts/PostBanner'
 import PostLayout from '@/layouts/PostLayout'
 import PostSimple from '@/layouts/PostSimple'
-import { MDXContent } from '@/components/MDXContent'
 import {
     type Authors,
     type Blog,
@@ -56,9 +56,14 @@ export async function generateMetadata({
         }
     })
 
+    const canonicalUrl = post.canonicalUrl || `${siteMetadata.siteUrl}/blog/${slug}`
+
     return {
         title: post.title,
         description: post.summary,
+        alternates: {
+            canonical: canonicalUrl,
+        },
         openGraph: {
             title: post.title,
             description: post.summary,
@@ -67,9 +72,10 @@ export async function generateMetadata({
             type: 'article',
             publishedTime: publishedAt,
             modifiedTime: modifiedAt,
-            url: './',
+            url: canonicalUrl,
             images: ogImages,
             authors: authors.length > 0 ? authors : [siteMetadata.author],
+            tags: post.tags,
         },
         twitter: {
             card: 'summary_large_image',
@@ -145,7 +151,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             <ReportView slug={slug} />
-            <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev} toc={post.toc}>
+            <Layout
+                content={mainContent}
+                authorDetails={authorDetails}
+                next={next}
+                prev={prev}
+                toc={post.toc}
+            >
                 <MDXContent code={post.body} />
             </Layout>
             {post.draft && (

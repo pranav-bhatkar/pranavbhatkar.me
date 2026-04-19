@@ -12,11 +12,17 @@ import CustomLink from './Link'
 import StaticTweet from './StaticTweet'
 import YouTube from './YouTube'
 
+const NoSnippetPre = (props: React.ComponentProps<typeof Pre>) => (
+    <div data-nosnippet>
+        <Pre {...props} />
+    </div>
+)
+
 export const components: MDXComponents = {
     Image,
     TOCInline,
     a: CustomLink,
-    pre: Pre,
+    pre: NoSnippetPre,
     CodeBlock,
     CountryFlag,
     Challenge,

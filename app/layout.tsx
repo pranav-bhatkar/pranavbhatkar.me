@@ -5,6 +5,7 @@ import { ThemeProviders } from 'app/theme-providers'
 import 'css/tailwind.css'
 import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
+import { GA } from 'pliny/analytics/GoogleAnalytics'
 import { Suspense } from 'react'
 
 import ConvexClientProvider from './ConvexClientProvider'
@@ -90,6 +91,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
             <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
             <body className="relative bg-background text-black antialiased dark:text-white">
+                {siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId && (
+                    <GA
+                        googleAnalyticsId={siteMetadata.analytics.googleAnalytics.googleAnalyticsId}
+                    />
+                )}
                 <ConvexClientProvider>
                     <ThemeProviders>
                         {children}
