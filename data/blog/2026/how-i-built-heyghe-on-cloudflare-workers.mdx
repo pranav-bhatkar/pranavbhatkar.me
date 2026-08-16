@@ -1,0 +1,36 @@
+---
+title: 'how i built heyghe, an instagram comment-to-dm tool, on cloudflare workers'
+date: '2026-08-16'
+lastmod: '2026-08-16'
+tags: ['cloudflare', 'workers', 'better-auth', 'saas', 'building-in-public']
+authors: ['pranavbhatkar']
+summary: 'the stack behind heyghe, and the parts of the instagram/meta api that actually gave me trouble.'
+layout: PostLayout
+draft: false
+---
+
+i spent the last few months building [heyghe](https://heyghe.com), a tool that turns instagram comments into dms automatically. someone comments a keyword on your post or reel, and it dms them a link, lead form, or price list within a couple of seconds, then saves the lead. this is the build log, mostly for other devs who might touch the meta api and regret it.
+
+## the stack
+
+- **api:** cloudflare workers + d1 (sqlite at the edge). the whole backend is one worker.
+- **auth:** better-auth, running on the worker against d1. magic link, google, and passkeys.
+- **dashboard:** react + vite spa.
+- **marketing site:** next.js on cloudflare pages.
+- **billing:** razorpay. **email:** resend. **instagram:** the official meta instagram api, not a scraping hack.
+
+i wanted the whole thing on cloudflare so i wasn't paying for idle servers, and d1 was enough for the data model. no separate postgres, no redis.
+
+## the parts that were annoying
+
+**the 24 hour window.** meta only lets you dm a user inside 24 hours of them interacting with you. so the "comment triggers a dm" flow is fine, but anything proactive is out. i leaned into that instead of fighting it. the tool only ever replies to people who already commented, which is also the honest, non-spammy version of this product. i wrote more about that here: [is instagram dm automation safe](https://heyghe.com/blog/is-instagram-automation-safe/).
+
+**webhook verification and rate limits.** the comment webhook is easy to wire, harder to make reliable. you have to verify the payload, dedupe, and respect per-account send limits or you get flagged. edge functions made the latency good. getting the comment-to-dm time under about 2 seconds was mostly about not doing dumb sequential work in the handler.
+
+**better-auth on workers.** smoother than i expected. magic link, passkeys, and google all ran fine against d1. the only real config pain was getting the oauth redirect uris right across local and prod.
+
+## what i'd tell another dev
+
+if you build on the meta instagram api: read the actual policy first, respect the 24 hour window, and do not try to auto-dm strangers or new followers. it will get the account limited and it is against the rules anyway. the compliant version is also the better product.
+
+if you're curious what it turned into, it's live at [heyghe](https://heyghe.com), and there's a rundown of [the best instagram dm automation tools](https://heyghe.com/blog/best-instagram-dm-automation-tools-2026/) if you want to see how it compares.
