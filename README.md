@@ -48,7 +48,7 @@ This blog is based on the [timlrx/tailwind-nextjs-starter-blog](https://github.c
 
 ## License
 
-This project is licensed under the terms of the [license](link-to-your-license-file).
+This project is licensed under the terms of the [license](LICENSE).
 
 ## Deployment
 
