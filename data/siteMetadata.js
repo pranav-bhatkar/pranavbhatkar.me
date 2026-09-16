@@ -15,7 +15,7 @@ const siteMetadata = {
     twitter: 'https://twitter.com/pranavbhatkar_',
     facebook: 'https://www.facebook.com/profile.php?id=100091675700292',
     youtube: 'https://www.youtube.com/@pranavbhatkar',
-    linkedin: 'www.linkedin.com/in/pranavbhatkar',
+    linkedin: 'https://www.linkedin.com/in/pranavbhatkar',
     instagram: 'https://instagram.com/pranavbhatkar_',
     locale: 'en-US',
     analytics: {
