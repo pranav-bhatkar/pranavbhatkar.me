@@ -1,8 +1,10 @@
+import ProjectsPlaceholder from '@/components/ProjectsPlaceholder'
 import HeroSection from '@/components/home/NewHero'
 import WishlistSection from '@/components/home/WishlistSection'
 import BlurFade from '@/components/magicui/blur-fade'
 import { ResumeCard } from '@/components/resume-card'
 import { Badge } from '@/components/shadcn/badge'
+import projectsData from '@/data/projectsData'
 import { DATA } from '@/data/resume'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -10,6 +12,10 @@ import Markdown from 'react-markdown'
 
 const BLUR_FADE_DELAY = 0.04
 export default async function Page() {
+    // `data/projectsData.ts` is the single switch for both project surfaces:
+    // while it is empty the portfolio shows the placeholder instead.
+    const hasProjects = projectsData.length > 0
+
     return (
         <main className="flex flex-col min-h-[100dvh]">
             <HeroSection profileImage="https://github.com/pranav-bhatkar.png" />
@@ -110,27 +116,36 @@ export default async function Page() {
                 <BlurFade delay={BLUR_FADE_DELAY * 11}>
                     <h2 className="text-xl font-bold mb-4">Projects</h2>
                 </BlurFade>
-                <div className="flex min-h-0 flex-col gap-y-4">
+                {!hasProjects && (
                     <BlurFade delay={0.04 * 12}>
-                        <ResumeCard
-                            logoUrl="https://github.com/pranav-bhatkar.png"
-                            altText="Lyrix"
-                            title="Lyrix"
-                            subtitle="A native macOS app that displays real-time synchronized lyrics from Spotify and Apple Music in a customizable floating overlay."
-                            href="https://github.com/pranav-bhatkar/lyrix"
-                            badges={['Swift', 'macOS', 'Spotify', 'Apple Music']}
-                            period="Weekend project"
-                        />
+                        <ProjectsPlaceholder />
                     </BlurFade>
-                </div>
-                <BlurFade delay={0.04 * 13}>
-                    <Link
-                        href="/projects"
-                        className="inline-flex items-center gap-1.5 mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                        View all projects <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                </BlurFade>
+                )}
+                {hasProjects && (
+                    <>
+                        <div className="flex min-h-0 flex-col gap-y-4">
+                            <BlurFade delay={0.04 * 12}>
+                                <ResumeCard
+                                    logoUrl="https://github.com/pranav-bhatkar.png"
+                                    altText="Lyrix"
+                                    title="Lyrix"
+                                    subtitle="A native macOS app that displays real-time synchronized lyrics from Spotify and Apple Music in a customizable floating overlay."
+                                    href="https://github.com/pranav-bhatkar/lyrix"
+                                    badges={['Swift', 'macOS', 'Spotify', 'Apple Music']}
+                                    period="Weekend project"
+                                />
+                            </BlurFade>
+                        </div>
+                        <BlurFade delay={0.04 * 13}>
+                            <Link
+                                href="/projects"
+                                className="inline-flex items-center gap-1.5 mt-6 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                                View all projects <ArrowRight className="h-3.5 w-3.5" />
+                            </Link>
+                        </BlurFade>
+                    </>
+                )}
             </section>
             <WishlistSection />
         </main>
